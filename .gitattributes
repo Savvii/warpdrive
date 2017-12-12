@@ -1,0 +1,13 @@
+# Ignore test suite and configuration files for export
+
+tests export-ignore
+
+.gitattributes export-ignore
+.gitignore export-ignore
+
+composer.json export-ignore
+composer.lock export-ignore
+phpmd.xml export-ignore
+phpunit.xml export-ignore
+phpunit-multisite.xml export-ignore
+ruleset.xml export-ignore
