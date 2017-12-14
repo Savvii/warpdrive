@@ -20,16 +20,18 @@ if ( ! function_exists( 'wp_json_encode' ) ) :
     }
 endif;
 
-/**
- * In WP 4.6.0 get_sites was introduced, to support WP verions before 4.6.0
- * we need to make a stub for get_sites to maintain compatibility.
- */
-if ( ! function_exists( 'get_sites' ) ) :
-    function get_sites( $args = [] ) {
-        $sites = wp_get_sites( $args );
-        foreach ( $sites as $key => $site ) {
-            $sites[ $key ] = (object) $site;
+if ( is_multisite() ) :
+    /**
+     * In WP 4.6.0 get_sites was introduced, to support WP verions before 4.6.0
+     * we need to make a stub for get_sites to maintain compatibility.
+     */
+    if ( ! function_exists( 'get_sites' ) ) :
+        function get_sites( $args = [] ) {
+            $sites = wp_get_sites( $args );
+            foreach ( $sites as $key => $site ) {
+                $sites[ $key ] = (object) $site;
+            }
+            return $sites;
         }
-        return $sites;
-    }
+    endif;
 endif;
