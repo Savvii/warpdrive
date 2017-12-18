@@ -3,7 +3,7 @@
  * Plugin name: Warpdrive
  * Plugin URI: https://github.com/Savvii/warpdrive
  * Description: Hosting plugin for Savvii
- * Version: 2.8.2
+ * Version: 2.8.3
  * Author: Savvii <support@savvii.com>
  * Author URI: https://www.savvii.com
  * License: GPLv3
