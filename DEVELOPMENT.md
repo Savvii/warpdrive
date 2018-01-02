@@ -13,11 +13,11 @@ Firstly get a local copy of the repository using git clone.
 
     git clone git@github.com:Savvii/warpdrive.git
 
-Before starting development we recommend creating a branche from "develop" where you can push your code to.
+Before starting development we recommend creating a branch from "master" where you can push your code to.
 This will give you your own branch to commit your changes to.
 
-    git checkout develop
-    git checkout -b my-feature-branch develop
+    git checkout master
+    git checkout -b my-feature-branch master
 
 In order to use the [PHPunit](https://phpunit.de/) test suite you have to install it using [composer](https://getcomposer.org/) with the following command.
 
