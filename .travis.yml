@@ -1,0 +1,42 @@
+language: php
+
+php:
+  - '5.6'
+  - '7.0'
+  - '7.1'
+  - '7.2'
+
+env:
+  global:
+    - secure: qYOTDuOvuFE75AZbLN9hFQhAQVZ1SmwohZBrcCWNWVV83Zf8WGNIsKDTjGKesSSfuaK5eMdzbpzP7BohFnobB7c9elklXzindlpPxwwiD4M+JYmP5lbsvZjlkEnQVuhugI2D05Xz3EiDQbYXXRPq9M3eb8PmB113edSwrHl9fygdFmfUyQu6msEH140Zs0GJOY3+QLThZlBayS4RHeZKGbuxImssvL1f666+yI+eisBsAfl+IO4QktLSHZhK3xayV5xn0VtUduh+pFxVb2CHPoZ8D9dPVY/PwAA6UjFi/cAeWNnUb02RQD+jChJG0eSeFsLdUfgKbWpHzKERxEr7PC+yb+nxkYMASpuOPo1ha4AH/RmtDDSaF8BQO0FLjxmUuaibUakdCzN5KwSVraJgCSPeobsynNSOhix3Vsg3+bPcHOp6I467/0vdAtU3zz5no6mPMlIheJczYz9ZGrGyRfs35KSNUqoGo0qhJFpQNMa0OUasyWSrirWAsH+KlBV0ky6EsGuZesFbcSrlKzCIfRU2g7nh7Vo4CNUe/bq1jBTqIezkkUe19gZpV3wFx+EfKGI1D5RodrWf3+uNsrA/Y5v/csRC0Xt3LI68JmQzU6iTRoIoXNOVaKu155WSKiVz5TQ3Xe5X9md1O2ZV2xweFQwi+vO7m6YylXFD3U1TQ48=
+    - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
+    - TZ=Europe/Amsterdam
+  matrix:
+    - WP_VERSION=latest
+    - WP_VERSION=4.8.X
+    - WP_VERSION=4.7.X
+    - WP_VERSION=4.6.X
+    - WP_VERSION=4.5.X
+    - WP_VERSION=4.4.X
+    - WP_VERSION=4.3.X
+    - WP_VERSION=4.2.X
+    - WP_VERSION=4.1.X
+    - WP_VERSION=4.0.X
+
+before_script:
+  - composer install
+  - export PATH="./vendor/bin:$PATH"
+  - bash tests/install-wp-tests.bash wordpress_test root '' localhost $WP_VERSION
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+
+script:
+  - for FILE in $(find . -type f -name '*.php' -not -path './vendor/*'); do php -l $FILE; done
+  - WP_MULTISITE=0 phpunit
+  - WP_MULTISITE=1 phpunit -c phpunit-multisite.xml --coverage-clover=clover.xml
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT || true; fi
+
+notifications:
+  email: false
+  slack:
+    secure: OK5zuD52QqHfoydonjOJUCtoAw17eZzMMonzBlmDSWef5pIZQGOdT2NbsPUPltwEcyT1tZwthRPDPlCPErW1Av+Lq6v9HhvgSDI3W7+qN2r0bjblKS+NME7A1xbCQrxWX1IwxseZi80mclEHshyi38Yn2hbc52ugJm5uXBAyY9FvEaJFi3RhMvqBOWsfyF+TJM4rEiAEPWKh4y1HdOufBgCA3BQ7FSH1WMDV2qD/Jo9e6ZZuTHqeoB/xkLkTabNUQpwmP8QAHtd8tw+h9XqGMArKQ8/WqmYBJj+s/VBYbzddKXdcSNBbEA2MqLvU9/dwDcMyITfcR3ymU6aHRACLTFwWhNxtryQBglDIMTOaGjBCgWRqPdLaAIAPaR5mEkz4Gv5iePHGMf8Eh4IR8fOTDBnp/4X1wJGXtwSlHSH6FP4QdQj6QzmieT4uypAHShtAUga6uHilfZe2R2/cclEk2PwogXcnuzndbVpTdBsITiEaMgxruUwSmKUqRvF4eo3JiJlElfePe5zgeG53ynBiWBnL8U6kHUQHunhbi7Pjf8iLSTr3YM/jFL1fP7kr4ugF0O4uE8lEHxNIYSamh3fe6SWC7NkMTwQV+VeY+biP4AMdp6i9nc08eFqEXFR9H44uHEe3jQa08KFiT/FkJOEF1ZKe/O7rlYE7p4sMOC74Kzc=
