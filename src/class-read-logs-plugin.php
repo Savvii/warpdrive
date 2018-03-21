@@ -23,6 +23,7 @@ class ReadLogsPlugin {
         $this->read_logs = new ReadLogs();
         // Add module menu items to warpdrive menu
         add_action( 'admin_menu', [ $this, 'admin_menu_init' ] );
+        add_action( 'admin_bar_menu', [ $this, 'admin_bar_menu' ], 90 );
     }
 
     function admin_menu_init() {
@@ -34,6 +35,56 @@ class ReadLogsPlugin {
             'savvii_readlogs', // Menu slug
             [ $this, 'readlogs_page' ] // Callback
         );
+    }
+
+    function admin_bar_menu() {
+       global $wp_admin_bar;
+
+       if ( is_super_admin() ) {
+            $wp_admin_bar->add_menu([
+                'parent' => 'savvii_top_menu',
+                'id' => 'savvii_access_log',
+                'title' => 'Access log',
+                'href' => '#',
+            ]);
+
+            $wp_admin_bar->add_menu([
+                'parent' => 'savvii_access_log',
+                'id' => 'savvii_access_log_10_lines',
+                'title' => '10 lines',
+                'href' => wp_nonce_url( admin_url( 'admin.php?page=savvii_readlogs&log=access&lines=10' ), 'savvii_readlogs' ),
+            ]);
+
+
+            $wp_admin_bar->add_menu([
+                'parent' => 'savvii_access_log',
+                'id' => 'savvii_access_log_100_lines',
+                'title' => '100 lines',
+                'href' => wp_nonce_url( admin_url( 'admin.php?page=savvii_readlogs&log=access&lines=100' ), 'savvii_readlogs' ),
+            ]);
+
+
+            $wp_admin_bar->add_menu([
+                'parent' => 'savvii_top_menu',
+                'id' => 'savvii_error_log',
+                'title' => 'Error log',
+                'href' => '#',
+            ]);
+
+            $wp_admin_bar->add_menu([
+                'parent' => 'savvii_error_log',
+                'id' => 'savvii_error_log_10_lines',
+                'title' => '10 lines',
+                'href' => wp_nonce_url( admin_url( 'admin.php?page=savvii_readlogs&log=error&lines=10' ), 'savvii_readlogs' ),
+            ]);
+
+            $wp_admin_bar->add_menu([
+                'parent' => 'savvii_error_log',
+                'id' => 'savvii_error_log_100_lines',
+                'title' => '100 lines',
+                'href' => wp_nonce_url( admin_url( 'admin.php?page=savvii_readlogs&log=error&lines=100' ), 'savvii_readlogs' ),
+            ]);
+       }
     }
 
     function _g( $var, $default = null ) {

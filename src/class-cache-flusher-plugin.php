@@ -271,6 +271,7 @@ class CacheFlusherPlugin {
         //Add option to menu bar
         if ( current_user_can( 'manage_options' ) ) {
             $wp_admin_bar->add_menu([
+                'parent' => 'savvii_top_menu',
                 'id' => 'savvii_cache_delete',
                 'title' => self::TEXT_FLUSH . $flush_result,
                 'href' => wp_nonce_url( admin_url( '?savvii_flush_now' ), self::NAME_FLUSH_NOW ),
@@ -278,6 +279,7 @@ class CacheFlusherPlugin {
 
             if ( is_multisite() ) {
                 $wp_admin_bar->add_menu([
+                    'parent' => 'savvii_top_menu',
                     'id' => 'savvii_sitecache_delete',
                     'title' => self::TEXT_DOMAINFLUSH . $domainflush_result,
                     'href' => wp_nonce_url( admin_url( '?savvii_domainflush_now' ), self::NAME_DOMAINFLUSH_NOW ),

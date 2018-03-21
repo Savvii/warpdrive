@@ -36,11 +36,27 @@ class SavviiDashboard {
         add_filter( 'custom_menu_order', [ $this, 'admin_menu_custom_order' ], 1, 0 );
         add_filter( 'menu_order', [ $this, 'admin_menu_order' ] );
 
+        // Add flush button to top bar
+        add_action( 'admin_bar_menu', [ $this, 'admin_bar_menu' ], 90 );
+
         $this->cache_flusher = new CacheFlusher();
     }
 
+    function admin_bar_menu() {
+        global $wp_admin_bar;
+
+        //Add option to menu bar
+        if ( current_user_can( 'manage_options' ) ) {
+            $wp_admin_bar->add_menu([
+                'id' => 'savvii_top_menu',
+                'title' => 'Savvii',
+                'href' => wp_nonce_url( admin_url( 'admin.php?page=savvii_dashboard' ) ),
+            ]);
+        }
+    }
+
     function admin_menu_register() {
-        add_menu_page( 'Savvii', 'Savvii', 'manage_options', self::MENU_NAME, [ $this, 'page_dashboard' ] );
+        add_menu_page( 'Savvii', 'Savvii', 'manage_options', self::MENU_NAME, [ $this, 'page_dashboard' ], '', 99 );
     }
 
     /**
