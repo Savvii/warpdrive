@@ -32,10 +32,6 @@ class SavviiDashboard {
     function __construct() {
         // Add menu to menu bar
         add_action( 'admin_menu', [ $this, 'admin_menu_register' ] );
-        // Menu filters
-        add_filter( 'custom_menu_order', [ $this, 'admin_menu_custom_order' ], 1, 0 );
-        add_filter( 'menu_order', [ $this, 'admin_menu_order' ] );
-
         // Add flush button to top bar
         add_action( 'admin_bar_menu', [ $this, 'admin_bar_menu' ], 90 );
 
@@ -59,30 +55,6 @@ class SavviiDashboard {
         add_menu_page( 'Savvii', 'Savvii', 'manage_options', self::MENU_NAME, [ $this, 'page_dashboard' ], '', 99 );
     }
 
-    /**
-     * Signal we want a custom menu order
-     * @return bool True
-     */
-    function admin_menu_custom_order() {
-        return true;
-    }
-
-    /**
-     * Filter Savvii to top
-     * @param $menu_order array Original order
-     * @return array Modified order
-     */
-    function admin_menu_order( $menu_order ) {
-        // Remove our menu item from array
-        foreach ( $menu_order as $key => $value ) {
-            if ( self::MENU_NAME === $value ) {
-                unset( $menu_order[ $key ] );
-            }
-        }
-        // Add our menu at front
-        array_unshift( $menu_order, self::MENU_NAME );
-        return $menu_order;
-    }
 
     function maybe_update_caching_style() {
         if ( ! isset( $_POST[ self::FORM_CACHE_DEFAULT ] ) ) {

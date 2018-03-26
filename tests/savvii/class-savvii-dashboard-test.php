@@ -23,24 +23,31 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         $_REQUEST = [];
     }
 
+    function test_construct_adds_dashboard_to_admin_bar_menu_at_top_position() {
+        $this->_setRole( 'administrator' );
+
+        $wp_admin_bar = $this->getMock( 'stdClass', array( 'add_menu' ) );
+        $wp_admin_bar->expects( $this->exactly( 1 ) )
+            ->method( 'add_menu' )
+            ->withConsecutive(
+                [ $this->callback( [ $this, '_test_admin_bar_add_savvii_top_menu' ] ) ]
+            );
+        $GLOBALS['wp_admin_bar'] = $wp_admin_bar;
+        new SavviiDashboard();
+        do_action( 'admin_bar_menu', [ &$wp_admin_bar ] );
+    }
+
+    function _test_admin_bar_add_savvii_top_menu( $subject ) {
+        return 'savvii_top_menu' === $subject['id'];
+    }
+
     function test_construct_adds_dashboard_to_admin_menu_at_top_position() {
-        global $menu, $wp_styles;
         // Create dashboard
-        $sd = new SavviiDashboard();
+        new SavviiDashboard();
         // Check actions set
         $this->assertTrue( $this->_action_added( 'admin_menu' ) );
-        $this->assertTrue( $this->_action_added( 'custom_menu_order' ) );
-        $this->assertTrue( $this->_action_added( 'menu_order' ) );
-        $this->assertTrue( apply_filters( 'custom_menu_order', false ) );
-        // Check menu ordering
-        $given    = [ 'menu_1', $sd::MENU_NAME, 'menu_2' ];
-        $expected = [ $sd::MENU_NAME, 'menu_1', 'menu_2' ];
-        $this->assertEquals( $expected, apply_filters( 'menu_order', $given ) );
-        // Check menu page added
         do_action( 'admin_menu' );
-        // Search the menu item
-        $menu_index = array_search( $sd::MENU_NAME, array_column( $menu, 2 ), true );
-        $this->assertTrue( false !== $menu_index, 'Expected menu to contain ' . $sd::MENU_NAME );
+        $this->assertNotEmpty(menu_page_url('savvii_dashboard', false));
     }
 
     function test_page_dashboard_shows_caching_normal_when_option_does_not_exist() {

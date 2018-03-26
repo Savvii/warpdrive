@@ -27,6 +27,50 @@ class ReadLogsPluginTest extends Warpdrive_UnitTestCase {
     // __construct
     // ----------------------------------------------------------------------
 
+    function test_construct_adds_dashboard_to_admin_bar_menu_at_top_position() {
+        $this->_setRole( 'administrator' );
+
+        $wp_admin_bar = $this->getMock( 'stdClass', array( 'add_menu' ) );
+        $wp_admin_bar
+            ->method( 'add_menu' )
+            ->withConsecutive(
+                [ $this->callback( [ $this, '_test_admin_bar_add_menu_savvii_access_log' ] ) ],
+                [ $this->callback( [ $this, '_test_admin_bar_add_submenu_savvii_access_log_10_lines' ] ) ],
+                [ $this->callback( [ $this, '_test_admin_bar_add_submenu_savvii_access_log_100_lines' ] ) ],
+                [ $this->callback( [ $this, '_test_admin_bar_add_menu_savvii_error_log' ] ) ],
+                [ $this->callback( [ $this, '_test_admin_bar_add_submenu_savvii_error_log_10_lines' ] ) ],
+                [ $this->callback( [ $this, '_test_admin_bar_add_submenu_savvii_error_log_100_lines' ] ) ]
+            );
+        // @codingStandardsIgnoreLine, we need to ignore because we set a global
+        $GLOBALS['wp_admin_bar'] = $wp_admin_bar;
+        new ReadLogsPlugin();
+        do_action( 'admin_bar_menu', [ &$wp_admin_bar ] );
+    }
+
+    function _test_admin_bar_add_menu_savvii_access_log( $subject ) {
+        return 'savvii_top_menu' === $subject['parent'] && 'savvii_access_log' === $subject['id'];
+    }
+
+    function _test_admin_bar_add_submenu_savvii_access_log_10_lines( $subject ) {
+        return 'savvii_access_log' === $subject['parent'] && 'savvii_access_log_10_lines' === $subject['id'];
+    }
+
+    function _test_admin_bar_add_submenu_savvii_access_log_100_lines( $subject ) {
+        return 'savvii_access_log' === $subject['parent'] && 'savvii_access_log_100_lines' === $subject['id'];
+    }
+
+    function _test_admin_bar_add_menu_savvii_error_log( $subject ) {
+        return 'savvii_top_menu' === $subject['parent'] && 'savvii_error_log' === $subject['id'];
+    }
+
+    function _test_admin_bar_add_submenu_savvii_error_log_10_lines( $subject ) {
+        return 'savvii_error_log' === $subject['parent'] && 'savvii_error_log_10_lines' === $subject['id'];
+    }
+
+    function _test_admin_bar_add_submenu_savvii_error_log_100_lines( $subject ) {
+        return 'savvii_error_log' === $subject['parent'] && 'savvii_error_log_100_lines' === $subject['id'];
+    }
+
     function test_construct_add_admin_menu_action() {
         global $submenu;
         $this->_setRole( 'administrator' );
