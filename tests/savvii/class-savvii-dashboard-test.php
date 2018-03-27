@@ -30,15 +30,15 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         $wp_admin_bar->expects( $this->exactly( 1 ) )
             ->method( 'add_menu' )
             ->withConsecutive(
-                [ $this->callback( [ $this, '_test_admin_bar_add_savvii_top_menu' ] ) ]
+                [ $this->callback( [ $this, '_test_admin_bar_add_warpdrive_top_menu' ] ) ]
             );
         $GLOBALS['wp_admin_bar'] = $wp_admin_bar;
         new SavviiDashboard();
         do_action( 'admin_bar_menu', [ &$wp_admin_bar ] );
     }
 
-    function _test_admin_bar_add_savvii_top_menu( $subject ) {
-        return 'savvii_top_menu' === $subject['id'];
+    function _test_admin_bar_add_warpdrive_top_menu( $subject ) {
+        return 'warpdrive_top_menu' === $subject['id'];
     }
 
     function test_construct_adds_dashboard_to_admin_menu_at_top_position() {
@@ -47,7 +47,7 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         // Check actions set
         $this->assertTrue( $this->_action_added( 'admin_menu' ) );
         do_action( 'admin_menu' );
-        $this->assertNotEmpty(menu_page_url('savvii_dashboard', false));
+        $this->assertNotEmpty(menu_page_url('warpdrive_dashboard', false));
     }
 
     function test_page_dashboard_shows_caching_normal_when_option_does_not_exist() {
@@ -60,7 +60,7 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         ob_start();
         $sd->page_dashboard();
         $output = ob_get_clean();
-        $this->assertContains( '<input type="hidden" name="savvii_cache_default" value="normal" />', $output, '', true );
+        $this->assertContains( '<input type="hidden" name="warpdrive_cache_default" value="normal" />', $output, '', true );
     }
 
     function test_page_dashboard_shows_caching_agressive_when_option_is_set() {
@@ -85,9 +85,9 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         $sd->page_dashboard();
         $output = ob_get_clean();
         if ( is_multisite() ) {
-            return $this->assertContains( '<input type="checkbox" name="savvii_cdn_use_default" checked="checked" />', $output, '', true );
+            return $this->assertContains( '<input type="checkbox" name="warpdrive_cdn_use_default" checked="checked" />', $output, '', true );
         }
-        $this->assertContains( '<input type="checkbox" name="savvii_cdn_enable"  />', $output, '', true );
+        $this->assertContains( '<input type="checkbox" name="warpdrive_cdn_enable"  />', $output, '', true );
     }
 
     function test_page_dashboard_shows_cdn_enabled_when_option_true() {
@@ -98,7 +98,7 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         ob_start();
         $sd->page_dashboard();
         $output = ob_get_clean();
-        $this->assertContains( '<input type="checkbox" name="savvii_cdn_enable" checked="checked" />', $output, '', true );
+        $this->assertContains( '<input type="checkbox" name="warpdrive_cdn_enable" checked="checked" />', $output, '', true );
     }
 
     function test_maybe_update_cache_style_when_old_same_as_new() {
@@ -251,7 +251,7 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         $sd->page_dashboard();
         $output = ob_get_clean();
         $this->assertContains( '<option value="normal" selected="selected">', $output, '', true );
-        $this->assertContains( '<input type="checkbox" name="savvii_cdn_enable"  />', $output, '', true );
+        $this->assertContains( '<input type="checkbox" name="warpdrive_cdn_enable"  />', $output, '', true );
     }
 
     function test_page_dashboard_with_cdn_and_caching_enabled() {
@@ -263,7 +263,7 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         $sd->page_dashboard();
         $output = ob_get_clean();
         $this->assertContains( '<option value="agressive" selected="selected">', $output, '', true );
-        $this->assertContains( '<input type="checkbox" name="savvii_cdn_enable" checked="checked" />', $output, '', true );
+        $this->assertContains( '<input type="checkbox" name="warpdrive_cdn_enable" checked="checked" />', $output, '', true );
     }
 
     function test_page_dashboard_display_cdn_warning_on_ssl() {

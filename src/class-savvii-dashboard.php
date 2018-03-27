@@ -8,17 +8,17 @@ namespace Savvii;
  */
 class SavviiDashboard {
 
-    const MENU_NAME = 'savvii_dashboard';
-    const FORM_CACHE_STYLE = 'savvii_cache_style';
-    const FORM_CACHE_DEFAULT = 'savvii_cache_default';
-    const FORM_CACHE_SET_DEFAULT = 'savvii_cache_set_default';
-    const FORM_CACHE_USE_DEFAULT = 'savvii_cache_use_default';
-    const FORM_DEFAULT_CACHE_STYLE = 'savvii_default_cache_style';
-    const FORM_CDN_ENABLE = 'savvii_cdn_enable';
-    const FORM_CDN_DEFAULT = 'savvii_cdn_default';
-    const FORM_CDN_SET_DEFAULT = 'savvii_cdn_set_default';
-    const FORM_CDN_USE_DEFAULT = 'savvii_cdn_use_default';
-    const FORM_CDN_HOME_URL = 'savvii_cdn_home_url';
+    const MENU_NAME = 'warpdrive_dashboard';
+    const FORM_CACHE_STYLE = 'warpdrive_cache_style';
+    const FORM_CACHE_DEFAULT = 'warpdrive_cache_default';
+    const FORM_CACHE_SET_DEFAULT = 'warpdrive_cache_set_default';
+    const FORM_CACHE_USE_DEFAULT = 'warpdrive_cache_use_default';
+    const FORM_DEFAULT_CACHE_STYLE = 'warpdrive_default_cache_style';
+    const FORM_CDN_ENABLE = 'warpdrive_cdn_enable';
+    const FORM_CDN_DEFAULT = 'warpdrive_cdn_default';
+    const FORM_CDN_SET_DEFAULT = 'warpdrive_cdn_set_default';
+    const FORM_CDN_USE_DEFAULT = 'warpdrive_cdn_use_default';
+    const FORM_CDN_HOME_URL = 'warpdrive_cdn_home_url';
 
     /**
      * CacheFlusher instance
@@ -44,9 +44,9 @@ class SavviiDashboard {
         //Add option to menu bar
         if ( current_user_can( 'manage_options' ) ) {
             $wp_admin_bar->add_menu([
-                'id' => 'savvii_top_menu',
+                'id' => 'warpdrive_top_menu',
                 'title' => 'Savvii',
-                'href' => wp_nonce_url( admin_url( 'admin.php?page=savvii_dashboard' ) ),
+                'href' => wp_nonce_url( admin_url( 'admin.php?page=warpdrive_dashboard' ) ),
             ]);
         }
     }
@@ -251,13 +251,13 @@ class SavviiDashboard {
                             <dl>
                                 <dt>Access log:</dt>
                                 <dd>
-                                    <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=savvii_readlogs&log=access&lines=10' ), 'savvii_readlogs' ) ); ?>" class="log-button">show 10 lines</a>,
-                                    <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=savvii_readlogs&log=access&lines=100' ), 'savvii_readlogs' ) ); ?>" class="log-button">show 100 lines</a>
+                                    <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=access&lines=10' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 10 lines</a>,
+                                    <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=access&lines=100' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 100 lines</a>
                                 </dd>
                                 <dt>Error log:</dt>
                                 <dd>
-                                    <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=savvii_readlogs&log=error&lines=10' ), 'savvii_readlogs' ) ); ?>" class="log-button">show 10 lines</a>,
-                                    <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=savvii_readlogs&log=error&lines=100' ), 'savvii_readlogs' ) ); ?>" class="log-button">show 100 lines</a>
+                                    <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=error&lines=10' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 10 lines</a>,
+                                    <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=error&lines=100' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 100 lines</a>
                                 </dd>
                             </dl>
             <?php else : ?>

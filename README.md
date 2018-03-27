@@ -19,8 +19,8 @@ Only post/page, comment changes and attachment changes will flush the cache on s
 #### Flush on demand
 The full page cache can be flushed from another plugin by using:
 
-    do_action( 'savvii_cache_flush' ); // This will flush the entire cache
-    do_action( 'savvii_domain_flush' ); // This will only flush the cache of the current domain
+    do_action( 'warpdrive_cache_flush' ); // This will flush the entire cache
+    do_action( 'warpdrive_domain_flush' ); // This will only flush the cache of the current domain
 
 ### CDN link rewriter
 The CDN link rewriter scans html output and rewrites file URI's to the CDN URI.

@@ -198,10 +198,10 @@ class SavviiSecurityPluginTest extends Warpdrive_UnitTestCase {
         // Prepare meta data
         $user_id = self::factory()->user->create();
         wp_set_current_user( $user_id );
-        update_user_meta( $user_id, 'savvii_prev_cookie', 'cookie' );
+        update_user_meta( $user_id, 'warpdrive_prev_cookie', 'cookie' );
 
         do_action( 'auth_cookie_valid', [], wp_get_current_user() );
-        $this->assertCount( 0, get_user_meta( $user_id, 'savvii_prev_cookie' ) );
+        $this->assertCount( 0, get_user_meta( $user_id, 'warpdrive_prev_cookie' ) );
     }
 
     // auth_cookie_malformed, auth_cookie_bad_hash, auth_cookie_bad_username,
@@ -243,7 +243,7 @@ class SavviiSecurityPluginTest extends Warpdrive_UnitTestCase {
 
         do_action( 'auth_cookie_bad_hash', $cookie );
 
-        $this->assertEquals( $cookie, get_user_meta( $user_id, 'savvii_prev_cookie', true ) );
+        $this->assertEquals( $cookie, get_user_meta( $user_id, 'warpdrive_prev_cookie', true ) );
     }
 
     function test_acbh_does_not_log_on_prev_cookie() {
@@ -252,7 +252,7 @@ class SavviiSecurityPluginTest extends Warpdrive_UnitTestCase {
 
         $user_id = self::factory()->user->create( [ 'user_login' => $user_login ] );
         wp_set_current_user( $user_id );
-        update_user_meta( $user_id, 'savvii_prev_cookie', $cookie );
+        update_user_meta( $user_id, 'warpdrive_prev_cookie', $cookie );
 
         $this->security->expects( $this->once() )
             ->method( 'clear_auth_cookie' );

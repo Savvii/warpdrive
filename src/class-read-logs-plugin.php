@@ -32,7 +32,7 @@ class ReadLogsPlugin {
             'Read server logs', // Page title
             'Read server logs', // Menu title
             'manage_options', // Capability
-            'savvii_readlogs', // Menu slug
+            'warpdrive_readlogs', // Menu slug
             [ $this, 'readlogs_page' ] // Callback
         );
     }
@@ -42,47 +42,47 @@ class ReadLogsPlugin {
 
        if ( is_super_admin() ) {
             $wp_admin_bar->add_menu([
-                'parent' => 'savvii_top_menu',
-                'id' => 'savvii_access_log',
+                'parent' => 'warpdrive_top_menu',
+                'id' => 'warpdrive_access_log',
                 'title' => 'Access log',
                 'href' => '#',
             ]);
 
             $wp_admin_bar->add_menu([
-                'parent' => 'savvii_access_log',
-                'id' => 'savvii_access_log_10_lines',
+                'parent' => 'warpdrive_access_log',
+                'id' => 'warpdrive_access_log_10_lines',
                 'title' => '10 lines',
-                'href' => wp_nonce_url( admin_url( 'admin.php?page=savvii_readlogs&log=access&lines=10' ), 'savvii_readlogs' ),
+                'href' => wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=access&lines=10' ), 'warpdrive_readlogs' ),
             ]);
 
 
             $wp_admin_bar->add_menu([
-                'parent' => 'savvii_access_log',
-                'id' => 'savvii_access_log_100_lines',
+                'parent' => 'warpdrive_access_log',
+                'id' => 'warpdrive_access_log_100_lines',
                 'title' => '100 lines',
-                'href' => wp_nonce_url( admin_url( 'admin.php?page=savvii_readlogs&log=access&lines=100' ), 'savvii_readlogs' ),
+                'href' => wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=access&lines=100' ), 'warpdrive_readlogs' ),
             ]);
 
 
             $wp_admin_bar->add_menu([
-                'parent' => 'savvii_top_menu',
-                'id' => 'savvii_error_log',
+                'parent' => 'warpdrive_top_menu',
+                'id' => 'warpdrive_error_log',
                 'title' => 'Error log',
                 'href' => '#',
             ]);
 
             $wp_admin_bar->add_menu([
-                'parent' => 'savvii_error_log',
-                'id' => 'savvii_error_log_10_lines',
+                'parent' => 'warpdrive_error_log',
+                'id' => 'warpdrive_error_log_10_lines',
                 'title' => '10 lines',
-                'href' => wp_nonce_url( admin_url( 'admin.php?page=savvii_readlogs&log=error&lines=10' ), 'savvii_readlogs' ),
+                'href' => wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=error&lines=10' ), 'warpdrive_readlogs' ),
             ]);
 
             $wp_admin_bar->add_menu([
-                'parent' => 'savvii_error_log',
-                'id' => 'savvii_error_log_100_lines',
+                'parent' => 'warpdrive_error_log',
+                'id' => 'warpdrive_error_log_100_lines',
                 'title' => '100 lines',
-                'href' => wp_nonce_url( admin_url( 'admin.php?page=savvii_readlogs&log=error&lines=100' ), 'savvii_readlogs' ),
+                'href' => wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=error&lines=100' ), 'warpdrive_readlogs' ),
             ]);
        }
     }
@@ -92,7 +92,7 @@ class ReadLogsPlugin {
     }
 
     function readlogs_page() {
-        check_admin_referer( 'savvii_readlogs' );
+        check_admin_referer( 'warpdrive_readlogs' );
 
         // Get variables from GET
         $log   = $this->read_logs->clean_log_name( $this->_g( 'log' ) );
@@ -106,13 +106,13 @@ class ReadLogsPlugin {
         <dl class="savvii">
             <dt>Access log:</dt>
             <dd>
-                <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=savvii_readlogs&log=access&lines=10' ), 'savvii_readlogs' ) ); ?>" class="log-button">show 10 lines</a>,
-                <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=savvii_readlogs&log=access&lines=100' ), 'savvii_readlogs' ) ); ?>" class="log-button">show 100 lines</a>
+                <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=access&lines=10' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 10 lines</a>,
+                <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=access&lines=100' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 100 lines</a>
             </dd>
             <dt>Error log:</dt>
             <dd>
-                <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=savvii_readlogs&log=error&lines=10' ), 'savvii_readlogs' ) ); ?>" class="log-button">show 10 lines</a>,
-                <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=savvii_readlogs&log=error&lines=100' ), 'savvii_readlogs' ) ); ?>" class="log-button">show 100 lines</a>
+                <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=error&lines=10' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 10 lines</a>,
+                <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=error&lines=100' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 100 lines</a>
             </dd>
         </dl>
         <div style="clear: both;"></div>

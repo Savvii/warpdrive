@@ -13,10 +13,10 @@ class CacheFlusherPlugin {
     const CACHING_STYLE_NORMAL    = 'normal';
     const CACHING_STYLE_AGRESSIVE = 'agressive';
 
-    const NAME_FLUSH_NOW = 'savvii_flush_now';
-    const NAME_DOMAINFLUSH_NOW = 'savvii_domainflush_now';
-    const NAME_FLUSH_RESULT = 'savvii_flush_result';
-    const NAME_DOMAINFLUSH_RESULT = 'savvii_domainflush_result';
+    const NAME_FLUSH_NOW = 'warpdrive_flush_now';
+    const NAME_DOMAINFLUSH_NOW = 'warpdrive_domainflush_now';
+    const NAME_FLUSH_RESULT = 'warpdrive_flush_result';
+    const NAME_DOMAINFLUSH_RESULT = 'warpdrive_domainflush_result';
     const NAME_FLUSH_RESULT_FAILED = 'failed';
     const NAME_FLUSH_RESULT_SUCCESS = 'success';
 
@@ -120,8 +120,8 @@ class CacheFlusherPlugin {
         }
 
         // Add custom direct flush hook
-        add_action( 'savvii_cache_flush', [ $this, 'flush' ], 10, 0 );
-        add_action( 'savvii_domain_flush', [ $this, 'domainflush' ], 10, 0 );
+        add_action( 'warpdrive_cache_flush', [ $this, 'flush' ], 10, 0 );
+        add_action( 'warpdrive_domain_flush', [ $this, 'domainflush' ], 10, 0 );
 
         // init
         add_action( 'init', [ $this, 'init' ] );
@@ -271,18 +271,18 @@ class CacheFlusherPlugin {
         //Add option to menu bar
         if ( current_user_can( 'manage_options' ) ) {
             $wp_admin_bar->add_menu([
-                'parent' => 'savvii_top_menu',
-                'id' => 'savvii_cache_delete',
+                'parent' => 'warpdrive_top_menu',
+                'id' => 'warpdrive_cache_delete',
                 'title' => self::TEXT_FLUSH . $flush_result,
-                'href' => wp_nonce_url( admin_url( '?savvii_flush_now' ), self::NAME_FLUSH_NOW ),
+                'href' => wp_nonce_url( admin_url( '?warpdrive_flush_now' ), self::NAME_FLUSH_NOW ),
             ]);
 
             if ( is_multisite() ) {
                 $wp_admin_bar->add_menu([
-                    'parent' => 'savvii_top_menu',
-                    'id' => 'savvii_sitecache_delete',
+                    'parent' => 'warpdrive_top_menu',
+                    'id' => 'warpdrive_sitecache_delete',
                     'title' => self::TEXT_DOMAINFLUSH . $domainflush_result,
-                    'href' => wp_nonce_url( admin_url( '?savvii_domainflush_now' ), self::NAME_DOMAINFLUSH_NOW ),
+                    'href' => wp_nonce_url( admin_url( '?warpdrive_domainflush_now' ), self::NAME_DOMAINFLUSH_NOW ),
                 ]);
             }
         }

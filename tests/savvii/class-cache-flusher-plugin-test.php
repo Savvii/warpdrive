@@ -79,13 +79,13 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
 
     function _test_admin_bar_add_menu_flush( $subject ) {
         return
-            'savvii_cache_delete' === $subject['id']
+            'warpdrive_cache_delete' === $subject['id']
             && preg_match( $this->admin_bar_menu_flush_title_regex, $subject['title'] );
     }
 
     function _test_admin_bar_add_menu_domainflush( $subject ) {
         return
-            'savvii_sitecache_delete' === $subject['id']
+            'warpdrive_sitecache_delete' === $subject['id']
             && preg_match( $this->admin_bar_menu_domainflush_title_regex, $subject['title'] );
     }
 
@@ -489,7 +489,7 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
         $this->assertFalse( $cfp->flushed_all );
         $this->assertEmpty( $cfp->flushed_domains );
 
-        do_action( 'savvii_cache_flush' );
+        do_action( 'warpdrive_cache_flush' );
         $this->assertTrue( $cfp->flushed_all );
         $this->assertEmpty( $cfp->flushed_domains );
 
@@ -522,7 +522,7 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
         $this->assertFalse( $cfp->flushed_all );
         $this->assertEquals( [ 'example.org' ], $cfp->flushed_domains );
 
-        do_action( 'savvii_cache_flush' );
+        do_action( 'warpdrive_cache_flush' );
         $this->assertTrue( $cfp->flushed_all );
         $this->assertEquals( [ 'example.org' ], $cfp->flushed_domains );
     }
@@ -548,12 +548,12 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
         $this->assertEmpty( $cfp->flushed_domains );
 
         update_option( 'siteurl', 'http://site1.example.com' );
-        do_action( 'savvii_domain_flush' );
+        do_action( 'warpdrive_domain_flush' );
         $this->assertFalse( $cfp->flushed_all );
         $this->assertEquals( [ 'site1.example.com' ], $cfp->flushed_domains );
 
         update_option( 'siteurl', 'http://site2.example.com' );
-        do_action( 'savvii_domain_flush' );
+        do_action( 'warpdrive_domain_flush' );
         $this->assertFalse( $cfp->flushed_all );
         $this->assertEquals( [ 'site1.example.com', 'site2.example.com' ], $cfp->flushed_domains );
     }
@@ -574,7 +574,7 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
         $this->setProtectedProperty( $cfp, 'cache_flusher', $mock );
 
         $this->assertFalse( $cfp->flushed_all );
-        do_action( 'savvii_cache_flush' );
+        do_action( 'warpdrive_cache_flush' );
         $this->assertTrue( $cfp->flushed_all );
     }
 
@@ -593,7 +593,7 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
         $this->setProtectedProperty( $cfp, 'cache_flusher', $mock );
 
         $this->assertEmpty( $cfp->flushed_domains );
-        do_action( 'savvii_domain_flush' );
+        do_action( 'warpdrive_domain_flush' );
         $this->assertEquals( [ 'example.org' ], $cfp->flushed_domains );
     }
 
