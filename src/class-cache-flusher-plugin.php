@@ -123,6 +123,11 @@ class CacheFlusherPlugin {
         add_action( 'warpdrive_cache_flush', [ $this, 'flush' ], 10, 0 );
         add_action( 'warpdrive_domain_flush', [ $this, 'domainflush' ], 10, 0 );
 
+        // Backward compatibility
+        add_action( 'savvii_cache_flush', [ $this, 'flush' ], 10, 0 );
+        add_action( 'savvii_domain_flush', [ $this, 'domainflush' ], 10, 0 );
+
+
         // init
         add_action( 'init', [ $this, 'init' ] );
 
