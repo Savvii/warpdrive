@@ -122,8 +122,8 @@ class Security {
      * @param $user
      */
     function cookie_success( $user ) {
-        if ( get_user_meta( $user->ID, 'savvii_prev_cookie' ) ) {
-            delete_user_meta( $user->ID, 'savvii_prev_cookie' );
+        if ( get_user_meta( $user->ID, 'warpdrive_prev_cookie' ) ) {
+            delete_user_meta( $user->ID, 'warpdrive_prev_cookie' );
         }
     }
 
@@ -149,13 +149,13 @@ class Security {
         $user = get_user_by( 'login', $username );
         if ( $user ) {
             // Check if the cookie matches the previous cookie
-            $prev_cookie = get_user_meta( $user->ID, 'savvii_prev_cookie', true );
+            $prev_cookie = get_user_meta( $user->ID, 'warpdrive_prev_cookie', true );
             if ( $prev_cookie && $prev_cookie === $cookie ) {
                 // Identical cookies, ignore this attempt
                 return;
             }
             // Store cookie
-            update_user_meta( $user->ID, 'savvii_prev_cookie', $cookie );
+            update_user_meta( $user->ID, 'warpdrive_prev_cookie', $cookie );
         }
 
         // Report fail

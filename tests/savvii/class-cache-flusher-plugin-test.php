@@ -79,13 +79,13 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
 
     function _test_admin_bar_add_menu_flush( $subject ) {
         return
-            'savvii_cache_delete' === $subject['id']
+            'warpdrive_cache_delete' === $subject['id']
             && preg_match( $this->admin_bar_menu_flush_title_regex, $subject['title'] );
     }
 
     function _test_admin_bar_add_menu_domainflush( $subject ) {
         return
-            'savvii_sitecache_delete' === $subject['id']
+            'warpdrive_sitecache_delete' === $subject['id']
             && preg_match( $this->admin_bar_menu_domainflush_title_regex, $subject['title'] );
     }
 
@@ -489,6 +489,35 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
         $this->assertFalse( $cfp->flushed_all );
         $this->assertEmpty( $cfp->flushed_domains );
 
+        do_action( 'warpdrive_cache_flush' );
+        $this->assertTrue( $cfp->flushed_all );
+        $this->assertEmpty( $cfp->flushed_domains );
+
+        do_action( 'publish_future_post', [ null, null ] );
+        $this->assertTrue( $cfp->flushed_all );
+        $this->assertEmpty( $cfp->flushed_domains );
+    }
+
+    function test_domain_flush_after_flush_all_wont_run_with_old_action() {
+        $mock_flusher = $this->getMock(
+            '\Savvii\CacheFlusher',
+            [ 'flush', 'flush_domain' ],
+            [],
+            '',
+            false
+        );
+
+        $mock_flusher->expects( $this->once() )
+            ->method( 'flush' );
+        $mock_flusher->expects( $this->never() )
+            ->method( 'flush_domain' );
+
+        $cfp = new CacheFlusherPlugin();
+        $this->setProtectedProperty( $cfp, 'cache_flusher', $mock_flusher );
+
+        $this->assertFalse( $cfp->flushed_all );
+        $this->assertEmpty( $cfp->flushed_domains );
+
         do_action( 'savvii_cache_flush' );
         $this->assertTrue( $cfp->flushed_all );
         $this->assertEmpty( $cfp->flushed_domains );
@@ -499,6 +528,35 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
     }
 
     function test_flush_all_after_domain_flush_will_run() {
+        $mock_flusher = $this->getMock(
+            '\Savvii\CacheFlusher',
+            [ 'flush', 'flush_domain' ],
+            [],
+            '',
+            false
+        );
+
+        $mock_flusher->expects( $this->once() )
+            ->method( 'flush' );
+        $mock_flusher->expects( $this->once() )
+            ->method( 'flush_domain' );
+
+        $cfp = new CacheFlusherPlugin();
+        $this->setProtectedProperty( $cfp, 'cache_flusher', $mock_flusher );
+
+        $this->assertFalse( $cfp->flushed_all );
+        $this->assertEmpty( $cfp->flushed_domains );
+
+        do_action( 'publish_future_post', [ null, null ] );
+        $this->assertFalse( $cfp->flushed_all );
+        $this->assertEquals( [ 'example.org' ], $cfp->flushed_domains );
+
+        do_action( 'warpdrive_cache_flush' );
+        $this->assertTrue( $cfp->flushed_all );
+        $this->assertEquals( [ 'example.org' ], $cfp->flushed_domains );
+    }
+
+    function test_flush_all_after_domain_flush_will_run_with_old_action() {
         $mock_flusher = $this->getMock(
             '\Savvii\CacheFlusher',
             [ 'flush', 'flush_domain' ],
@@ -548,6 +606,37 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
         $this->assertEmpty( $cfp->flushed_domains );
 
         update_option( 'siteurl', 'http://site1.example.com' );
+        do_action( 'warpdrive_domain_flush' );
+        $this->assertFalse( $cfp->flushed_all );
+        $this->assertEquals( [ 'site1.example.com' ], $cfp->flushed_domains );
+
+        update_option( 'siteurl', 'http://site2.example.com' );
+        do_action( 'warpdrive_domain_flush' );
+        $this->assertFalse( $cfp->flushed_all );
+        $this->assertEquals( [ 'site1.example.com', 'site2.example.com' ], $cfp->flushed_domains );
+    }
+
+    function test_flush_domain_runs_for_different_domains_with_old_action() {
+        $mock_flusher = $this->getMock(
+            '\Savvii\CacheFlusher',
+            [ 'flush', 'flush_domain' ],
+            [],
+            '',
+            false
+        );
+
+        $mock_flusher->expects( $this->never() )
+            ->method( 'flush' );
+        $mock_flusher->expects( $this->exactly( 2 ) )
+            ->method( 'flush_domain' );
+
+        $cfp = new CacheFlusherPlugin();
+        $this->setProtectedProperty( $cfp, 'cache_flusher', $mock_flusher );
+
+        $this->assertFalse( $cfp->flushed_all );
+        $this->assertEmpty( $cfp->flushed_domains );
+
+        update_option( 'siteurl', 'http://site1.example.com' );
         do_action( 'savvii_domain_flush' );
         $this->assertFalse( $cfp->flushed_all );
         $this->assertEquals( [ 'site1.example.com' ], $cfp->flushed_domains );
@@ -574,11 +663,50 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
         $this->setProtectedProperty( $cfp, 'cache_flusher', $mock );
 
         $this->assertFalse( $cfp->flushed_all );
+        do_action( 'warpdrive_cache_flush' );
+        $this->assertTrue( $cfp->flushed_all );
+    }
+
+    function test_flush_on_custom_trigger_with_old_action() {
+        $mock = $this->getMock(
+            '\Savvii\CacheFlusher',
+            [ 'flush' ],
+            [],
+            '',
+            false
+        );
+
+        $mock->expects( $this->once() )
+            ->method( 'flush' );
+
+        $cfp = new CacheFlusherPlugin();
+        $this->setProtectedProperty( $cfp, 'cache_flusher', $mock );
+
+        $this->assertFalse( $cfp->flushed_all );
         do_action( 'savvii_cache_flush' );
         $this->assertTrue( $cfp->flushed_all );
     }
 
     function test_domainflush_on_custom_trigger() {
+        $mock = $this->getMock(
+            '\Savvii\CacheFlusher',
+            [ 'flush_domain' ],
+            [],
+            '',
+            false
+        );
+        $mock->expects( $this->once() )
+            ->method( 'flush_domain' );
+
+        $cfp = new CacheFlusherPlugin();
+        $this->setProtectedProperty( $cfp, 'cache_flusher', $mock );
+
+        $this->assertEmpty( $cfp->flushed_domains );
+        do_action( 'warpdrive_domain_flush' );
+        $this->assertEquals( [ 'example.org' ], $cfp->flushed_domains );
+    }
+
+    function test_domainflush_on_custom_trigger_with_old_action() {
         $mock = $this->getMock(
             '\Savvii\CacheFlusher',
             [ 'flush_domain' ],

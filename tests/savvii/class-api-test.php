@@ -65,14 +65,14 @@ class APITest extends Warpdrive_UnitTestCase {
         // Assert
     }
 
-    function test_savvii_api_has_an_http_client() {
+    function test_warpdrive_api_has_an_http_client() {
         $token = 'Foo42Bar';
 
         $sa = new \Savvii\Api();
         $this->assertInstanceOf( \WP_Http::class, $this->getProtectedProperty( $sa, 'http_client' ) );
     }
 
-    function test_savvii_api_has_an_token() {
+    function test_warpdrive_api_has_an_token() {
         $token = 'Foo42Bar';
 
         $sa = new \Savvii\Api();
