@@ -53,7 +53,7 @@ class SavviiSavviiDashboardTestMultisite extends Warpdrive_UnitTestCase {
         ob_start();
         $sd->warpdrive_dashboard();
         $output = ob_get_clean();
-        $this->assertNotContains( 'Please use the Savvii top menu for reading logs.', $output, '', true );
+        $this->assertContains( 'only users with the \'Super Admin\'', $output, '', true );
     }
 
     function test_site_cache_settings_not_equal() {

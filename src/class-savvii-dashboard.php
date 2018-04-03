@@ -245,7 +245,8 @@ class SavviiDashboard {
                     <!-- Read server logs -->
                     <div class="postbox" style="min-height: 150px;">
                         <h2 class="hndle">Read server logs</h3>
-                        <div class="inside"><?= is_super_admin() ? 'Please use the Savvii top menu for reading logs.' : ''; ?>
+                        <div class="inside"><?= is_super_admin() ? 'Please use the Savvii top menu for reading logs.' : '
+                            \'Read server logs\' shows data for all subsites. Because of this, only users with the \'Super Admin\' role are able to read the server logs.'; ?>
                         </div>
                     </div>
                     <!-- /Read server logs -->
