@@ -46,7 +46,7 @@ class SavviiDashboard {
             $wp_admin_bar->add_menu([
                 'id' => 'warpdrive_top_menu',
                 'title' => 'Savvii',
-                'href' => wp_nonce_url( admin_url( 'admin.php?page=warpdrive_dashboard' ) ),
+                'href' => wp_nonce_url( 'options-general.php?page=warpdrive_dashboard' ),
             ]);
         }
     }
@@ -54,7 +54,6 @@ class SavviiDashboard {
     function admin_menu_register() {
         add_options_page( 'Savvii', 'Savvii', 'manage_options', self::MENU_NAME, [ $this, 'warpdrive_dashboard' ] );
     }
-
 
     function maybe_update_caching_style() {
         if ( ! isset( $_POST[ self::FORM_CACHE_DEFAULT ] ) ) {
