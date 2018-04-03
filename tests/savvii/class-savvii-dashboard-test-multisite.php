@@ -31,7 +31,7 @@ class SavviiSavviiDashboardTestMultisite extends Warpdrive_UnitTestCase {
         $this->assertCount( 2, $blogs );
     }
 
-    function test_page_dashboard_display_log_options_for_super_admin() {
+    function test_warpdrive_dashboard_display_log_options_for_super_admin() {
         wp_set_current_user( self::factory()->user->create( [
             'role' => 'administrator',
         ] ) );
@@ -39,21 +39,21 @@ class SavviiSavviiDashboardTestMultisite extends Warpdrive_UnitTestCase {
 
         $sd = new SavviiDashboard();
         ob_start();
-        $sd->page_dashboard();
+        $sd->warpdrive_dashboard();
         $output = ob_get_clean();
-        $this->assertContains( '<dt>Access log:</dt>', $output, '', true );
+        $this->assertContains( 'Please use the Savvii top menu for reading logs.', $output, '', true );
     }
 
-    function test_page_dashboard_hide_log_options_for_non_super_admin() {
+    function test_warpdrive_dashboard_hide_log_options_for_non_super_admin() {
         wp_set_current_user( self::factory()->user->create( [
             'role' => 'administrator',
         ] ) );
 
         $sd = new SavviiDashboard();
         ob_start();
-        $sd->page_dashboard();
+        $sd->warpdrive_dashboard();
         $output = ob_get_clean();
-        $this->assertContains( '\'Read server logs\' shows data for all subsites.', $output, '', true );
+        $this->assertNotContains( 'Please use the Savvii top menu for reading logs.', $output, '', true );
     }
 
     function test_site_cache_settings_not_equal() {

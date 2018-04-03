@@ -52,7 +52,7 @@ class SavviiDashboard {
     }
 
     function admin_menu_register() {
-        add_menu_page( 'Savvii', 'Savvii', 'manage_options', self::MENU_NAME, [ $this, 'page_dashboard' ], '', 99 );
+        add_options_page( 'Savvii', 'Savvii', 'manage_options', self::MENU_NAME, [ $this, 'warpdrive_dashboard' ] );
     }
 
 
@@ -118,7 +118,7 @@ class SavviiDashboard {
         }
     }
 
-    function page_dashboard() {
+    function warpdrive_dashboard() {
         if ( ! empty( $_POST ) ) {
             // Update settings when needed
             $this->maybe_update_caching_style();
@@ -246,23 +246,7 @@ class SavviiDashboard {
                     <!-- Read server logs -->
                     <div class="postbox" style="min-height: 150px;">
                         <h2 class="hndle">Read server logs</h3>
-                        <div class="inside">
-            <?php if ( is_super_admin() ) : ?>
-                            <dl>
-                                <dt>Access log:</dt>
-                                <dd>
-                                    <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=access&lines=10' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 10 lines</a>,
-                                    <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=access&lines=100' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 100 lines</a>
-                                </dd>
-                                <dt>Error log:</dt>
-                                <dd>
-                                    <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=error&lines=10' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 10 lines</a>,
-                                    <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=error&lines=100' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 100 lines</a>
-                                </dd>
-                            </dl>
-            <?php else : ?>
-                            'Read server logs' shows data for all subsites. Because of this, only users with the 'Super Admin' role are able to read the server logs.
-            <?php endif; ?>
+                        <div class="inside"><?= is_super_admin() ? 'Please use the Savvii top menu for reading logs.' : ''; ?>
                         </div>
                     </div>
                     <!-- /Read server logs -->
