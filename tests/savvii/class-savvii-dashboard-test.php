@@ -26,7 +26,9 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
     function test_construct_adds_dashboard_to_admin_bar_menu_at_top_position() {
         $this->_setRole( 'administrator' );
 
-        $wp_admin_bar = $this->getMock( 'stdClass', array( 'add_menu' ) );
+        $wp_admin_bar = $this->getMockBuilder( 'stdClass' )
+            ->setMethods( [ 'add_menu' ] )
+            ->getMock();
         $wp_admin_bar->expects( $this->exactly( 1 ) )
             ->method( 'add_menu' )
             ->withConsecutive(
@@ -35,6 +37,7 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         $GLOBALS['wp_admin_bar'] = $wp_admin_bar;
         new SavviiDashboard();
         do_action( 'admin_bar_menu', [ &$wp_admin_bar ] );
+        $this->addToAssertionCount( 1 );
     }
 
     function _test_admin_bar_add_warpdrive_top_menu( $subject ) {
@@ -180,7 +183,9 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
     }
 
     function prepare_dashboard_with_flusher( $result ) {
-        $flusher_mock = $this->getMock( 'stdClass', [ 'flush' ] );
+        $flusher_mock = $this->getMockBuilder( 'stdClass' )
+            ->setMethods( [ 'flush' ] )
+            ->getMock();
         $flusher_mock->expects( $this->once() )
             ->method( 'flush' )
             ->will( $this->returnValue( $result ) );
@@ -286,7 +291,10 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
             'maybe_update_default_cdn_enable',
         ];
 
-        $dash_mock = $this->getMock( 'Savvii\SavviiDashboard', $mock_methods );
+        $dash_mock = $this->getMockBuilder( 'Savvii\SavviiDashboard' )
+            ->setMethods( $mock_methods )
+            ->getMock();
+
         foreach ( $mock_methods as $method ) {
             $dash_mock->expects( $this->once() )
                 ->method( $method )

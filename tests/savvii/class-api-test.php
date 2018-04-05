@@ -13,7 +13,9 @@ class APITest extends Warpdrive_UnitTestCase {
     function test_cache_flush() {
         // Arrange
         $token   = 'Foo42Bar';
-        $wp_http = $this->getMock( 'WP_Http', [ 'request' ] );
+        $wp_http = $this->getMockBuilder( 'WP_Http' )
+            ->setMethods( [ 'request' ] )
+            ->getMock();
         $wp_http->expects( $this->once() )
             ->method( 'request' )
             ->with(
@@ -40,7 +42,9 @@ class APITest extends Warpdrive_UnitTestCase {
         // Arrange
         $token   = 'Foo42Bar';
         $domain  = 'example.org';
-        $wp_http = $this->getMock( 'WP_Http', [ 'request' ] );
+        $wp_http = $this->getMockBuilder( 'WP_Http' )
+            ->setMethods( [ 'request' ] )
+            ->getMock();
         $wp_http->expects( $this->once() )
             ->method( 'request' )
             ->with(

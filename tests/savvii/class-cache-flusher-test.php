@@ -37,7 +37,9 @@ class CacheFlusherTest extends Warpdrive_UnitTestCase {
 
     function build_cache_flusher( $success ) {
         $response_code = $success ? 200 : 400;
-        $wp_http = $this->getMock( 'WP_Http', [ 'request' ] );
+        $wp_http = $this->getMockBuilder( 'WP_Http' )
+            ->setMethods( [ 'request' ] )
+            ->getMock();
         $wp_http->expects( $this->once() )
             ->method( 'request' )
             ->will(
