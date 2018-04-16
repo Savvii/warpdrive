@@ -22,7 +22,7 @@ class SavviiSecurityTest extends \Warpdrive_UnitTestCase {
     function setUp() {
         parent::setUp();
         putenv( 'WARPDRIVE_SYSTEM_NAME=bar-baz' );
-        $this->security = $this->getMockBuilder( '\Savvii\Security' )
+        $this->security = $this->getMockBuilder( 'Savvii\Security' )
             ->setMethods( [ 'write_syslog' ] )
             ->getMock();
     }
@@ -117,7 +117,7 @@ class SavviiSecurityTest extends \Warpdrive_UnitTestCase {
     }
 
     function test_cookie_failed_log_uses_ip_address() {
-        $this->security = $this->getMockBuilder( '\Savvii\Security' )
+        $this->security = $this->getMockBuilder( 'Savvii\Security' )
             ->setMethods( [ 'get_ip_address' ] )
             ->getMock();
         $this->security->expects( $this->once() )

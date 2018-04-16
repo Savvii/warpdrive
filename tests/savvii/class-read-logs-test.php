@@ -12,7 +12,7 @@ class ReadLogsTest extends Warpdrive_UnitTestCase {
     function setUp() {
         parent::setUp();
         putenv( 'WARPDRIVE_SYSTEM_NAME=FooBar' );
-        $this->subject = $this->getMockBuilder( '\Savvii\ReadLogs' )
+        $this->subject = $this->getMockBuilder( 'Savvii\ReadLogs' )
             ->setMethods( [ 'file_exists', 'file_size', 'file_get_contents' ] )
             ->getMock();
     }

@@ -18,12 +18,12 @@ class SavviiSecurityPluginTest extends Warpdrive_UnitTestCase {
         parent::setUp();
         putenv( 'WARPDRIVE_SYSTEM_NAME=FooBar' );
         // Create SecurityPlugin mock
-        $this->security_plugin = $this->getMockBuilder( '\Savvii\SecurityPlugin' )
+        $this->security_plugin = $this->getMockBuilder( 'Savvii\SecurityPlugin' )
             ->setMethods( [ 'FooBar' ] )
             ->getMock();
 
         // Create Security mock
-        $this->security = $this->getMockBuilder( '\Savvii\Security' )
+        $this->security = $this->getMockBuilder( 'Savvii\Security' )
             ->setMethods( [ 'write_syslog', 'can_login_header_show_message', 'clear_auth_cookie', 'cookie_failed_log', 'forbidden', 'login_failed' ] )
             ->getMock();
         // Inject Security mock into SecurityPlugin mock

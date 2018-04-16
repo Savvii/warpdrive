@@ -16,7 +16,7 @@ class ReadLogsPluginTest extends Warpdrive_UnitTestCase {
 
     function setUp() {
         parent::setUp();
-        $this->read_logs = $this->getMockBuilder( '\Savvii\ReadLogs' )
+        $this->read_logs = $this->getMockBuilder( 'Savvii\ReadLogs' )
             ->setMethods([ 'clean_log_name', 'clean_lines', 'get_log_lines' ] )
             ->getMock();
         $this->plugin = new ReadLogsPlugin();
