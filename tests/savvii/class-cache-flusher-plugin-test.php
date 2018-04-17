@@ -65,13 +65,16 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
     }
 
     function test_sets_action_for_menu_bar() {
-        $wp_admin_bar = $this->getMock( 'stdClass', array( 'add_menu' ) );
+        $wp_admin_bar = $this->getMockBuilder( 'stdClass' )
+            ->setMethods( ['add_menu'] )
+            ->getMock();
         $wp_admin_bar->expects( $this->any() )
             ->method( 'add_menu' );
         // @codingStandardsIgnoreLine, we need to ignore because we set a global
         $GLOBALS['wp_admin_bar'] = $wp_admin_bar;
         $cfp = new CacheFlusherPlugin();
         do_action( 'admin_bar_menu', [ &$wp_admin_bar ] );
+        $this->addToAssertionCount( 1 );
     }
 
     private $admin_bar_menu_flush_title_regex = '/^' . CacheFlusherPlugin::TEXT_FLUSH;
@@ -92,7 +95,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
     function _test_admin_bar_add_menu_do_action() {
         $this->_setRole( 'administrator' );
         $call_amount = is_multisite() ? 2 : 1;
-        $wp_admin_bar = $this->getMock( 'stdClass', array( 'add_menu' ) );
+        $wp_admin_bar = $this->getMockBuilder( 'stdClass' )
+            ->setMethods( ['add_menu'] )
+            ->getMock();
         $wp_admin_bar->expects( $this->exactly( $call_amount ) )
             ->method( 'add_menu' )
             ->withConsecutive(
@@ -163,7 +168,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
     function test_not_show_flush_if_privilege_is_not_publish_posts() {
         $user_id = $this->factory()->user->create( [ 'role' => 'contributor' ] );
         wp_set_current_user( $user_id );
-        $wp_admin_bar = $this->getMock( 'stdClass', array( 'add_menu' ) );
+        $wp_admin_bar = $this->getMockBuilder( 'stdClass' )
+            ->setMethods( ['add_menu'] )
+            ->getMock();
         $wp_admin_bar->expects( $this->never() )
             ->method( 'add_menu' );
         // @codingStandardsIgnoreLine, we need to ignore because we set a global
@@ -176,7 +183,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
         $user_id = $this->factory()->user->create( [ 'role' => 'author' ] );
         wp_set_current_user( $user_id );
         $this->assertTrue( current_user_can( 'publish_posts' ) );
-        $wp_admin_bar = $this->getMock( 'stdClass', array( 'add_menu' ) );
+        $wp_admin_bar = $this->getMockBuilder( 'stdClass' )
+            ->setMethods( ['add_menu'] )
+            ->getMock();
         $wp_admin_bar->expects( $this->never() )
             ->method( 'add_menu' );
         // @codingStandardsIgnoreLine, we need to ignore because we set a global
@@ -214,7 +223,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
         // Act
         $this->assertNotNull( $_REQUEST[ CacheFlusherPlugin::NAME_FLUSH_NOW ] );
         $this->assertEquals( 1, wp_verify_nonce( $_REQUEST['_wpnonce'], $action ) );
-        $stub = $this->getMock( 'Savvii\CacheFlusherPlugin', [ 'flush' ] );
+        $stub = $this->getMockBuilder( 'Savvii\CacheFlusherPlugin' )
+            ->setMethods( ['flush'] )
+            ->getMock();
         $stub->expects( $this->once() )
             ->method( 'flush' );
         $stub->init();
@@ -229,7 +240,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
         // Act
         $this->assertNotNull( $_REQUEST[ CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW ] );
         $this->assertEquals( 1, wp_verify_nonce( $_REQUEST['_wpnonce'], $action ) );
-        $stub = $this->getMock( 'Savvii\CacheFlusherPlugin', [ 'domainflush' ] );
+        $stub = $this->getMockBuilder( 'Savvii\CacheFlusherPlugin' )
+            ->setMethods( ['domainflush'] )
+            ->getMock();
         $stub->expects( $this->once() )
             ->method( 'domainflush' );
         $stub->init();
@@ -237,10 +250,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
 
     function test_flusher_returns_if_flushed_all_is_set() {
         $cfp = new CacheFlusherPlugin();
-        $mock_flusher = $this->getMock(
-            '\Savvii\CacheFlusher',
-            [ 'flush' ]
-        )
+        $mock_flusher = $this->getMockBuilder( 'Savvii\CacheFlusher' )
+            ->setMethods( ['flush'] )
+            ->getMock()
             ->expects( $this->never() )
             ->method( 'flush' );
         $this->setProtectedProperty( $cfp, 'cache_flusher', $mock_flusher );
@@ -256,16 +268,17 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
         $name_result = $flush_domain ? CacheFlusherPlugin::NAME_DOMAINFLUSH_RESULT : CacheFlusherPlugin::NAME_FLUSH_RESULT;
 
         // Mock the flusher, let it return the requested result
-        $flusher_mock = $this->getMock( 'stdClass', [ $flush_method ] );
+        $flusher_mock = $this->getMockBuilder( 'stdClass' )
+            ->setMethods( [ $flush_method ] )
+            ->getMock();
         $flusher_mock->expects( $this->once() )
             ->method( $flush_method )
             ->will( $this->returnValue( $flush_result ) );
 
         // Mock the CacheFlusherPlugin, this way we can mock the flusher and check the calls to safe_redirect
-        $cfp = $this->getMock(
-            'Savvii\CacheFlusherPlugin',
-            [ 'safe_redirect' ]
-        );
+        $cfp = $this->getMockBuilder( 'Savvii\CacheFlusherPlugin' )
+            ->setMethods( [ 'safe_redirect' ] )
+            ->getMock();
 
         // Add mocked flusher
         $this->setProtectedProperty( $cfp, 'cache_flusher', $flusher_mock );
@@ -380,10 +393,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
 
     function test_post_save_non_published_does_not_trigger_flush() {
         $this->assertFalse( $this->_action_added( 'clean_post_cache' ) );
-        $mock = $this->getMock(
-            '\Savvii\CacheFlusherPlugin',
-            [ 'domainflush' ]
-        );
+        $mock = $this->getMockBuilder( 'Savvii\CacheFlusherPlugin' )
+            ->setMethods( [ 'domainflush' ] )
+            ->getMock();
         $this->assertTrue( $this->_action_added( 'clean_post_cache' ) );
 
         $mock->expects( $this->never() )
@@ -396,10 +408,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
     function test_post_save_published_triggers_flush() {
         $post_id = self::factory()->post->create( array( 'post_status' => 'publish' ) );
         $this->assertFalse( $this->_action_added( 'clean_post_cache' ) );
-        $mock = $this->getMock(
-            '\Savvii\CacheFlusherPlugin',
-            [ 'domainflush' ]
-        );
+        $mock = $this->getMockBuilder( 'Savvii\CacheFlusherPlugin' )
+            ->setMethods( [ 'domainflush' ] )
+            ->getMock();
         $this->assertTrue( $this->_action_added( 'clean_post_cache' ) );
 
         $mock->expects( $this->once() )
@@ -409,10 +420,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
     }
 
     function test_flush_on_publish_future_post() {
-        $mock = $this->getMock(
-            '\Savvii\CacheFlusherPlugin',
-            [ 'domainflush' ]
-        );
+        $mock = $this->getMockBuilder( 'Savvii\CacheFlusherPlugin' )
+            ->setMethods( [ 'domainflush' ] )
+            ->getMock();
         $mock->expects( $this->once() )
             ->method( 'domainflush' );
 
@@ -421,10 +431,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
 
     function test_flush_on_post_status_future_to_publish() {
         $post_id = self::factory()->post->create( array( 'post_status' => 'publish' ) );
-        $mock = $this->getMock(
-            '\Savvii\CacheFlusherPlugin',
-            [ 'domainflush' ]
-        );
+        $mock = $this->getMockBuilder( 'Savvii\CacheFlusherPlugin' )
+            ->setMethods( [ 'domainflush' ] )
+            ->getMock();
         $mock->expects( $this->once() )
             ->method( 'domainflush' );
 
@@ -433,10 +442,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
 
     function test_no_flush_on_post_status_other_than_future_to_publish() {
         $post_id = self::factory()->post->create( array( 'post_status' => 'publish' ) );
-        $mock = $this->getMock(
-            '\Savvii\CacheFlusherPlugin',
-            [ 'domainflush' ]
-        );
+        $mock = $this->getMockBuilder( 'Savvii\CacheFlusherPlugin')
+            ->setMethods( [ 'domainflush' ] )
+            ->getMock();
         $mock->expects( $this->never() )
             ->method( 'domainflush' );
 
@@ -446,13 +454,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
 
     function test_single_flush_on_multiple_triggers() {
         $post_id = self::factory()->post->create( array( 'post_status' => 'future' ) );
-        $mock = $this->getMock(
-            '\Savvii\CacheFlusher',
-            [ 'flush_domain' ],
-            [],
-            '',
-            false
-        );
+        $mock = $this->getMockBuilder( 'Savvii\CacheFlusher' )
+            ->setMethods( [ 'flush_domain' ] )
+            ->getMock();
         $mock->expects( $this->once() )
             ->method( 'flush_domain' );
 
@@ -470,14 +474,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
     }
 
     function test_domain_flush_after_flush_all_wont_run() {
-        $mock_flusher = $this->getMock(
-            '\Savvii\CacheFlusher',
-            [ 'flush', 'flush_domain' ],
-            [],
-            '',
-            false
-        );
-
+        $mock_flusher = $this->getMockBuilder( 'Savvii\CacheFlusher' )
+            ->setMethods( [ 'flush', 'flush_domain' ] )
+            ->getMock();
         $mock_flusher->expects( $this->once() )
             ->method( 'flush' );
         $mock_flusher->expects( $this->never() )
@@ -499,14 +498,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
     }
 
     function test_domain_flush_after_flush_all_wont_run_with_old_action() {
-        $mock_flusher = $this->getMock(
-            '\Savvii\CacheFlusher',
-            [ 'flush', 'flush_domain' ],
-            [],
-            '',
-            false
-        );
-
+        $mock_flusher = $this->getMockBuilder( 'Savvii\CacheFlusher' )
+            ->setMethods( [ 'flush', 'flush_domain' ] )
+            ->getMock();
         $mock_flusher->expects( $this->once() )
             ->method( 'flush' );
         $mock_flusher->expects( $this->never() )
@@ -528,14 +522,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
     }
 
     function test_flush_all_after_domain_flush_will_run() {
-        $mock_flusher = $this->getMock(
-            '\Savvii\CacheFlusher',
-            [ 'flush', 'flush_domain' ],
-            [],
-            '',
-            false
-        );
-
+        $mock_flusher = $this->getMockBuilder( 'Savvii\CacheFlusher' )
+            ->setMethods( [ 'flush', 'flush_domain' ] )
+            ->getMock();
         $mock_flusher->expects( $this->once() )
             ->method( 'flush' );
         $mock_flusher->expects( $this->once() )
@@ -557,14 +546,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
     }
 
     function test_flush_all_after_domain_flush_will_run_with_old_action() {
-        $mock_flusher = $this->getMock(
-            '\Savvii\CacheFlusher',
-            [ 'flush', 'flush_domain' ],
-            [],
-            '',
-            false
-        );
-
+        $mock_flusher = $this->getMockBuilder( 'Savvii\CacheFlusher' )
+            ->setMethods( [ 'flush', 'flush_domain' ] )
+            ->getMock();
         $mock_flusher->expects( $this->once() )
             ->method( 'flush' );
         $mock_flusher->expects( $this->once() )
@@ -586,14 +570,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
     }
 
     function test_flush_domain_runs_for_different_domains() {
-        $mock_flusher = $this->getMock(
-            '\Savvii\CacheFlusher',
-            [ 'flush', 'flush_domain' ],
-            [],
-            '',
-            false
-        );
-
+        $mock_flusher = $this->getMockBuilder( 'Savvii\CacheFlusher' )
+            ->setMethods( [ 'flush', 'flush_domain' ] )
+            ->getMock();
         $mock_flusher->expects( $this->never() )
             ->method( 'flush' );
         $mock_flusher->expects( $this->exactly( 2 ) )
@@ -617,14 +596,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
     }
 
     function test_flush_domain_runs_for_different_domains_with_old_action() {
-        $mock_flusher = $this->getMock(
-            '\Savvii\CacheFlusher',
-            [ 'flush', 'flush_domain' ],
-            [],
-            '',
-            false
-        );
-
+        $mock_flusher = $this->getMockBuilder( 'Savvii\CacheFlusher' )
+            ->setMethods( [ 'flush', 'flush_domain' ] )
+            ->getMock();
         $mock_flusher->expects( $this->never() )
             ->method( 'flush' );
         $mock_flusher->expects( $this->exactly( 2 ) )
@@ -648,14 +622,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
     }
 
     function test_flush_on_custom_trigger() {
-        $mock = $this->getMock(
-            '\Savvii\CacheFlusher',
-            [ 'flush' ],
-            [],
-            '',
-            false
-        );
-
+        $mock = $this->getMockBuilder( 'Savvii\CacheFlusher' )
+            ->setMethods( [ 'flush' ] )
+            ->getMock();
         $mock->expects( $this->once() )
             ->method( 'flush' );
 
@@ -668,14 +637,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
     }
 
     function test_flush_on_custom_trigger_with_old_action() {
-        $mock = $this->getMock(
-            '\Savvii\CacheFlusher',
-            [ 'flush' ],
-            [],
-            '',
-            false
-        );
-
+        $mock = $this->getMockBuilder( 'Savvii\CacheFlusher' )
+            ->setMethods( [ 'flush' ] )
+            ->getMock();
         $mock->expects( $this->once() )
             ->method( 'flush' );
 
@@ -688,13 +652,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
     }
 
     function test_domainflush_on_custom_trigger() {
-        $mock = $this->getMock(
-            '\Savvii\CacheFlusher',
-            [ 'flush_domain' ],
-            [],
-            '',
-            false
-        );
+        $mock = $this->getMockBuilder( 'Savvii\CacheFlusher' )
+            ->setMethods( [ 'flush_domain' ] )
+            ->getMock();
         $mock->expects( $this->once() )
             ->method( 'flush_domain' );
 
@@ -707,13 +667,9 @@ class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
     }
 
     function test_domainflush_on_custom_trigger_with_old_action() {
-        $mock = $this->getMock(
-            '\Savvii\CacheFlusher',
-            [ 'flush_domain' ],
-            [],
-            '',
-            false
-        );
+        $mock = $this->getMockBuilder( 'Savvii\CacheFlusher' )
+            ->setMethods( [ 'flush_domain' ] )
+            ->getMock();
         $mock->expects( $this->once() )
             ->method( 'flush_domain' );
 

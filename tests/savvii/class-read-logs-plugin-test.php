@@ -16,10 +16,9 @@ class ReadLogsPluginTest extends Warpdrive_UnitTestCase {
 
     function setUp() {
         parent::setUp();
-        $this->read_logs = $this->getMock(
-            '\Savvii\ReadLogs',
-            [ 'clean_log_name', 'clean_lines', 'get_log_lines' ]
-        );
+        $this->read_logs = $this->getMockBuilder( 'Savvii\ReadLogs' )
+            ->setMethods([ 'clean_log_name', 'clean_lines', 'get_log_lines' ] )
+            ->getMock();
         $this->plugin = new ReadLogsPlugin();
         $this->plugin->read_logs = $this->read_logs;
     }
@@ -30,7 +29,9 @@ class ReadLogsPluginTest extends Warpdrive_UnitTestCase {
     function test_construct_adds_dashboard_to_admin_bar_menu_at_top_position() {
         $this->_setRole( 'administrator' );
 
-        $wp_admin_bar = $this->getMock( 'stdClass', array( 'add_menu' ) );
+        $wp_admin_bar = $this->getMockBuilder( 'stdClass' )
+            ->setMethods( [ 'add_menu' ] )
+            ->getMock();
         $wp_admin_bar
             ->method( 'add_menu' )
             ->withConsecutive(
@@ -45,6 +46,7 @@ class ReadLogsPluginTest extends Warpdrive_UnitTestCase {
         $GLOBALS['wp_admin_bar'] = $wp_admin_bar;
         new ReadLogsPlugin();
         do_action( 'admin_bar_menu', [ &$wp_admin_bar ] );
+        $this->addToAssertionCount( 1 );
     }
 
     function _test_admin_bar_add_menu_warpdrive_access_log( $subject ) {

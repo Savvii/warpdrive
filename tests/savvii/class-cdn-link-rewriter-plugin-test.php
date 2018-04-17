@@ -23,7 +23,9 @@ class CdnLinkRewriterPluginTest extends Warpdrive_UnitTestCase {
     }
 
     function test_construct_sets_and_calls_ob_actions_on_can_ob() {
-        $stub = $this->getMock( 'Savvii\CdnLinkRewriterPlugin', [ 'start', 'end' ] );
+        $stub = $this->getMockBuilder( 'Savvii\CdnLinkRewriterPlugin' )
+            ->setMethods( [ 'start', 'end' ] )
+            ->getMock();
         $stub->expects( $this->once() )
             ->method( 'start' );
         $stub->expects( $this->once() )
@@ -36,7 +38,9 @@ class CdnLinkRewriterPluginTest extends Warpdrive_UnitTestCase {
 
     function test_construct_sets_no_ob_actions_on_no_can_ob() {
         set_current_screen( 'dashboard' );
-        $stub = $this->getMock( 'Savvii\CdnLinkRewriterPlugin', [ 'start', 'end' ] );
+        $stub = $this->getMockBuilder( 'Savvii\CdnLinkRewriterPlugin' )
+            ->setMethods( [ 'start', 'end' ] )
+            ->getMock();
         $stub->expects( $this->never() )
             ->method( 'start' );
         $stub->expects( $this->never() )
@@ -49,7 +53,9 @@ class CdnLinkRewriterPluginTest extends Warpdrive_UnitTestCase {
 
     function test_process_called_when_page_rendered() {
         set_current_screen( 'front' );
-        $stub = $this->getMock( 'Savvii\CdnLinkRewriterPlugin', [ 'process' ] );
+        $stub = $this->getMockBuilder( 'Savvii\CdnLinkRewriterPlugin' )
+            ->setMethods( [ 'process' ] )
+            ->getMock();
         $stub->expects( $this->once() )
             ->method( 'process' )
             ->with( '' )

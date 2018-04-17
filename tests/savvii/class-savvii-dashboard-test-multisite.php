@@ -233,7 +233,9 @@ class SavviiSavviiDashboardTestMultisite extends Warpdrive_UnitTestCase {
     }
 
     function prepare_dashboard_with_flusher( $result, $method = 'flush' ) {
-        $flusher_mock = $this->getMock( 'stdClass', [ $method ] );
+        $flusher_mock = $this->getMockBuilder( 'stdClass' )
+            ->setMethods( [ $method ] )
+            ->getMock();
         $flusher_mock->expects( $this->once() )
             ->method( $method )
             ->will( $this->returnValue( $result ) );

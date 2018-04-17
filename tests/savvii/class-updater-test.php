@@ -19,6 +19,7 @@ class UpdaterTest extends Warpdrive_UnitTestCase {
 
     function test_register_filters_registers_filters() {
         Savvii\Updater::create_instance();
+        $this->addToAssertionCount( 1 );
     }
 
     function test_http_request_sslverify_contains_location() {
@@ -46,7 +47,9 @@ class UpdaterTest extends Warpdrive_UnitTestCase {
 
         $repository_url = Savvii\Options::REPO_RELEASES_LOCATION;
 
-        $updater = $this->getMock( 'UpdaterMock', [ 'remote_get', 'get_plugin_data' ] );
+        $updater = $this->getMockBuilder( 'UpdaterMock' )
+            ->setMethods( [ 'remote_get', 'get_plugin_data' ] )
+            ->getMock();
         $updater->expects( $this->once() )
             ->method( 'remote_get' )
             ->with( $this->equalTo( $repository_url ) )
@@ -77,7 +80,9 @@ class UpdaterTest extends Warpdrive_UnitTestCase {
 
         $repository_url = Savvii\Options::REPO_RELEASES_LOCATION;
 
-        $updater = $this->getMock( 'UpdaterMock', [ 'remote_get', 'get_plugin_data' ] );
+        $updater = $this->getMockBuilder( 'UpdaterMock' )
+            ->setMethods( [ 'remote_get', 'get_plugin_data' ] )
+            ->getMock();
         $updater->expects( $this->once() )
             ->method( 'remote_get' )
             ->with( $this->equalTo( $repository_url ) )
@@ -218,7 +223,9 @@ class UpdaterTest extends Warpdrive_UnitTestCase {
 
         $destination = Savvii\Updater::DIR;
 
-        $wp_filesystem = $this->getMock( 'WP_Filesystem_Base', [ 'move' ] );
+        $wp_filesystem = $this->getMockBuilder( 'WP_Filesystem_Base' )
+            ->setMethods( [ 'move' ] )
+            ->getMock();
         $wp_filesystem->expects( $this->once() )
             ->method( 'move' )
             ->with(
@@ -233,7 +240,9 @@ class UpdaterTest extends Warpdrive_UnitTestCase {
     }
 
     private function instantiate_updater() {
-        $updater = $this->getMock( 'UpdaterMock', [ 'get_plugin_data', 'activate_plugin' ] );
+        $updater = $this->getMockBuilder( 'UpdaterMock' )
+            ->setMethods( [ 'get_plugin_data', 'activate_plugin' ] )
+            ->getMock();
         $updater->expects( $this->any() )
             ->method( 'get_plugin_data' )
             ->will( $this->returnValue( $this->plugin_info_mock_data ) );
@@ -247,7 +256,9 @@ class UpdaterTest extends Warpdrive_UnitTestCase {
     private function instantiate_updater_with_remote_get( $tag_name = '1.0.0', $response_code = 200 ) {
         $repository_url = Savvii\Options::REPO_RELEASES_LOCATION;
 
-        $updater = $this->getMock( 'UpdaterMock', [ 'remote_get', 'get_plugin_data', 'activate_plugin' ] );
+        $updater = $this->getMockBuilder( 'UpdaterMock' )
+            ->setMethods( [ 'remote_get', 'get_plugin_data', 'activate_plugin' ] )
+            ->getMock();
         $updater->expects( $this->once() )
             ->method( 'remote_get' )
             ->with( $this->equalTo( $repository_url ) )

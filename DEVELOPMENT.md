@@ -33,8 +33,8 @@ The above mentioned script will create a WordPress installation in your systems 
 
 ## Testing
 
-Warpdrive uses [PHPUnit 4.8.*](https://phpunit.de/) to run automated tests.
-For documentation refer to [DevDocs](http://devdocs.io/phpunit~4/).
+Warpdrive uses [PHPUnit 5.7.*](https://phpunit.de/) to run automated tests.
+For documentation refer to [DevDocs](http://devdocs.io/phpunit~5/).
 You can switch between normal tests and multisite tests using the `WP_MULTISITE` environment variable.
 
     WP_MULTISITE=0 vendor/phpunit/phpunit/phpunit
