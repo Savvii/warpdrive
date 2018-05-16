@@ -17,9 +17,11 @@ require_once $_tests_dir . '/includes/functions.php';
  * Manually add autoloader to prevent load_modules from Warpdrive
  */
 spl_autoload_register( function( $class_name ) {
-    $file = __DIR__ . str_replace( 'savvii\\', '/../src/class-', strtolower( preg_replace( '/([a-zA-Z])(?=[A-Z])/', '$1-', $class_name ) ) ) . '.php';
-    if (file_exists($file)) {
-      require $file;
+    if ( strpos( $class_name, 'Savvii\\' ) === 0 ) {
+        $file = __DIR__ . str_replace( 'savvii\\', '/../src/class-', strtolower( preg_replace( '/([a-zA-Z])(?=[A-Z])/', '$1-', $class_name ) ) ) . '.php';
+        if ( file_exists( $file ) ) {
+            require $file;
+        }
     }
 });
 
