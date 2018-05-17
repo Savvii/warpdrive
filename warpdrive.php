@@ -3,7 +3,7 @@
  * Plugin name: Warpdrive
  * Plugin URI: https://github.com/Savvii/warpdrive
  * Description: Hosting plugin for Savvii
- * Version: 2.9.1
+ * Version: 2.9.2
  * Author: Savvii <support@savvii.com>
  * Author URI: https://www.savvii.com
  * License: GPL-3.0-only
@@ -27,8 +27,11 @@
  */
 
 spl_autoload_register( function( $class_name ) {
-    if ( strpos( $class_name, 'Savvii' ) === 0 ) {
-        require __DIR__ . str_replace( 'savvii\\', '/src/class-', strtolower( preg_replace( '/([a-zA-Z])(?=[A-Z])/', '$1-', $class_name ) ) ) . '.php';
+    if ( strpos( $class_name, 'Savvii\\' ) === 0 ) {
+        $file = __DIR__ . str_replace( 'savvii\\', '/src/class-', strtolower( preg_replace( '/([a-zA-Z])(?=[A-Z])/', '$1-', $class_name ) ) ) . '.php';
+        if ( file_exists( $file ) ) {
+            require $file;
+        }
     }
 });
 require __DIR__.'/src/compatibility.php';
