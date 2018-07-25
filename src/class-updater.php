@@ -122,6 +122,11 @@ class Updater {
     public function upgrader_post_install( $response, $hook_extra, $result ) {
         global $wp_filesystem;
 
+        // Skip if not Warpdrive
+        if ( empty( $hook_extra ) || Updater::NAME !== $hook_extra['plugin'] ) {
+            return $result;
+        }
+
         // Move & Activate
         $wp_filesystem->move( $result['destination'], Updater::DIR );
         $result['destination'] = Updater::DIR;
