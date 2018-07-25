@@ -234,7 +234,7 @@ class UpdaterTest extends Warpdrive_UnitTestCase {
             );
 
         $updater = $this->instantiate_updater();
-        $proper_destination = $updater->upgrader_post_install( true, [], [ 'destination' => $destination ] );
+        $proper_destination = $updater->upgrader_post_install( true, [ 'plugin' => Updater::NAME ], [ 'destination' => $destination ] );
 
         $this->assertEquals( [ 'destination' => $destination ] , $proper_destination );
     }
