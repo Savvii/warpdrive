@@ -21,11 +21,5 @@ class Warpdrive {
         new CacheFlusherPlugin();
         // Include read logs
         new ReadLogsPlugin();
-
-        // Only load CDN when we want to
-        $default_cdn_option = get_site_option( Options::CDN_ENABLE, false );
-        if ( ! is_ssl() && get_option( Options::CDN_ENABLE, $default_cdn_option ) ) {
-            new CdnLinkRewriterPlugin();
-        }
     }
 }

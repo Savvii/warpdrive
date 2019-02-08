@@ -22,11 +22,6 @@ The full page cache can be flushed from another plugin by using:
     do_action( 'warpdrive_cache_flush' ); // This will flush the entire cache
     do_action( 'warpdrive_domain_flush' ); // This will only flush the cache of the current domain
 
-### CDN link rewriter
-The CDN link rewriter scans html output and rewrites file URI's to the CDN URI.
-File extensions which are rewritten are: css, js, gif, png, jpg, ico, ttf, otf, woff.
-This is not a real [CDN](https://en.wikipedia.org/wiki/Content_delivery_network) but a cookieless domain to reduce the size of the requests.
-
 ### Read logs
 From within WordPress on the Warpdrive dashboard there are links to see the last 10/100 entries in the access or error log entries.
 
