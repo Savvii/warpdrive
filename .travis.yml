@@ -1,10 +1,9 @@
 language: php
 
 php:
-  - '5.6'
-  - '7.0'
   - '7.1'
   - '7.2'
+  - '7.3'
 
 env:
   global:
@@ -13,6 +12,7 @@ env:
     - TZ=Europe/Amsterdam
   matrix:
     - WP_VERSION=latest
+    - WP_VERSION=4.9.X
     - WP_VERSION=4.8.X
     - WP_VERSION=4.7.X
     - WP_VERSION=4.6.X
