@@ -1,10 +1,5 @@
 language: php
 
-php:
-  - 7.1
-  - 7.2
-  - 7.3
-
 env:
   global:
     - secure: qYOTDuOvuFE75AZbLN9hFQhAQVZ1SmwohZBrcCWNWVV83Zf8WGNIsKDTjGKesSSfuaK5eMdzbpzP7BohFnobB7c9elklXzindlpPxwwiD4M+JYmP5lbsvZjlkEnQVuhugI2D05Xz3EiDQbYXXRPq9M3eb8PmB113edSwrHl9fygdFmfUyQu6msEH140Zs0GJOY3+QLThZlBayS4RHeZKGbuxImssvL1f666+yI+eisBsAfl+IO4QktLSHZhK3xayV5xn0VtUduh+pFxVb2CHPoZ8D9dPVY/PwAA6UjFi/cAeWNnUb02RQD+jChJG0eSeFsLdUfgKbWpHzKERxEr7PC+yb+nxkYMASpuOPo1ha4AH/RmtDDSaF8BQO0FLjxmUuaibUakdCzN5KwSVraJgCSPeobsynNSOhix3Vsg3+bPcHOp6I467/0vdAtU3zz5no6mPMlIheJczYz9ZGrGyRfs35KSNUqoGo0qhJFpQNMa0OUasyWSrirWAsH+KlBV0ky6EsGuZesFbcSrlKzCIfRU2g7nh7Vo4CNUe/bq1jBTqIezkkUe19gZpV3wFx+EfKGI1D5RodrWf3+uNsrA/Y5v/csRC0Xt3LI68JmQzU6iTRoIoXNOVaKu155WSKiVz5TQ3Xe5X9md1O2ZV2xweFQwi+vO7m6YylXFD3U1TQ48=
@@ -14,39 +9,34 @@ env:
     - WP_VERSION=latest
     - WP_VERSION=5.1.X
     - WP_VERSION=5.0.X
-    - WP_VERSION=4.9.X
-    - WP_VERSION=4.8.X
-    - WP_VERSION=4.7.X
-    - WP_VERSION=4.6.X
-    - WP_VERSION=4.5.X
-    - WP_VERSION=4.4.X
-    - WP_VERSION=4.3.X
-    - WP_VERSION=4.2.X
-    - WP_VERSION=4.1.X
-    - WP_VERSION=4.0.X
 
 matric:
-  exclude:
+  include:
+    - php: 7.1
+      env:
+        - WP_VERSION=4.9.X
+        - WP_VERSION=4.8.X
+        - WP_VERSION=4.7.X
+        - WP_VERSION=4.6.X
+        - WP_VERSION=4.5.X
+        - WP_VERSION=4.4.X
+        - WP_VERSION=4.3.X
+        - WP_VERSION=4.2.X
+        - WP_VERSION=4.1.X
+        - WP_VERSION=4.0.X
+    - php: 7.2
+      env:
+        - WP_VERSION=4.9.X
+        - WP_VERSION=4.8.X
+        - WP_VERSION=4.7.X
+        - WP_VERSION=4.6.X
+        - WP_VERSION=4.5.X
+        - WP_VERSION=4.4.X
+        - WP_VERSION=4.3.X
+        - WP_VERSION=4.2.X
+        - WP_VERSION=4.1.X
+        - WP_VERSION=4.0.X
     - php: 7.3
-      env: WP_VERSION=4.0.X
-    - php: 7.3
-      env: WP_VERSION=4.1.X
-    - php: 7.3
-      env: WP_VERSION=4.2.X
-    - php: 7.3
-      env: WP_VERSION=4.3.X
-    - php: 7.3
-      env: WP_VERSION=4.4.X
-    - php: 7.3
-      env: WP_VERSION=4.5.X
-    - php: 7.3
-      env: WP_VERSION=4.6.X
-    - php: 7.3
-      env: WP_VERSION=4.7.X
-    - php: 7.3
-      env: WP_VERSION=4.8.X
-    - php: 7.3
-      env: WP_VERSION=4.9.X
 
 before_script:
   - composer install
