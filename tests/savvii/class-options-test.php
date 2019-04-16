@@ -19,9 +19,4 @@ class SavviiOptionsTest extends Warpdrive_UnitTestCase {
         putenv( 'WARPDRIVE_SYSTEM_NAME=FooSystemBar' );
         $this->assertEquals( 'FooSystemBar', Options::system_name() );
     }
-
-    public function test_cdn_domain_from_system_name() {
-        putenv( 'WARPDRIVE_SYSTEM_NAME=FooSystemBar' );
-        $this->assertEquals( 'cdn.FooSystemBar.savviihq.com', Options::cdn_domain() );
-    }
 }

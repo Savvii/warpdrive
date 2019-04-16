@@ -29,7 +29,7 @@ if [[ $WP_VERSION =~ ([0-9]+\.[0-9]+)\.X ]]; then
   for ((;; ((PATCH_NUMBER=PATCH_NUMBER+1)))); do
     # Test if a download can be found for PATCH_NUMBER
     WP_VERSION_TEST="${WP_VERSION_BASE}.${PATCH_NUMBER}"
-    WP_TEST_RESULT="$(curl -I --silent https://codeload.github.com/WordPress/WordPress/tar.gz/${WP_VERSION_TEST} | head -n 1 | awk '{print $2}')"
+    WP_TEST_RESULT="$(curl -I --silent https://wordpress.org/wordpress-${WP_VERSION_TEST}.tar.gz | head -n 1 | awk '{print $2}')"
     echo "${WP_VERSION_TEST}: ${WP_TEST_RESULT}"
     # Break out if the download could not be found
     if [ "${WP_TEST_RESULT}" -gt '200' ]; then

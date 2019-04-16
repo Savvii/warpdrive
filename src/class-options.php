@@ -13,8 +13,6 @@ class Options {
      **************************************************/
 
     const CACHING_STYLE             = 'warpdrive.caching_style';
-    const CDN_ENABLE                = 'warpdrive.cdn_enabled';
-    const CDN_DOMAIN_FORMAT         = 'cdn.%s.savviihq.com';
     const REPO_LOCATION             = 'https://github.com/Savvii/warpdrive';
     const REPO_RELEASES_LOCATION    = 'https://api.github.com/repos/Savvii/warpdrive/releases/latest';
 
@@ -36,9 +34,5 @@ class Options {
 
     public static function system_name() {
         return getenv( 'WARPDRIVE_SYSTEM_NAME' );
-    }
-
-    public static function cdn_domain() {
-        return sprintf( self::CDN_DOMAIN_FORMAT, self::system_name() );
     }
 }

@@ -43,7 +43,6 @@ class Api {
             $request['body'] = wp_json_encode( [
                 'domains' => [
                     $domain,
-                    Options::cdn_domain(),
                 ],
             ] );
         }

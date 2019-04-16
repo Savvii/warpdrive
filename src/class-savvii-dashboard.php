@@ -14,11 +14,6 @@ class SavviiDashboard {
     const FORM_CACHE_SET_DEFAULT = 'warpdrive_cache_set_default';
     const FORM_CACHE_USE_DEFAULT = 'warpdrive_cache_use_default';
     const FORM_DEFAULT_CACHE_STYLE = 'warpdrive_default_cache_style';
-    const FORM_CDN_ENABLE = 'warpdrive_cdn_enable';
-    const FORM_CDN_DEFAULT = 'warpdrive_cdn_default';
-    const FORM_CDN_SET_DEFAULT = 'warpdrive_cdn_set_default';
-    const FORM_CDN_USE_DEFAULT = 'warpdrive_cdn_use_default';
-    const FORM_CDN_HOME_URL = 'warpdrive_cdn_home_url';
 
     /**
      * CacheFlusher instance
@@ -69,28 +64,6 @@ class SavviiDashboard {
         update_option( Options::CACHING_STYLE, ( CacheFlusherPlugin::CACHING_STYLE_NORMAL === $_POST[ self::FORM_CACHE_STYLE ] ? CacheFlusherPlugin::CACHING_STYLE_NORMAL : CacheFlusherPlugin::CACHING_STYLE_AGRESSIVE ) );
     }
 
-    function maybe_update_cdn_enable() {
-        if ( ! isset( $_POST[ self::FORM_CDN_DEFAULT ] ) ) {
-            return;
-        }
-
-        check_admin_referer( Options::CDN_ENABLE );
-
-        if ( isset( $_POST[ self::FORM_CDN_USE_DEFAULT ] ) ) {
-            delete_option( Options::CDN_ENABLE );
-        }
-
-        if ( ! isset( $_POST[ self::FORM_CDN_USE_DEFAULT ] ) ) {
-            update_option( Options::CDN_ENABLE, isset( $_POST[ self::FORM_CDN_ENABLE ] ) ? true : 0 );
-        }
-
-        if ( $this->cache_flusher->flush() ) {
-            ?><div class="updated"><p>Content Delivery Network option saved and performed cache flush.</p></div><?php
-        } else {
-            ?><div class="error"><p>Content Delivery Network option saved but could not perform cache flush.</p></div><?php
-        }
-    }
-
     function maybe_update_default_caching_style() {
         if ( ! isset( $_POST[ self::FORM_CACHE_SET_DEFAULT ] ) ) {
             return;
@@ -101,37 +74,17 @@ class SavviiDashboard {
         update_site_option( Options::CACHING_STYLE, ( CacheFlusherPlugin::CACHING_STYLE_NORMAL === $_POST[ self::FORM_CACHE_SET_DEFAULT ] ? CacheFlusherPlugin::CACHING_STYLE_NORMAL : CacheFlusherPlugin::CACHING_STYLE_AGRESSIVE ) );
     }
 
-    function maybe_update_default_cdn_enable() {
-        if ( ! isset( $_POST[ self::FORM_CACHE_SET_DEFAULT ] ) ) {
-            return;
-        }
-
-        check_admin_referer( Options::CACHING_STYLE );
-
-        update_site_option( Options::CDN_ENABLE, isset( $_POST[ self::FORM_CDN_SET_DEFAULT ] ) ? true : 0 );
-
-        if ( $this->cache_flusher->flush() ) {
-            ?><div class="updated"><p>Default Content Delivery Network option saved and performed cache flush.</p></div><?php
-        } else {
-            ?><div class="error"><p>Default Content Delivery Network option saved but could not perform cache flush.</p></div><?php
-        }
-    }
-
     function warpdrive_dashboard() {
         if ( ! empty( $_POST ) ) {
             // Update settings when needed
             $this->maybe_update_caching_style();
-            $this->maybe_update_cdn_enable();
             // Update default settings when needed
             $this->maybe_update_default_caching_style();
-            $this->maybe_update_default_cdn_enable();
         }
 
         // Get settings from options
         $default_cache_style = get_site_option( Options::CACHING_STYLE, CacheFlusherPlugin::get_default_cache_style() );
-        $default_cdn_enabled = get_site_option( Options::CDN_ENABLE, false );
         $cache_style = get_option( Options::CACHING_STYLE, $default_cache_style );
-        $cdn_enabled = get_option( Options::CDN_ENABLE, $default_cdn_enabled );
 
         $caching_styles = [
             CacheFlusherPlugin::CACHING_STYLE_AGRESSIVE => 'Flush on post/page edit or publish',
@@ -184,36 +137,8 @@ class SavviiDashboard {
                         </div>
                     </div>
                     <!-- /Caching -->
-                    <!-- CDN -->
-                    <div class="postbox" style="min-height: 130px;">
-                        <h2 class="hndle">Content Delivery Network</h2>
-                        <div class="inside">
-                            <div class="main">
-                                <form action="" method="post">
-                                    <div class="activity-block">
-                                        <div class="button-group-vertical" style="width: 100%;">
-            <?php if ( is_multisite() ) : ?>
-                                            <label class="checkbox"><input type="checkbox" name="<?php echo esc_attr( self::FORM_CDN_USE_DEFAULT ); ?>" <?php echo is_null( get_option( Options::CDN_ENABLE, null ) ) ? 'checked="checked"' : ''; ?> /> Use default network value</label>
-            <?php endif; ?>
-            <?php if ( ! is_multisite() || ! is_null( get_option( Options::CDN_ENABLE, null ) ) ) : ?>
-                                            <label class="checkbox"><input type="checkbox" name="<?php echo esc_attr( self::FORM_CDN_ENABLE ); ?>" <?php echo $cdn_enabled ? 'checked="checked"' : ''; ?> /> CDN enabled</label>
-            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="<?php echo esc_attr( self::FORM_CDN_DEFAULT ); ?>" value="<?php echo esc_attr( $cdn_enabled ); ?>" />
-                                    <?php wp_nonce_field( Options::CDN_ENABLE ); ?>
-                                </form>
-                            </div>
-            <?php if ( is_ssl() ) : ?>
-                            <div class="sub">
-                                Our CDN does not work in combination with SSL. <a href="https://www.savvii.eu/blog/what-does-the-savvii-content-delivery-network-do/#cdnssl" title="Savvii CDN and SSL" target="_blank">Read here why</a>.
-                            </div>
-            <?php endif; ?>
-                        </div>
-                    </div>
-                    <!-- /CDN -->
             <?php if ( is_multisite() && is_super_admin() ) : ?>
-                    <!-- CDN and caching defaults -->
+                    <!-- Caching defaults -->
                     <div class="postbox" style="min-height: 130px;">
                         <h2 class="hndle">Multisite default values (only visible to super admin)</h2>
                         <div class="inside">
@@ -229,18 +154,12 @@ class SavviiDashboard {
                                             </select>
                                         </div>
                                     </div>
-                                    <h3>Content Delivery Network</h3>
-                                    <div class="activity-block">
-                                        <div class="button-group-vertical" style="width: 100%;">
-                                            <label class="checkbox"><input type="checkbox" name="<?php echo esc_attr( self::FORM_CDN_SET_DEFAULT ); ?>" <?php echo $default_cdn_enabled ? 'checked="checked"' : ''; ?> /> CDN enabled</label>
-                                        </div>
-                                    </div>
                                     <?php wp_nonce_field( Options::CACHING_STYLE ); ?>
                                 </form>
                             </div>
                         </div>
                     </div>
-                    <!-- /CDN and caching defaults -->
+                    <!-- /Caching defaults -->
             <?php endif; ?>
                     <!-- Read server logs -->
                     <div class="postbox" style="min-height: 150px;">

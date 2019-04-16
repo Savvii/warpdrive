@@ -58,7 +58,7 @@ class APITest extends Warpdrive_UnitTestCase {
                             'Authorization' => 'Token token="' . $token . '"',
                             'Content-Type' => 'application/json',
                         ],
-                        'body' => '{"domains":["example.org","cdn.FooBar.savviihq.com"]}',
+                        'body' => '{"domains":["example.org"]}',
                     ]
                 )
             );
