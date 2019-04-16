@@ -18,29 +18,45 @@ env:
 matric:
   include:
     - php: 7.1
-      env:
-        - WP_VERSION=4.9.X
-        - WP_VERSION=4.8.X
-        - WP_VERSION=4.7.X
-        - WP_VERSION=4.6.X
-        - WP_VERSION=4.5.X
-        - WP_VERSION=4.4.X
-        - WP_VERSION=4.3.X
-        - WP_VERSION=4.2.X
-        - WP_VERSION=4.1.X
-        - WP_VERSION=4.0.X
+      env: WP_VERSION=4.9.X
+    - php: 7.1
+      env: WP_VERSION=4.8.X
+    - php: 7.1
+      env: WP_VERSION=4.7.X
+    - php: 7.1
+      env: WP_VERSION=4.6.X
+    - php: 7.1
+      env: WP_VERSION=4.5.X
+    - php: 7.1
+      env: WP_VERSION=4.4.X
+    - php: 7.1
+      env: WP_VERSION=4.3.X
+    - php: 7.1
+      env: WP_VERSION=4.2.X
+    - php: 7.1
+      env: WP_VERSION=4.1.X
+    - php: 7.1
+      env: WP_VERSION=4.0.X
     - php: 7.2
-      env:
-        - WP_VERSION=4.9.X
-        - WP_VERSION=4.8.X
-        - WP_VERSION=4.7.X
-        - WP_VERSION=4.6.X
-        - WP_VERSION=4.5.X
-        - WP_VERSION=4.4.X
-        - WP_VERSION=4.3.X
-        - WP_VERSION=4.2.X
-        - WP_VERSION=4.1.X
-        - WP_VERSION=4.0.X
+      env: WP_VERSION=4.9.X
+    - php: 7.2
+      env: WP_VERSION=4.8.X
+    - php: 7.2
+      env: WP_VERSION=4.7.X
+    - php: 7.2
+      env: WP_VERSION=4.6.X
+    - php: 7.2
+      env: WP_VERSION=4.5.X
+    - php: 7.2
+      env: WP_VERSION=4.4.X
+    - php: 7.2
+      env: WP_VERSION=4.3.X
+    - php: 7.2
+      env: WP_VERSION=4.2.X
+    - php: 7.2
+      env: WP_VERSION=4.1.X
+    - php: 7.2
+      env: WP_VERSION=4.0.X
     - php: 7.3
 
 before_script:
