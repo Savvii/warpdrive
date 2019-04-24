@@ -20,6 +20,10 @@ A few notes about the sections above:
 
 == Changelog ==
 
+= 2.10.2 =
+* Support GitHub Updater
+* Add hooks for CLI and cron for the Updater
+
 = 2.10.1 =
 * Add readme.txt with a changelog
 

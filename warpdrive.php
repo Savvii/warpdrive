@@ -2,8 +2,9 @@
 /**
  * Plugin name: Warpdrive
  * Plugin URI: https://github.com/Savvii/warpdrive
+ * GitHub Plugin URI: Savvii/warpdrive
  * Description: Hosting plugin for Savvii
- * Version: 2.10.1
+ * Version: 2.10.2
  * Author: Savvii <support@savvii.com>
  * Author URI: https://www.savvii.com
  * License: GPL-3.0-only
@@ -38,3 +39,7 @@ require __DIR__.'/src/compatibility.php';
 
 add_action( 'plugins_loaded', [ 'Savvii\Warpdrive', 'load_modules' ] );
 add_action( 'admin_init', [ 'Savvii\Updater', 'create_instance' ] );
+add_action( 'cli_init', [ 'Savvii\Updater', 'create_instance' ] );
+if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
+    add_action( 'init', [ 'Savvii\Updater', 'create_instance' ] );
+}
