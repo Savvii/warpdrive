@@ -46,17 +46,19 @@ class DatabaseSizePlugin {
 		check_admin_referer( 'warpdrive_viewdatabasesize' );
 		$systemname = Options::system_name();
 
-		$results = $wpdb->get_results("
+		$results = $wpdb->get_results( $wpdb->prepare( "
 			SELECT 
      		table_schema as `Database`, 
      		table_name AS `Table`, 
      		round(((data_length + index_length) / 1024 / 1024), 2) `Size in MB` 
 			FROM information_schema.TABLES
 			WHERE table_schema = {$systemname}
-			ORDER BY (data_length + index_length) DESC;");
+			ORDER BY (data_length + index_length) DESC;" ));
 		?>
 		<h2>View database table sizes</h2>
-		<?php print_r($results); ?>
+		<?php 
+		var_dump($results);
+		?>
 		<?php
 	}	
 }
