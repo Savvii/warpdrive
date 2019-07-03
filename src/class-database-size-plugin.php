@@ -23,7 +23,7 @@ class DatabaseSizePlugin {
 			'View database size',
 			'View database size',
 			'manage_options',
-			'warpdrive_readdatabasesize',
+			'warpdrive_viewdatabasesize',
 			[ $this, 'viewdatabasesize_page']
 		);
 	}
@@ -36,12 +36,15 @@ class DatabaseSizePlugin {
 				'parent' => 'warpdrive_top_menu',
 				'id' => 'warpdrive_viewdatabasesize',
 				'title' => 'View database size',
-				'href' => '#',
+				'href' => wp_nonce_url( admin_url( 'admin.php?page=warpdrive_viewdatabasesize' ), 'warpdrive_viewdatabasesize' ),
 			]);
 		}
 	}
 
 	function viewdatabasesize_page() {
-		echo 'worst';
+		check_admin_referer( 'warpdrive_viewdatabasesize' );
+		?>
+		<h2>View database table sizes</h2>
+		<?php
 	}	
 }
