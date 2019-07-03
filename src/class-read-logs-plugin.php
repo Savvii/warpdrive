@@ -96,8 +96,8 @@ class ReadLogsPlugin {
                 'parent' => 'warpdrive_php_fpm_log',
                 'id' => 'warpdrive_php_fpm_log_10_lines',
                 'title' => '10 lines',
-                'href' => wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=phpfpm&lines=10' ), 'warpdrive_readlogs' )
-            ])
+                'href' => wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=phpfpm&lines=10' ), 'warpdrive_readlogs' ),
+            ]);
        }
     }
 
