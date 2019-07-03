@@ -56,7 +56,7 @@ class DatabaseSizePlugin {
 			ORDER BY (data_length + index_length) DESC;");
 		?>
 		<h2>View database table sizes</h2>
-		<?php print_r($results);
+		<?php print_r($results); ?>
 		<?php
 	}	
 }
