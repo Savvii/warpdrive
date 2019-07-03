@@ -66,11 +66,13 @@ class DatabaseSizePlugin {
 		foreach($results as $row)
 		{
 			var_dump($row);
-			echo "<tr>";
-			echo "<td>" . $row['database'] . "</td>";
-			echo "<td>" . $row['table']    . "</td>";
-			echo "<td>" . $row['size']     . "</td>";
-			echo "</tr>";
+			// 			echo "<td>" . $row['database'] . "</td>";
+			// echo "<td>" . $row['table']    . "</td>";
+			// echo "<td>" . $row['size']     . "</td>";
+			// echo "</tr>";
+		?>
+			<tr><?php echo $row['database'] ?></tr>
+		<?php
 		}
 		?>
 		</table>
