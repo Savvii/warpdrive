@@ -65,6 +65,7 @@ class DatabaseSizePlugin {
 		<?php 
 		foreach($results as $row)
 		{
+			var_dump($row);
 			echo "<tr>";
 			echo "<td>" . $row['database'] . "</td>";
 			echo "<td>" . $row['table']    . "</td>";
