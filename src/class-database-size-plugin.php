@@ -53,7 +53,7 @@ class DatabaseSizePlugin {
      		round(((data_length + index_length) / 1024 / 1024), 2) `size` 
 			FROM information_schema.TABLES
 			WHERE table_schema = %s
-			ORDER BY (data_length + index_length) DESC;", $systemname ));
+			ORDER BY (data_length + index_length) DESC;", $systemname), $output=ARRAY_A);
 		?>
 		<h2>View database table sizes</h2>
 		<table>
@@ -63,14 +63,17 @@ class DatabaseSizePlugin {
 				<th>Size (MB)</th>
 			</tr>
 		<?php 
+		
 		foreach($results as $row)
 		{
-			// 			echo "<td>" . $row['database'] . "</td>";
-			// echo "<td>" . $row['table']    . "</td>";
-			// echo "<td>" . $row['size']     . "</td>";
-			// echo "</tr>";
 		?>
-			<tr><?php echo $row['database'] ?></tr>
+			<tr>
+			<?php
+			echo "<td style='text-align:center;'>" . $row['database'] . "</td>";
+			echo "<td style='text-align:center;'>" . $row['table']    . "</td>";
+			echo "<td style='text-align:center;'>" . $row['size']     . "</td>";
+			?>
+			</tr>
 		<?php
 		}
 		?>
