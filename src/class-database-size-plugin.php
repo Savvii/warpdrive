@@ -48,17 +48,31 @@ class DatabaseSizePlugin {
 
 		$results = $wpdb->get_results( $wpdb->prepare( "
 			SELECT 
-     		table_schema as `Database`, 
-     		table_name AS `Table`, 
-     		round(((data_length + index_length) / 1024 / 1024), 2) `Size in MB` 
+     		table_schema as `database`, 
+     		table_name AS `table`, 
+     		round(((data_length + index_length) / 1024 / 1024), 2) `size` 
 			FROM information_schema.TABLES
 			WHERE table_schema = %s
 			ORDER BY (data_length + index_length) DESC;", $systemname ));
 		?>
 		<h2>View database table sizes</h2>
+		<table>
+			<tr>
+				<th>Database</th>
+				<th>Table</th>
+				<th>Size (MB)</th>
+			</tr>
 		<?php 
-		var_dump($results);
+		foreach($results as $row)
+		{
+			echo "<tr>";
+			echo "<td>" . $row['database'] . "</td>";
+			echo "<td>" . $row['table']    . "</td>";
+			echo "<td>" . $row['size']     . "</td>";
+			echo "</tr>";
+		}
 		?>
+		</table>
 		<?php
 	}	
 }
