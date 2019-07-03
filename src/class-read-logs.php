@@ -11,7 +11,7 @@ class ReadLogs {
     const LOG_LINE_SIZE = 1024;
 
     function clean_log_name( $log ) {
-        return ( 'access' === $log || 'error' === $log ) ? $log : 'access';
+        return ( 'access' === $log || 'error' === $log || 'php-fpm' === $log) ? $log : 'access';
     }
 
     function clean_lines( $lines ) {
@@ -41,7 +41,11 @@ class ReadLogs {
 
     function search_log_file( $system_name, $log ) {
         // Construct log path
-        $log_path = "/var/www/{$system_name}/log/{$system_name}.{$log}.log";
+        if ( $log === 'php-fpm' ) {
+            $log_path = "/var/www/{$system_name}/log/{$log}-errors.log";
+        } else {
+            $log_path = "/var/www/{$system_name}/log/{$system_name}.{$log}.log";
+        }
         return $this->file_exists( $log_path ) ? $log_path : null;
     }
 
