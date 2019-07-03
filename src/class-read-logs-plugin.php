@@ -2,7 +2,7 @@
 /**
  * Read logs
  * Allows administrators to read the access and error log
- *
+ * and the php-fpm log ;) <matthias@savvii.com>
  * @author Ferdi van der Werf <ferdi@savvii.nl>
  */
 
