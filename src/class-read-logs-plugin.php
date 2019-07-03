@@ -98,6 +98,13 @@ class ReadLogsPlugin {
                 'title' => '10 lines',
                 'href' => wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=php-fpm&lines=10' ), 'warpdrive_readlogs' ),
             ]);
+
+            $wp_admin_bar->add_menu([
+                'parent' => 'warpdrive_php_fpm_log',
+                'id' => 'warpdrive_php_fpm_log_100_lines',
+                'title' => '100 lines',
+                'href' => wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=php-fpm&lines=100' ), 'warpdrive_readlogs' ),
+            ]);
        }
     }
 
@@ -130,7 +137,7 @@ class ReadLogsPlugin {
             </dd>
             <dt>PHP-FPM log:</dt>
             <dd>
-                <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=php-fpm&lines=10' ), '  warpdrive_readlogs' ) ); ?>" class="log-button">show 10 lines</a>,
+                <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=php-fpm&lines=10' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 10 lines</a>,
                 <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=php-fpm&lines=100' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 100 lines</a>
             </dd>
         </dl>
