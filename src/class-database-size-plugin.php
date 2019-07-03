@@ -46,6 +46,7 @@ class DatabaseSizePlugin {
 		check_admin_referer( 'warpdrive_viewdatabasesize' );
 		$systemname = Options::system_name();
 
+		// TODO: move to class-database-size.php
 		$results = $wpdb->get_results( $wpdb->prepare( "
 			SELECT 
      		table_schema as `database`, 
