@@ -128,6 +128,11 @@ class ReadLogsPlugin {
                 <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=error&lines=10' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 10 lines</a>,
                 <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=error&lines=100' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 100 lines</a>
             </dd>
+            <dt>PHP-FPM log:</dt>
+            <dd>
+                <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=php-fpm&lines=10' ), '  warpdrive_readlogs' ) ); ?>" class="log-button">show 10 lines</a>,
+                <a href="<?php echo esc_attr( wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=php-fpm&lines=100' ), 'warpdrive_readlogs' ) ); ?>" class="log-button">show 100 lines</a>
+            </dd>
         </dl>
         <div style="clear: both;"></div>
         <h3><?php echo esc_html( ucfirst( $log ) ) ?> log</h3>
