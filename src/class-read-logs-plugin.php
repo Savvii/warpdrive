@@ -84,6 +84,20 @@ class ReadLogsPlugin {
                 'title' => '100 lines',
                 'href' => wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=error&lines=100' ), 'warpdrive_readlogs' ),
             ]);
+
+            $wp_admin_bar->add_menu([
+                'parent' => 'warpdrive_top_menu',
+                'id' => 'warpdrive_php_fpm_log',
+                'title' => 'PHP-FPM Log',
+                'href' => '#',
+            ]);
+
+            $wp_admin_bar->add_menu([
+                'parent' => 'warpdrive_php_fpm_log',
+                'id' => 'warpdrive_php_fpm_log_10_lines',
+                'title' => '10 lines',
+                'href' => wp_nonce_url( admin_url( 'admin.php?page=warpdrive_readlogs&log=phpfpm&lines=10' ), 'warpdrive_readlogs' )
+            ])
        }
     }
 
