@@ -1,5 +1,5 @@
 <?php
-/** 
+/**
 * Get the sizes of all tables in the Database
 * and display them
 * @author Matthias <matthias@savvii.com>
@@ -8,10 +8,10 @@
 namespace Savvii;
 
 class DatabaseSizePlugin {
-	var $database_size;
+	var $database;
 
 	function __construct() {
-		$this->database_size = new DatabaseSize();
+		$this->database = new Database();
 		add_action( 'admin_menu', [ $this, 'admin_menu_init' ]);
 		add_action( 'admin_bar_menu', [ $this, 'admin_bar_menu' ], 90);
 	}
@@ -41,20 +41,10 @@ class DatabaseSizePlugin {
 	}
 
 	function viewdatabasesize_page() {
-		global $wpdb;
-
 		check_admin_referer( 'warpdrive_viewdatabasesize' );
 		$systemname = Options::system_name();
 
-		// TODO: move to class-database-size.php
-		$results = $wpdb->get_results( $wpdb->prepare( "
-			SELECT 
-     		table_schema as `database`, 
-     		table_name AS `table`, 
-     		round(((data_length + index_length) / 1024 / 1024), 2) `size` 
-			FROM information_schema.TABLES
-			WHERE table_schema = %s
-			ORDER BY (data_length + index_length) DESC;", $systemname), $output=ARRAY_A);
+		$results = $this->database->get_wp_table_sizes();
 		?>
 		<h2>View database table sizes</h2>
 		<table>
@@ -63,8 +53,8 @@ class DatabaseSizePlugin {
 				<th>Table</th>
 				<th>Size (MB)</th>
 			</tr>
-		<?php 
-		
+		<?php
+
 		foreach($results as $row)
 		{
 		?>
@@ -80,5 +70,5 @@ class DatabaseSizePlugin {
 		?>
 		</table>
 		<?php
-	}	
+	}
 }
