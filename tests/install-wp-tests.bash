@@ -139,7 +139,13 @@ install_db() {
       EXTRA=" --host=$DB_HOSTNAME --protocol=tcp"
     fi
   fi
-
+  # create database user
+  mysql -u root -e "drop user if exists $DB_USER@$DB_HOSTNAME;"
+  mysql -u root -e "flush privileges;"
+  mysql -u root -e "create user $DB_USER@$DB_HOSTNAME identified by '$DB_PASS';"
+  mysql -u root -e "grant all privileges on $DB_NAME.* to $DB_USER@$DB_HOSTNAME with grant option;"
+  mysql -u root -e "flush privileges;"
+  
   # create database
   mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }
