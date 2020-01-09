@@ -139,6 +139,8 @@ install_db() {
       EXTRA=" --host=$DB_HOSTNAME --protocol=tcp"
     fi
   fi
+  # start mysql service
+  sudo service mysql start
   # create database user
   mysql -u root -e "drop user if exists $DB_USER@$DB_HOSTNAME;"
   mysql -u root -e "flush privileges;"
