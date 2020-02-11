@@ -139,7 +139,9 @@ install_db() {
       EXTRA=" --host=$DB_HOSTNAME --protocol=tcp"
     fi
   fi
-
+  # start mysql service
+  sudo service mysql start
+  
   # create database
   mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }

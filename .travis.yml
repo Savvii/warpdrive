@@ -1,5 +1,5 @@
 language: php
-
+sudo: enabled
 php:
   - 7.1
   - 7.2
@@ -47,7 +47,8 @@ matrix:
       env: WP_VERSION=4.1.X
     - php: 7.3
       env: WP_VERSION=4.0.X
-
+services:
+    - mysql
 before_script:
   - composer install
   - export PATH="./vendor/bin:$PATH"
