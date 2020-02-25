@@ -39,6 +39,26 @@ class ReadLogs {
         return $log_lines;
     }
 
+    function find_match_in_log( $log, $regex) {
+         // Clean log name
+        $log     = $this->clean_log_name( $log );
+        
+        // Search for log file
+        $log_path = $this->search_log_file( Options::system_name(), $log );
+        if ( is_null( $log_path ) ) {
+            return [ \ucfirst( $log ) . ' log not found.' ];
+        }
+
+        $file    = fopen( $log_path, 'r' );
+        $results = array();
+        while (($bufferedline = fgets($file))) {
+            if (preg_match( $regex, $bufferedline )) {
+                array_push( $results, $bufferedline);
+            }
+        }
+        return $results;
+    }
+
     function search_log_file( $system_name, $log ) {
         // Construct log path
         $log_path = "/var/www/{$system_name}/log/{$system_name}.{$log}.log";

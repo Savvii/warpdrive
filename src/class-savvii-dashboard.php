@@ -100,10 +100,17 @@ class SavviiDashboard {
             .savvii .postbox .button {text-align: center; width: 100%;}
             .savvii dt, dd { float: left }
             .savvii dt {width: 75px; clear:both}
-
+            .postbox { margin: 12px; overflow: hidden; }
+            .postbox .inside .pct50 {
+                float: left;
+                width: 100%;
+            }
             @media screen and ( min-width: 600px ) {
                 .savvii #dashboard-widgets .postbox-container {
-                    min-width: 510px;
+                    min-width: 100%;
+                }
+                .postbox .inside .pct50 {
+                    width: 50%;
                 }
             }
         </style>
@@ -139,7 +146,7 @@ class SavviiDashboard {
                     <!-- /Caching -->
             <?php if ( is_multisite() && is_super_admin() ) : ?>
                     <!-- Caching defaults -->
-                    <div class="postbox" style="min-height: 130px;">
+                    <div class="postbox">
                         <h2 class="hndle">Multisite default values (only visible to super admin)</h2>
                         <div class="inside">
                             <div class="main">
@@ -162,13 +169,35 @@ class SavviiDashboard {
                     <!-- /Caching defaults -->
             <?php endif; ?>
                     <!-- Read server logs -->
-                    <div class="postbox" style="min-height: 150px;">
+                    <div class="postbox">
                         <h2 class="hndle">Read server logs</h3>
                         <div class="inside"><?= is_super_admin() ? 'Please use the Savvii top menu for reading logs.' : '
                             \'Read server logs\' shows data for all subsites. Because of this, only users with the \'Super Admin\' role are able to read the server logs.'; ?>
                         </div>
                     </div>
                     <!-- /Read server logs -->
+                    <!-- Statistics -->
+                    <div class="postbox">
+                        <h2 class="hndle">Statistics</h2>
+                        <div class="inside">
+                            <div class="pct50">
+                            <?php
+                            $logreader = new ReadLogs();
+                            $errors_502 = $logreader->find_match_in_log( 'access', '/HTTP\/(?:1\.1|2)\"\s+502/i');
+                            $errors_504 = $logreader->find_match_in_log( 'access', '/HTTP\/(?:1\.1|2)\"\s+504/i');
+                            ?>
+                            <p>WarpDrive detected
+                                <?php
+                                echo ' '.count( $errors_502 ).' ';
+                                ?>
+                            recent 502 (Bad Gateway) error(s)</p>
+                            <p>WarpDrive detected <?php echo count( $errors_504 ); ?> recent 504 (Gateway Timeout) error(s)</p>
+                        </div>
+                        <div class="pct50">
+                        </div>
+                        </div>
+                    </div>
+                     <!-- Statistics -->
                 </div>
             </div>
         </div>
