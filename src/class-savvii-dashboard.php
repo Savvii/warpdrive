@@ -194,6 +194,31 @@ class SavviiDashboard {
                             <p>WarpDrive detected <?php echo count( $errors_504 ); ?> recent 504 (Gateway Timeout) error(s)</p>
                         </div>
                         <div class="pct50">
+                            <?php
+                            $database = new Database();
+                            $results = $database->get_wp_table_sizes(10);
+                            ?>
+                            <table>
+                            <tr>
+                            <th>Table</th>
+                            <th>Size (MB)</th>
+                            </tr>
+                            <?php
+
+                            foreach($results as $row)
+                            {
+                            ?>
+                            <tr>
+                            <?php
+                            echo "<td style='text-align:left;'>"   . $row['table']    . "</td>";
+                            echo "<td style='text-align:center;'>" . $row['size']     . "</td>";
+                            ?>
+                            </tr>
+                            <?php
+                            }
+                            ?>
+                            </table>
+                            <a href=<?php echo wp_nonce_url( admin_url( 'admin.php?page=warpdrive_viewdatabasesize' ), 'warpdrive_viewdatabasesize' ) ?> > View all tables...</a>
                         </div>
                         </div>
                     </div>
