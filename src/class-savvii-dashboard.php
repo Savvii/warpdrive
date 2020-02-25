@@ -29,8 +29,14 @@ class SavviiDashboard {
         add_action( 'admin_menu', [ $this, 'admin_menu_register' ] );
         // Add flush button to top bar
         add_action( 'admin_bar_menu', [ $this, 'admin_bar_menu' ], 90 );
-
+        // Add stylesheet
+        add_action( 'admin_enqueue_scripts', array( $this, 'register_plugin_styles' ) );
         $this->cache_flusher = new CacheFlusher();
+    }
+
+    function register_plugin_styles() {
+        wp_register_style( 'warpdrive-dashboard', plugins_url( 'warpdrive/src/css/savvii-dashboard.css' ) );
+        wp_enqueue_style( 'warpdrive-dashboard' );
     }
 
     function admin_bar_menu() {
@@ -91,29 +97,8 @@ class SavviiDashboard {
             CacheFlusherPlugin::CACHING_STYLE_NORMAL => 'Flush on post/page edit or publish, comment changes, attachment changes',
         ];
 
+
         ?>
-        <style>
-            .savvii .postbox .main .activity-block label.checkbox { display: block; width: 100%; clear: both; }
-            .savvii .postbox .main .activity-block label { margin-bottom: 10px; }
-            .savvii .postbox .main .activity-block select { width: 100%; }
-            .savvii .postbox .main .activity-block { border: none; }
-            .savvii .postbox .button {text-align: center; width: 100%;}
-            .savvii dt, dd { float: left }
-            .savvii dt {width: 75px; clear:both}
-            .postbox { margin: 12px; overflow: hidden; }
-            .postbox .inside .pct50 {
-                float: left;
-                width: 100%;
-            }
-            @media screen and ( min-width: 600px ) {
-                .savvii #dashboard-widgets .postbox-container {
-                    min-width: 100%;
-                }
-                .postbox .inside .pct50 {
-                    width: 50%;
-                }
-            }
-        </style>
         <div class="savvii dashboard-widgets-wrap">
             <div id="dashboard-widgets" class="metabox-holder">
                 <div class="postbox-container">

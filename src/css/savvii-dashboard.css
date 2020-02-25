@@ -1,0 +1,45 @@
+.savvii .postbox .main .activity-block label.checkbox { 
+    display: block; width: 100%; clear: both;
+}
+
+.savvii .postbox .main .activity-block label {
+    margin-bottom: 10px;
+}
+
+.savvii .postbox .main .activity-block select {
+    width: 100%;
+}
+
+.savvii .postbox .main .activity-block {
+    border: none;
+}
+
+.savvii .postbox .button {
+    text-align: center; width: 100%;
+}
+
+.savvii dt, dd {
+    float: left
+}
+
+.savvii dt {
+    width: 75px; clear:both
+}
+
+.postbox {
+    margin: 12px; overflow: hidden;
+}
+
+.postbox .inside .pct50 {
+    float: left;
+    width: 100%;
+}
+
+@media screen and ( min-width: 600px ) {
+    .savvii #dashboard-widgets .postbox-container {
+        min-width: 100%;
+    }
+    .postbox .inside .pct50 {
+        width: 50%;
+    }
+}
