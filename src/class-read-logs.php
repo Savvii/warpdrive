@@ -82,6 +82,28 @@ class ReadLogs {
         return array_reverse( array_slice( $log_lines, -$lines ) );
     }
 
+    function print_lines( $log, $lines ) {
+        $result = self::get_log_lines( $log, $lines );
+        if (count($result) == 1) {
+            printf("<p>%s</p>", $result[0]);        
+        } else {
+            foreach ( $result as $line ) {
+                $e = explode( " ", $line );
+                if ( $log === 'access' ) {
+                    printf("<p><span class='date'>%s</span>
+                        <span class='ip_address'>%s</span>
+                        <span class='http_version'>%s</span>
+                        <span class='http_status'>%s</span>
+                        <span class='url'>%s</span></p>", 
+                        substr($e[3], 1), $e[0], $e[7], $e[8], $e[6]);
+                }
+                if ( $log === 'error' ) {
+                    printf("<p><span class='date'>%s %s</span>%s</p>", $e[0], $e[1], substr($line, 19));
+                } 
+            }
+        }
+    }
+
     /**
      * @param $path
      * @return bool

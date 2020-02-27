@@ -97,19 +97,20 @@ class SavviiDashboard {
             CacheFlusherPlugin::CACHING_STYLE_NORMAL => 'Flush on post/page edit or publish, comment changes, attachment changes',
         ];
 
+        $logreader = new ReadLogs();
 
         ?>
         <div class="savvii dashboard-widgets-wrap">
             <div id="dashboard-widgets" class="metabox-holder">
                 <div class="postbox-container">
                     <!-- Caching -->
-                    <div class="postbox" style="min-height: 130px;">
+                    <div class="postbox">
                         <h2 class="hndle">Caching</h2>
                         <div class="inside">
                             <div class="main">
                                 <form action="" method="post">
                                     <div class="activity-block">
-                                        <div class="button-group-vertical" style="width: 100%;">
+                                        <div class="button-group-vertical">
             <?php if ( is_multisite() ) : ?>
                                             <label class="checkbox"><input type="checkbox" name="<?php echo esc_attr( self::FORM_CACHE_USE_DEFAULT ); ?>" <?php echo is_null( get_option( Options::CACHING_STYLE, null ) ) ? 'checked="checked"' : ''; ?> /> Use default network value</label>
             <?php endif; ?>
@@ -156,8 +157,29 @@ class SavviiDashboard {
                     <!-- Read server logs -->
                     <div class="postbox">
                         <h2 class="hndle">Read server logs</h3>
-                        <div class="inside"><?= is_super_admin() ? 'Please use the Savvii top menu for reading logs.' : '
-                            \'Read server logs\' shows data for all subsites. Because of this, only users with the \'Super Admin\' role are able to read the server logs.'; ?>
+                        <div class="inside">
+                            <?php
+                            if (is_super_admin()) {
+                            ?>
+                                <div class='row'>  
+                                    <div class='column'>
+                                        <h3>Access Log preview</h3>
+                                        <div class='code'>
+                                            <?php $logreader->print_lines( 'access', 10 ); ?>
+                                        </div>
+                                    </div>
+                                    <div class='column'>
+                                        <h3>Error log preview</h3>
+                                        <div class='code'>
+                                            <?php $logreader->print_lines( 'error', 10 ); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php
+                            } else {
+                                echo "<p>Only users with the Super Admin role are allowed to read server logs</p>";
+                            }
+                            ?>
                         </div>
                     </div>
                     <!-- /Read server logs -->
@@ -165,49 +187,50 @@ class SavviiDashboard {
                     <div class="postbox">
                         <h2 class="hndle">Statistics</h2>
                         <div class="inside">
-                            <div class="pct50">
-                            <?php
-                            $logreader = new ReadLogs();
-                            $errors_502 = $logreader->find_match_in_log( 'access', '/HTTP\/(?:1\.1|2)\"\s+502/i');
-                            $errors_504 = $logreader->find_match_in_log( 'access', '/HTTP\/(?:1\.1|2)\"\s+504/i');
-                            ?>
-                            <p>WarpDrive detected
+                            <div class="row">
                                 <?php
-                                echo ' '.count( $errors_502 ).' ';
+                                $errors_502 = $logreader->find_match_in_log( 'access', '/HTTP\/(?:1\.1|2)\"\s+502/i');
+                                $errors_504 = $logreader->find_match_in_log( 'access', '/HTTP\/(?:1\.1|2)\"\s+504/i');
                                 ?>
-                            recent 502 (Bad Gateway) error(s)</p>
-                            <p>WarpDrive detected <?php echo count( $errors_504 ); ?> recent 504 (Gateway Timeout) error(s)</p>
-                        </div>
-                        <div class="pct50">
-                            <?php
-                            $database = new Database();
-                            $results = $database->get_wp_table_sizes(10);
-                            ?>
-                            <table>
-                            <tr>
-                            <th>Table</th>
-                            <th>Size (MB)</th>
-                            </tr>
-                            <?php
-
-                            foreach($results as $row)
-                            {
-                            ?>
-                            <tr>
-                            <?php
-                            echo "<td style='text-align:left;'>"   . $row['table']    . "</td>";
-                            echo "<td style='text-align:center;'>" . $row['size']     . "</td>";
-                            ?>
-                            </tr>
-                            <?php
-                            }
-                            ?>
-                            </table>
-                            <a href=<?php echo wp_nonce_url( admin_url( 'admin.php?page=warpdrive_viewdatabasesize' ), 'warpdrive_viewdatabasesize' ) ?> > View all tables...</a>
-                        </div>
+                                <div class="column">
+                                    <p>WarpDrive detected <?php echo ' '.count( $errors_502 ).' ';?> recent 502 (Bad Gateway) error(s)</p>
+                                    <p>WarpDrive detected <?php echo count( $errors_504 ); ?> recent 504 (Gateway Timeout) error(s)</p>
+                                </div>
+                                <?php
+                                $database = new Database();
+                                $results = $database->get_wp_table_sizes(10);
+                                ?>
+                                <div class="column">
+                                    <table>
+                                        <tr>
+                                            <th>Table</th>
+                                            <th>Size (MB)</th>
+                                        </tr>
+                                    <?php foreach($results as $row) { ?>
+                                        <tr>
+                                            <?php
+                                            printf("<td>%s</td>", $row['table']);
+                                            printf("<td>%d</td>", $row['size']);
+                                            ?>
+                                        </tr>
+                                    <?php } ?>
+                                    </table>
+                                <a href=<?php echo wp_nonce_url( admin_url( 'admin.php?page=warpdrive_viewdatabasesize' ), 'warpdrive_viewdatabasesize' ) ?> > View all tables...</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                     <!-- Statistics -->
+                    <!-- /Statistics -->
+                    <!-- PHP-FPM Settings -->
+                    <div class="postbox" style="min-height: 130px;">
+                        <h2 class="hndle">PHP</h2>
+                        <div class="inside">
+                            <form name="warpdrive_php_form" method="post" action="">
+                                <input id="warpdrive_php_restart" type="submit" value="Restart PHP-FPM">
+                            </form>
+                        </div>
+                    </div>
+                     <!-- /PHP-FPM Settings -->
                 </div>
             </div>
         </div>

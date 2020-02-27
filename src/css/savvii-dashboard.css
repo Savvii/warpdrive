@@ -30,16 +30,60 @@
     margin: 12px; overflow: hidden;
 }
 
-.postbox .inside .pct50 {
-    float: left;
-    width: 100%;
+.row {
+    display: flex;
 }
 
-@media screen and ( min-width: 600px ) {
+.column {
+    margin-right: 8px;
+}
+
+.column h3 {
+    border-bottom: 1px solid #ccd0d4;
+}
+
+.row > .column {
+    flex: 1;
+}
+
+.row > .column > .code {
+    font-family: Courier new,sans-serif;
+}
+
+.code p {
+    font-size: 12px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.code p:hover {
+    background-color: #e1e1e1 !important;
+}
+
+.code p:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+
+span.date {
+    font-weight: bold;
+}
+
+span.ip_address {
+    font-style: italic;
+}
+
+
+@media screen and ( min-width: 800px ) {
     .savvii #dashboard-widgets .postbox-container {
         min-width: 100%;
     }
     .postbox .inside .pct50 {
         width: 50%;
+    }
+}
+
+@media screen and ( max-width: 800px ) {
+    .row {
+        display: block;
     }
 }
