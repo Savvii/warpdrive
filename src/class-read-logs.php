@@ -56,6 +56,7 @@ class ReadLogs {
                 array_push( $results, $bufferedline);
             }
         }
+        fclose( $file );
         return $results;
     }
 
