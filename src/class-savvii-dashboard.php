@@ -231,16 +231,6 @@ class SavviiDashboard {
                         </div>
                     </div>
                     <!-- /Statistics -->
-                    <!-- PHP-FPM Settings -->
-                    <div class="postbox" style="min-height: 130px;">
-                        <h2 class="hndle">PHP</h2>
-                        <div class="inside">
-                            <form name="warpdrive_php_form" method="post" action="">
-                                <input id="warpdrive_php_restart" type="submit" value="Restart PHP-FPM">
-                            </form>
-                        </div>
-                    </div>
-                     <!-- /PHP-FPM Settings -->
                 </div>
             </div>
         </div>
