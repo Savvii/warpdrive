@@ -189,12 +189,23 @@ class SavviiDashboard {
                         <div class="inside">
                             <div class="row">
                                 <?php
-                                $errors_502 = $logreader->find_match_in_log( 'access', '/HTTP\/(?:1\.1|2)\"\s+502/i');
-                                $errors_504 = $logreader->find_match_in_log( 'access', '/HTTP\/(?:1\.1|2)\"\s+504/i');
+                                $errors = $logreader->find_match_in_log( 'access', '/HTTP\/(?:1\.1|2)\"\s+(50[24])/i');
+                                $errors_502 = 0;
+                                $errors_504 = 0;
+                                foreach ($errors as $error) {
+                                    if (strpos($error, '502')) {
+                                        $errors_502++;
+                                    } elseif (strpos($error, '504')) {
+                                        $errors_504++;
+                                    }
+                                }
+
+                                //$errors_502 = $logreader->find_match_in_log( 'access', '/HTTP\/(?:1\.1|2)\"\s+502/i');
+                                //$errors_504 = $logreader->find_match_in_log( 'access', '/HTTP\/(?:1\.1|2)\"\s+504/i');
                                 ?>
                                 <div class="column">
-                                    <p>WarpDrive detected <?php echo ' '.count( $errors_502 ).' ';?> recent 502 (Bad Gateway) error(s)</p>
-                                    <p>WarpDrive detected <?php echo count( $errors_504 ); ?> recent 504 (Gateway Timeout) error(s)</p>
+                                    <p>WarpDrive detected <?php echo ' ' . $errors_502 . ' ';?> recent 502 (Bad Gateway) error(s)</p>
+                                    <p>WarpDrive detected <?php echo ' ' . $errors_504 . ' ';?> recent 504 (Gateway Timeout) error(s)</p>
                                 </div>
                                 <?php
                                 $results = Database::get_wp_table_sizes(10);
