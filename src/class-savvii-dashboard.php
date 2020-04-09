@@ -197,8 +197,7 @@ class SavviiDashboard {
                                     <p>WarpDrive detected <?php echo count( $errors_504 ); ?> recent 504 (Gateway Timeout) error(s)</p>
                                 </div>
                                 <?php
-                                $database = new Database();
-                                $results = $database->get_wp_table_sizes(10);
+                                $results = Database::get_wp_table_sizes(10);
                                 ?>
                                 <div class="column">
                                     <table>

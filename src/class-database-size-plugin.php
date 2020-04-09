@@ -8,10 +8,8 @@
 namespace Savvii;
 
 class DatabaseSizePlugin {
-    var $database;
 
     function __construct() {
-        $this->database = new Database();
         add_action( 'admin_menu', [ $this, 'admin_menu_init' ]);
         add_action( 'admin_bar_menu', [ $this, 'admin_bar_menu' ], 90);
     }
@@ -44,7 +42,7 @@ class DatabaseSizePlugin {
         check_admin_referer( 'warpdrive_viewdatabasesize' );
         $systemname = Options::system_name();
 
-        $results = $this->database->get_wp_table_sizes();
+        $results = Database::get_wp_table_sizes();
         ?>
         <h2>View database table sizes</h2>
         <table>

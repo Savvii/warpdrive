@@ -7,7 +7,7 @@ namespace Savvii;
  * @package Savvii
  */
 class Database {
-    function get_wp_table_sizes( $limit = -1 ) {
+    public static function get_wp_table_sizes( $limit = -1 ) {
         global $wpdb;
 
         //check_admin_referer( 'warpdrive_viewdatabasesize' );
