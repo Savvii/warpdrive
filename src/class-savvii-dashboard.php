@@ -218,10 +218,8 @@ class SavviiDashboard {
                                         </tr>
                                     <?php foreach($results as $row) { ?>
                                         <tr>
-                                            <?php
-                                            printf("<td>%s</td>", $row['table']);
-                                            printf("<td>%d</td>", $row['size']);
-                                            ?>
+                                            <td><?php echo $row['table']; ?></td>
+                                            <td><?php echo $row['size']; ?></td>
                                         </tr>
                                     <?php } ?>
                                     </table>
