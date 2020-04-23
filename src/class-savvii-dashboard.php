@@ -216,7 +216,7 @@ class SavviiDashboard {
                                             <th>Table</th>
                                             <th>Size (MB)</th>
                                         </tr>
-                                    <?php foreach($results as $row) { ?>
+                                    <?php foreach(Database::get_wp_table_sizes(10) as $row) { ?>
                                         <tr>
                                             <td><?php echo $row['table']; ?></td>
                                             <td><?php echo $row['size']; ?></td>
