@@ -28,6 +28,9 @@ class CacheFlusher {
      * @return bool True on success
      */
     function flush() {
+        // Flush the OpCache
+        $this->flush_opcache();
+
         // Flush the cache
         $result = $this->api->cache_flush();
 
@@ -40,6 +43,9 @@ class CacheFlusher {
      * @return bool True on success
      */
     function flush_domain() {
+        // Flush the OpCache
+        $this->flush_opcache();
+
         // Get the current domain
         $domain = wp_parse_url( get_site_url() );
         $host = isset( $domain['host'] ) ? $domain['host'] : '';
@@ -49,5 +55,17 @@ class CacheFlusher {
 
         // Call API and check response code
         return $result->success();
+    }
+
+    /**
+     * Flush the OpCache if enabled
+     */
+    private function flush_opcache()
+    {
+        $opcache_status = opcache_get_status();
+
+        if ($opcache_status && is_array($opcache_status) && $opcache_status['opcache_enabled']) {
+            opcache_reset();
+        }
     }
 }
