@@ -28,23 +28,23 @@ env:
 
 matrix:
   exclude:
-    - php: 7.3
+    - php: 7.3.24
       env: WP_VERSION=4.9.X
-    - php: 7.3
+    - php: 7.3.24
       env: WP_VERSION=4.8.X
-    - php: 7.3
+    - php: 7.3.24
       env: WP_VERSION=4.7.X
-    - php: 7.3
+    - php: 7.3.24
       env: WP_VERSION=4.6.X
-    - php: 7.3
+    - php: 7.3.24
       env: WP_VERSION=4.5.X
-    - php: 7.3
+    - php: 7.3.24
       env: WP_VERSION=4.4.X
-    - php: 7.3
+    - php: 7.3.24
       env: WP_VERSION=4.3.X
-    - php: 7.3
+    - php: 7.3.24
       env: WP_VERSION=4.2.X
-    - php: 7.3
+    - php: 7.3.24
       env: WP_VERSION=4.1.X
     - php: 7.3.24
       env: WP_VERSION=4.0.X
