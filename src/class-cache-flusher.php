@@ -14,7 +14,8 @@ class CacheFlusher implements CacheFlusherInterface {
      * @var string[]
      */
     private $caches = [
-        'varnish', 'opcache'
+        'varnish', 'opcache',
+        'memcached'
     ];
 
     /**
