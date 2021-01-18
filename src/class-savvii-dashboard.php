@@ -97,6 +97,8 @@ class SavviiDashboard {
             .savvii .postbox .main .activity-block label { margin-bottom: 10px; }
             .savvii .postbox .main .activity-block select { width: 100%; }
             .savvii .postbox .main .activity-block { border: none; }
+            .savvii .postbox .main ul { list-style-type: square; }
+            .savvii .postbox .main li { position: relative; left: 2em; }
             .savvii .postbox .button {text-align: center; width: 100%;}
             .savvii dt, dd { float: left }
             .savvii dt {width: 75px; clear:both}
@@ -115,6 +117,17 @@ class SavviiDashboard {
                         <h2 class="hndle">Caching</h2>
                         <div class="inside">
                             <div class="main">
+                                <h3>Enabled caches</h3>
+                                <ul>
+                                    <?php foreach ( Options::AVAILABLE_CACHES as $cache ) : ?>
+                                    <?php $className = '\Savvii\CacheFlusher' . ucfirst($cache) ?>
+                                    <?php $cacheClass = new $className() ?>
+                                    <?php if ($cacheClass->is_enabled()) : ?>
+                                    <li><?php echo esc_attr(ucfirst($cache)) ?></li>
+                                    <?php endif; ?>
+                                    <?php endforeach; ?>
+                                </ul>
+                                <h3>Behaviour</h3>
                                 <form action="" method="post">
                                     <div class="activity-block">
                                         <div class="button-group-vertical" style="width: 100%;">

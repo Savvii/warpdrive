@@ -53,4 +53,13 @@ class CacheFlusherVarnishTest extends Warpdrive_UnitTestCase {
 
         return $cf;
     }
+
+    /**
+     * Check is_enabled(), Varnish should always be enabled
+     */
+    public function test_is_enabled()
+    {
+        $cache = new \Savvii\CacheFlusherVarnish();
+        $this->assertTrue($cache->is_enabled());
+    }
 }

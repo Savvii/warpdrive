@@ -21,15 +21,15 @@ class CacheFlusherOpcache implements CacheFlusherInterface
     protected $inTestResult = true;
 
     /**
-     * @inheritDoc
+     * Return value of is_enabled() when overridden
+     * @var bool
      */
-    public function __construct()
-    {
-        // do nothing
-    }
+    protected $inTestEnabled = true;
 
     /**
-     * @inheritDoc
+     * Flush the Opcache
+     *
+     * @returns bool
      */
     public function flush()
     {
@@ -37,11 +37,15 @@ class CacheFlusherOpcache implements CacheFlusherInterface
     }
 
     /**
-     * @inheritDoc
+     * Flush the Opcache for a specific domain
+     * Return true, because we can only flush the entire opcache and
+     * not a part for a specific site
+     *
+     * @returns bool
      */
     public function flush_domain($domain = null)
     {
-        return $this->flush_opcache();
+        return true;
     }
 
     /**
@@ -53,19 +57,33 @@ class CacheFlusherOpcache implements CacheFlusherInterface
         if ($this->inTest) return $this->inTestResult;
 
         // default result
-        $result = false;
+        $result = true;
 
-        // get the status of the opcache
-        $opcache_status = opcache_get_status();
-
-        // flush it if enabled
-        if ($opcache_status && is_array($opcache_status) &&
-            array_key_exists('opcache_enabled', $opcache_status) &&
-            $opcache_status['opcache_enabled']
-        ) {
+        // flush it, if enabled
+        if ($this->is_enabled()) {
             $result = opcache_reset();
         }
 
         return $result;
+    }
+
+    /**
+     * Check if the Opcache is enabled
+     *
+     * @return bool
+     */
+    public function is_enabled()
+    {
+        // early exit when in phpunittest
+        if ($this->inTest) return $this->inTestEnabled;
+
+        // get the status of the opcache
+        $opcache_status = opcache_get_status();
+
+        // check and return the status of the opcache
+        return ($opcache_status && is_array($opcache_status) &&
+            array_key_exists('opcache_enabled', $opcache_status) &&
+            $opcache_status['opcache_enabled']
+        );
     }
 }

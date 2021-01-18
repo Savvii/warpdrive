@@ -30,10 +30,6 @@ class CacheFlusherMemcached implements CacheFlusherInterface
      */
     public function __construct()
     {
-        // TODO: how is the memcached setup in a shared vps ?
-        // my guess would be, that each wp instance has its own memcached on a different port, needs checking
-        // and implement a multiuser solution
-
         $this->memcachedStream =
             @stream_socket_client("tcp://127.0.0.1:11211", $this->errCode, $this->errMsg, 1);
     }
@@ -60,26 +56,25 @@ class CacheFlusherMemcached implements CacheFlusherInterface
     }
 
     /**
-     * We can't flush a specific domain, so flush everything
+     * We can't flush a specific domain, so always return true
      *
      * @param string $domain
      * @return bool
      */
     public function flush_domain($domain = null)
     {
-        return $this->flush_memcached();
+        return true;
     }
 
     /**
-     * As memcached doesn't work with wildcards or namespaces, we can only flush everything.
-     * So we send a 'flush_all' to memcached and expect an 'OK' back.
+     * We send a 'flush_all' to memcached and expect an 'OK' back.
      *
      * @return bool
      */
     private function flush_memcached()
     {
         // if we can't connect to the socket (no memcached running), we 'succeed')
-        if (!$this->memcachedStream) return true;
+        if (!$this->is_enabled()) return true;
 
         // connection to memcached
         // send 'flush_all' and wait for 'OK'
@@ -87,5 +82,19 @@ class CacheFlusherMemcached implements CacheFlusherInterface
         $response = fgets($this->memcachedStream, 1024);
 
         return (preg_match('/^OK/', $response) == 1);
+    }
+
+    /**
+     * Check if we have a Memcached cache and it is enabled
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function is_enabled()
+    {
+        // if we can't connect to the memcached server, we probably don't have a memcached cache ;)
+        if (!$this->memcachedStream) return false;
+
+        return true;
     }
 }

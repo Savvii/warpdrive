@@ -10,19 +10,10 @@ namespace Savvii;
 class CacheFlusher implements CacheFlusherInterface {
 
     /**
-     * the different caches we want to flush
-     * @var string[]
-     */
-    private $caches = [
-        'varnish', 'opcache',
-        'memcached'
-    ];
-
-    /**
      * Array containg the initialized cache flushers
-     * @var \stdClass[]
+     * @var object[]
      */
-    private $flusherClasses = [];
+    private $caches = [];
 
     /**
      * Constructor
@@ -31,9 +22,9 @@ class CacheFlusher implements CacheFlusherInterface {
     public function __construct() {
 
         // Initialize the different caches
-        foreach ($this->caches as $cache) {
+        foreach (Options::AVAILABLE_CACHES as $cache) {
             $className = '\Savvii\CacheFlusher' . ucfirst($cache);
-            $this->flusherClasses[] = new $className();
+            $this->caches[] = new $className();
         }
     }
 
@@ -47,7 +38,11 @@ class CacheFlusher implements CacheFlusherInterface {
         // Loop over all caches and flush them
         // bitwise and the results with the current result
         // so if a cache isn't flushed we return false
-        foreach ($this->flusherClasses as $cache) {
+        foreach ($this->caches as $cache) {
+
+            // only flush enabled caches
+            if (!$cache->is_enabled()) continue;
+
             $result = $result && $cache->flush();
         }
 
@@ -69,10 +64,24 @@ class CacheFlusher implements CacheFlusherInterface {
         // Loop over all caches and flush them
         // bitwise and the results with the current result
         // so if a cache isn't flushed we return false
-        foreach ($this->flusherClasses as $cache) {
+        foreach ($this->caches as $cache) {
+
+            // only flush enabled caches
+            if (!$cache->is_enabled()) continue;
+
             $result = $result && $cache->flush_domain($host);
         }
 
         return $result;
+    }
+
+    /**
+     * The interface forces us to have an is_enabled() method :)
+     *
+     * @return bool
+     */
+    public function is_enabled()
+    {
+        return true;
     }
 }
