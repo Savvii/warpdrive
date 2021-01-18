@@ -22,6 +22,11 @@ spl_autoload_register( function( $class_name ) {
         if ( file_exists( $file ) ) {
             require $file;
         }
+    } else if ( strpos( $class_name, 'Mock\\' ) === 0 ) {
+        $file = __DIR__ . str_replace( 'mock\\', '/mock/class-', strtolower( preg_replace( '/([a-zA-Z])(?=[A-Z])/', '$1-', $class_name ) ) ) . '.php';
+        if ( file_exists( $file ) ) {
+            require $file;
+        }
     }
 });
 
