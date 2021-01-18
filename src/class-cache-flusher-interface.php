@@ -14,11 +14,6 @@ namespace Savvii;
 interface CacheFlusherInterface
 {
     /**
-     * CacheFlusherInterface constructor.
-     */
-    public function __construct();
-
-    /**
      * Flush cache for all sites
      *
      * @return bool
@@ -32,5 +27,12 @@ interface CacheFlusherInterface
      * @return bool
      */
     public function flush_domain($domain = null);
+
+    /**
+     * Returns if the current cache is enabled.
+     *
+     * @return bool
+     */
+    public function is_enabled();
 
 }

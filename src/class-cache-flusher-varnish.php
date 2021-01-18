@@ -49,4 +49,14 @@ class CacheFlusherVarnish implements CacheFlusherInterface {
         return $result->success();
     }
 
+    /**
+     * The Varnish cache is always enabled
+     *
+     * @return bool
+     */
+    public function is_enabled()
+    {
+        return true;
+    }
+
 }

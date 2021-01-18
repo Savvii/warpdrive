@@ -65,16 +65,17 @@ class CacheFlusherMemcachedTest extends \Warpdrive_UnitTestCase
     }
 
     /**
-     * We set the teststream to return 'ERROR', so flush_domain() should return false
+     * We set the teststream to return 'ERROR'
+     * flush_domain() should still give a success, as memcached can't flush a single domain
      */
-    public function test_failed_flush_domain()
+    public function test_always_success_flush_domain()
     {
         // write error data to testStream
         fputs($this->testStream, "flush_all\r\nERROR\r\n");
         rewind($this->testStream);
 
-        // expect false
-        $this->assertFalse($this->cache->flush_domain('example.com'));
+        // expect true even, if we give an error back :)
+        $this->assertTrue($this->cache->flush_domain('example.com'));
     }
 
     /**
@@ -105,5 +106,22 @@ class CacheFlusherMemcachedTest extends \Warpdrive_UnitTestCase
 
         // expect true, if we can't connect to memcached
         $this->assertTrue($this->cache->flush_domain('example.com'));
+    }
+
+    /**
+     * Check successfull is_enabled()
+     */
+    public function test_success_is_enabled()
+    {
+        $this->assertTrue($this->cache->is_enabled());
+    }
+
+    /**
+     * Check unsuccessfull is_enabled()
+     */
+    public function test_unsuccessfull_is_enabled()
+    {
+        $this->setProtectedProperty($this->cache, 'memcachedStream', false);
+        $this->assertFalse($this->cache->is_enabled());
     }
 }
