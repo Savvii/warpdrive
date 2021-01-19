@@ -10,7 +10,7 @@ class APITest extends Warpdrive_UnitTestCase {
         putenv( 'WARPDRIVE_SYSTEM_NAME=FooBar' );
     }
 
-    function test_cache_flush() {
+    function test_varnish_cache_flush() {
         // Arrange
         $token   = 'Foo42Bar';
         $wp_http = $this->getMockBuilder( 'WP_Http' )
@@ -34,11 +34,11 @@ class APITest extends Warpdrive_UnitTestCase {
         $api = new Savvii\Api();
         $this->setProtectedProperty( $api, 'http_client', $wp_http );
         // Act
-        $api->cache_flush();
+        $api->varnish_cache_flush();
         // Assert
     }
 
-    function test_cache_flush_domain() {
+    function test_varnish_cache_flush_domain() {
         // Arrange
         $token   = 'Foo42Bar';
         $domain  = 'example.org';
@@ -65,7 +65,7 @@ class APITest extends Warpdrive_UnitTestCase {
         $api = new Savvii\Api();
         $this->setProtectedProperty( $api, 'http_client', $wp_http );
         // Act
-        $api->cache_flush( $domain );
+        $api->varnish_cache_flush( $domain );
         // Assert
     }
 

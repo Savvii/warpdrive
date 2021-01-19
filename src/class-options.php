@@ -15,7 +15,7 @@ class Options {
     const CACHING_STYLE             = 'warpdrive.caching_style';
     const REPO_LOCATION             = 'https://github.com/Savvii/warpdrive';
     const REPO_RELEASES_LOCATION    = 'https://api.github.com/repos/Savvii/warpdrive/releases/latest';
-    const AVAILABLE_CACHES          = ['varnish', 'opcache', 'memcached'];
+    const AVAILABLE_CACHES          = ['memcached', 'opcache', 'varnish', 'sucuri'];
 
     /**************************************************
      * Groups consts

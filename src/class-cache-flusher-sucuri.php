@@ -3,10 +3,10 @@
 namespace Savvii;
 
 /**
- * Class SavviiCacheFlusher
- * Sends cache flush request to the API
+ * Class SavviiCacheSucuri
+ * Sends Sucuri cache flush request to the API
  */
-class CacheFlusherVarnish implements CacheFlusherInterface {
+class CacheFlusherSucuri implements CacheFlusherInterface {
 
     /**
      * Api object instance
@@ -16,7 +16,6 @@ class CacheFlusherVarnish implements CacheFlusherInterface {
 
     /**
      * Constructor
-     * @param array $args Options
      */
     public function __construct() {
         // Create SavviiApi instance for API communication
@@ -28,8 +27,11 @@ class CacheFlusherVarnish implements CacheFlusherInterface {
      * @return bool True on success
      */
     public function flush() {
+        // Early return if not enabled
+        if (!$this->is_enabled()) return true;
+
         // Flush the cache
-        $result = $this->api->varnish_cache_flush();
+        $result = $this->api->sucuri_cache_flush();
 
         // Call API and check response code
         return $result->success();
@@ -41,22 +43,35 @@ class CacheFlusherVarnish implements CacheFlusherInterface {
      * @return bool True on success
      */
     public function flush_domain($domain = null) {
+        // Early return if not enabled
+        if (!$this->is_enabled()) return true;
 
         // Flush the domain cache
-        $result = $this->api->varnish_cache_flush( $domain );
+        $result = $this->api->sucuri_cache_flush( $domain );
 
         // Call API and check response code
         return $result->success();
     }
 
     /**
-     * The Varnish cache is always enabled
+     * Check if the Sucuri cache is enabled
      *
      * @return bool
      */
     public function is_enabled()
     {
-        return true;
-    }
+        $result = $this->api->sucuri_cache_is_enabled();
+        $response = $result->get_response();
 
+        if ($result->success() && is_array($response) &&
+            array_key_exists('body', $response)
+        ) {
+            $body = json_decode($response['body']);
+            if (!is_null($body)) {
+                return $body->enabled;
+            }
+        }
+
+        return false;
+    }
 }
