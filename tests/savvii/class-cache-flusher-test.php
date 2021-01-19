@@ -85,4 +85,52 @@ class CacheFlusherTest extends \Warpdrive_UnitTestCase
         $this->assertFalse($this->flusher->flush_domain('example.com'));
     }
 
+    /**
+     * One cache is disabled (which returns a fail), should succeed
+     */
+    public function test_disabled_failed_cache_flush_caches()
+    {
+        // fail and disable a cache
+        $this->setProtectedProperty($this->cache2, 'flushResult', false);
+        $this->setProtectedProperty($this->cache2, 'cacheEnabled', false);
+
+        $this->assertTrue($this->flusher->flush());
+    }
+
+    /**
+     * One cache is disabled (which returns a fail), should succeed
+     */
+    public function test_disabled_failed_cache_flush_domain_caches()
+    {
+        // fail and disable a cache
+        $this->setProtectedProperty($this->cache2, 'flushResult', false);
+        $this->setProtectedProperty($this->cache2, 'cacheEnabled', false);
+
+        $this->assertTrue($this->flusher->flush_domain('example.com'));
+    }
+
+    /**
+     * All caches disabled, should succeed
+     */
+    public function test_successfull_flush_disabled_all_caches()
+    {
+        // disable both caches
+        $this->setProtectedProperty($this->cache1, 'cacheEnabled', false);
+        $this->setProtectedProperty($this->cache2, 'cacheEnabled', false);
+
+        $this->assertTrue($this->flusher->flush());
+
+    }
+
+    /**
+     * All caches disabled, should succeed
+     */
+    public function test_successfull_flush_domain_disabled_all_caches()
+    {
+        // disable both caches
+        $this->setProtectedProperty($this->cache1, 'cacheEnabled', false);
+        $this->setProtectedProperty($this->cache2, 'cacheEnabled', false);
+
+        $this->assertTrue($this->flusher->flush_domain('example.com'));
+    }
 }
