@@ -115,9 +115,9 @@ class CacheFlusherSucuriTest extends Warpdrive_UnitTestCase {
             ->will(
                 $this->returnValue( [
                     'response' => [
-                        'code' => $response_code,
-                        'body' => '{"enabled":' . ($enabled ? 'true' : 'false') .'}'
-                    ]
+                        'code' => $response_code
+                    ],
+                    'body' => '{"enabled":' . ($enabled ? 'true' : 'false') .'}'
                 ])
             );
         $cf = new \Savvii\CacheFlusherSucuri();

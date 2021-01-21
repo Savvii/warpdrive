@@ -47,8 +47,8 @@ class ApiResponse {
      */
     function get_body() {
         $body = '';
-        if (is_array( $this->response) && array_key_exists('body', $this->response['response']))
-            $body = $this->response['response']['body'];
+        if (array_key_exists('body', $this->response))
+            $body = $this->response['body'];
 
         return $body;
     }
