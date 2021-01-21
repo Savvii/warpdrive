@@ -4,7 +4,7 @@ use \Savvii\Options;
 use \Savvii\CacheFlusherPlugin;
 
 /**
- * Class CacheFlusherTest
+ * Class CacheFlusherPluginTest
  */
 class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
 

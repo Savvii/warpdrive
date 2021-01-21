@@ -8,7 +8,7 @@ class APIResponseTest extends Warpdrive_UnitTestCase {
     function test_response_get_response_equals_input() {
         $response = $this->build_response_object( true );
 
-        $this->assertEquals( [ 'response' => [ 'code' => 200 ] ], $response->get_response() );
+        $this->assertEquals( [ 'response' => [ 'code' => 200, 'body' => 'OK' ] ], $response->get_response() );
     }
 
     function test_response_success_returns_true() {
@@ -23,10 +23,20 @@ class APIResponseTest extends Warpdrive_UnitTestCase {
         $this->assertFalse( $response->success() );
     }
 
-    function build_response_object( $success ) {
+    function test_response_get_body() {
+        // create a body
+        $bodyObject = new stdClass();
+        $bodyObject->result = 'ok';
+        $bodyJson = json_encode($bodyObject);
+
+        $response = $this->build_response_object(true, $bodyJson);
+        $this->assertEquals($bodyJson, $response->get_body());
+    }
+
+    function build_response_object( $success, $body ='OK' ) {
         $status_code = $success ? 200 : 400;
 
-        return new \Savvii\ApiResponse( [ 'response' => [ 'code' => $status_code ] ] );
+        return new \Savvii\ApiResponse( [ 'response' => [ 'code' => $status_code, 'body' => $body ] ] );
     }
 
     function test_api_response_success_returns_false_with_wp_error() {

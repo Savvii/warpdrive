@@ -9,6 +9,27 @@ namespace Savvii;
 class CacheFlusherSucuri implements CacheFlusherInterface {
 
     /**
+     * Are we in a test
+     *
+     * @var bool
+     */
+    protected $inTest = false;
+
+    /**
+     * Do we override the is_enabled() function
+     *
+     * @var bool
+     */
+    protected $overrideIsEnabled = false;
+
+    /**
+     * What is the result of is_enabled() when overridden
+     *
+     * @var bool
+     */
+    protected $overrideIsEnabledResult = true;
+
+    /**
      * Api object instance
      * @private Api
      */
@@ -60,13 +81,16 @@ class CacheFlusherSucuri implements CacheFlusherInterface {
      */
     public function is_enabled()
     {
-        $result = $this->api->sucuri_cache_is_enabled();
-        $response = $result->get_response();
+        // test override (not pretty) TODO: rewrite this
+        if ($this->inTest && $this->overrideIsEnabled) return $this->overrideIsEnabledResult;
 
-        if ($result->success() && is_array($response) &&
-            array_key_exists('body', $response)
+        $result = $this->api->sucuri_cache_is_enabled();
+        $bodyRaw = $result->get_body();
+
+        if ($result->success() && !empty($bodyRaw)
         ) {
-            $body = json_decode($response['body']);
+            $body = json_decode($bodyRaw);
+
             if (!is_null($body)) {
                 return $body->enabled;
             }
