@@ -4,63 +4,83 @@ namespace Savvii;
 
 /**
  * Class SavviiCacheFlusher
- * Sends cache flush request to the API
+ * Sends cache flush requests to all defined caches
+ *
  */
-class CacheFlusher {
+class CacheFlusher implements CacheFlusherInterface {
 
     /**
-     * Api object instance
-     * @private Api
+     * Array containg the initialized cache flushers
+     * @var object[]
      */
-    private $api;
+    private $caches = [];
 
     /**
      * Constructor
      * @param array $args Options
      */
-    function __construct() {
-        // Create SavviiApi instance for API communication
-        $this->api = new Api();
+    public function __construct() {
+
+        // Initialize the different caches
+        foreach (Options::AVAILABLE_CACHES as $cache) {
+            $className = '\Savvii\CacheFlusher' . ucfirst($cache);
+            $this->caches[] = new $className();
+        }
     }
 
     /**
-     * Flush cache
+     * Flush all caches
      * @return bool True on success
      */
-    function flush() {
-        // Flush the OpCache
-        $this->flush_opcache();
+    public function flush() {
+        $result = true;
 
-        // Flush the cache
-        $result = $this->api->cache_flush();
+        // Loop over all caches and flush them
+        // bitwise and the results with the current result
+        // so if a cache isn't flushed we return false
+        foreach ($this->caches as $cache) {
 
-        // Call API and check response code
-        return $result->success();
+            // only flush enabled caches
+            if (!$cache->is_enabled()) continue;
+
+            $result = $result && $cache->flush();
+        }
+
+        return $result;
     }
 
     /**
      * Flush cache for a specific domain
+     * @param null $domain
      * @return bool True on success
      */
-    function flush_domain() {
-        // Flush the OpCache
-        $this->flush_opcache();
+    public function flush_domain($domain = null) {
+        $result = true;
 
         // Get the current domain
-        $domain = wp_parse_url( get_site_url() );
-        $host = isset( $domain['host'] ) ? $domain['host'] : '';
+        $siteDomain = wp_parse_url( get_site_url() );
+        $host = isset( $domain['host'] ) ? $siteDomain['host'] : '';
 
-        // Flush the domain cache
-        $result = $this->api->cache_flush( $host );
+        // Loop over all caches and flush them
+        // bitwise and the results with the current result
+        // so if a cache isn't flushed we return false
+        foreach ($this->caches as $cache) {
 
-        // Call API and check response code
-        return $result->success();
+            // only flush enabled caches
+            if (!$cache->is_enabled()) continue;
+
+            $result = $result && $cache->flush_domain($host);
+        }
+
+        return $result;
     }
 
     /**
-     * Flush the OpCache if enabled
+     * The interface forces us to have an is_enabled() method :)
+     *
+     * @return bool
      */
-    private function flush_opcache()
+    public function is_enabled()
     {
         if (extension_loaded('Zend OPcache')) {
             {
