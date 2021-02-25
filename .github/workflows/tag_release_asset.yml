@@ -1,17 +1,19 @@
-  on:
-    push:
-      tags:
-        - '*'
+on:
+  push:
+    tags:
+      - '*'
   jobs:
     tag_and_release:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v2
         - run: rm -rf .git .DS_Store
+        - run: mkdir -p /tmp/release
+        - run: cp -R . /tmp/release
+        - run: mv /tmp/release .
 
         - uses: meeDamian/github-release@2.0
           with:
             token: ${{ secrets.GITHUB_TOKEN }}
-            files: package:.
+            files: package:release
             gzip: true
-
