@@ -55,7 +55,7 @@ class UpdaterTest extends Warpdrive_UnitTestCase {
             ->with( $this->equalTo( $repository_url ) )
             ->will( $this->returnValue( [
                     'response' => [ 'code' => 200 ],
-                    'body' => '{"tag_name": "99.0.0", "published_at": "", "zipball_url": "https://github.com/Savvii/warpdrive/archive/latest"}',
+                    'body' => '{"tag_name": "99.0.0", "published_at": "", "zipball_url": "https://github.com/Savvii/warpdrive/releases/latest/download/package.zip"}',
             ] ) );
         $updater->expects( $this->once() )
             ->method( 'get_plugin_data' )
@@ -153,7 +153,7 @@ class UpdaterTest extends Warpdrive_UnitTestCase {
                     'slug' => Savvii\Updater::SLUG,
                     'plugin' => Savvii\Updater::NAME,
                     'url' => 'https://github.com/Savvii/warpdrive',
-                    'package' => 'https://github.com/Savvii/warpdrive/archive/latest',
+                    'package' => 'https://github.com/Savvii/warpdrive/releases/latest/download/package.zip',
                 ],
             ],
         ];
@@ -163,7 +163,7 @@ class UpdaterTest extends Warpdrive_UnitTestCase {
         $api_response_data = [
             'tag_name' => '99.0.0',
             'published_at' => '',
-            'zipball_url' => 'https://github.com/Savvii/warpdrive/archive/latest',
+            'zipball_url' => 'https://github.com/Savvii/warpdrive/releases/latest/download/package.zip',
         ];
 
         set_site_transient( 'warpdrive_github_api_response', $api_response_data );
@@ -194,7 +194,7 @@ class UpdaterTest extends Warpdrive_UnitTestCase {
         $response->sections = [
             'description' => 'Description',
         ];
-        $response->download_link = 'https://github.com/Savvii/warpdrive/archive/latest';
+        $response->download_link = 'https://github.com/Savvii/warpdrive/releases/latest/download/package.zip';
 
         $this->assertEquals( $response, $updater_response );
     }
