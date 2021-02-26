@@ -17,7 +17,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: >
-            package:clue
+            package:warpdrive
             package.zip
           gzip: folders
 
