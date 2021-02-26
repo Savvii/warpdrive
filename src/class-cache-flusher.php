@@ -45,7 +45,7 @@ class CacheFlusher implements CacheFlusherInterface {
 
             $result = $result && $cache->flush();
         }
-
+      
         return $result;
     }
 
@@ -71,7 +71,6 @@ class CacheFlusher implements CacheFlusherInterface {
 
             $result = $result && $cache->flush_domain($host);
         }
-
         return $result;
     }
 
@@ -82,6 +81,17 @@ class CacheFlusher implements CacheFlusherInterface {
      */
     public function is_enabled()
     {
-        return true;
+        if (extension_loaded('Zend OPcache')) {
+            {
+                $opcache_status = opcache_get_status();
+
+                if ($opcache_status && is_array($opcache_status) &&
+                    array_key_exists('opcache_enabled', $opcache_status) &&
+                    $opcache_status['opcache_enabled']
+                ) {
+                    opcache_reset();
+                }
+            }
+        }
     }
 }
