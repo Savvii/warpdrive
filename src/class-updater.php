@@ -64,7 +64,7 @@ class Updater {
                 'slug' => Updater::SLUG,
                 'plugin' => Updater::NAME,
                 'url' => Options::REPO_LOCATION,
-                'package' => $new_release['zipball_url'],
+                'package' => Options::REPO_RELEASES_LATEST_ZIPBALL,
             ];
         }
 
@@ -106,7 +106,7 @@ class Updater {
             'sections' => [
                 'description' => $plugin_info['Description'],
             ],
-            'download_link' => $latest_release['zipball_url'],
+            'download_link' => Options::REPO_RELEASES_LATEST_ZIPBALL,
         ];
     }
 

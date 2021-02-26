@@ -45,6 +45,7 @@ class CacheFlusher implements CacheFlusherInterface {
 
             $result = $result && $cache->flush();
         }
+      
         return $result;
     }
 
