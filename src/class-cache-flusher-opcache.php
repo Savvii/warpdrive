@@ -77,6 +77,9 @@ class CacheFlusherOpcache implements CacheFlusherInterface
         // early exit when in phpunittest
         if ($this->inTest) return $this->inTestEnabled;
 
+        // check if 'Zend OPcache' is loaded early exit when not
+        if(!extension_loaded('Zend OPcache')) return false;
+
         // get the status of the opcache
         $opcache_status = opcache_get_status();
 
