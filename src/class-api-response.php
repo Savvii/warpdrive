@@ -39,4 +39,17 @@ class ApiResponse {
     function success() {
         return is_array( $this->response ) && ( ! empty( $this->response['response']['code'] ) && $this->response['response']['code'] < $this->failure_level );
     }
+
+    /**
+     * Returns the body from the API call
+     *
+     * @return string
+     */
+    function get_body() {
+        $body = '';
+        if (array_key_exists('body', $this->response))
+            $body = $this->response['body'];
+
+        return $body;
+    }
 }

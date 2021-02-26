@@ -28,10 +28,12 @@ class Api {
     }
 
     /**
-     * Flush the cache of the specified domain, if no domain given it flushes the cache of all domains
-     * @param string @domain Domain name
+     * Flush the varnish cache of the specified domain, if no domain given it flushes the cache of all domains
+     * @param string $domain Domain name
+     *
+     * @return ApiResponse
      */
-    function cache_flush( $domain = '' ) {
+    function varnish_cache_flush( $domain = '' ) {
         // Build the request
         $request = [
             'method' => 'DELETE',
@@ -55,9 +57,58 @@ class Api {
     }
 
     /**
-    * Make an API call to the given route
-    * @param array $args Options
-    */
+     * Flush the sucuri cache of the specified domain, if no domain given it flushes the cache of all domains
+     * @param string $domain Domain name
+     *
+     * @return ApiResponse
+     */
+    function sucuri_cache_flush( $domain = '' ) {
+        // Build the request
+        $request = [
+            'method' => 'DELETE',
+        ];
+
+        // If there is a domain, add it to the request
+        if ( '' !== $domain ) {
+            $request['headers']['Content-Type'] = 'application/json';
+            $request['body'] = wp_json_encode( [
+                'domains' => [
+                    $domain,
+                ],
+            ] );
+        }
+
+        // Call API
+        return $this->call_api( [
+            'request' => $request,
+            'api_route' => '/v2/sucuricaches/' . $this->token,
+        ] );
+    }
+
+    /**
+     * Ask Evvii if this account has a Sucuri cache
+     *
+     * @return ApiResponse
+     */
+    function sucuri_cache_is_enabled() {
+        // Build the request
+        $request = [
+            'method' => 'GET',
+        ];
+
+        // Call API
+        return $this->call_api( [
+            'request' => $request,
+            'api_route' => '/v2/sucuricaches/' . $this->token,
+        ] );
+    }
+
+    /**
+     * Make an API call to the given route
+     * @param array $args Options
+     *
+     * @return ApiResponse
+     */
     private function call_api( $args = [] ) {
         // Default request headers
         $request = [

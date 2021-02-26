@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class CacheFlusherTest
+ * Class CacheFlusherVarnishTest
  */
 class CacheFlusherVarnishTest extends Warpdrive_UnitTestCase {
 

@@ -29,7 +29,7 @@ class CacheFlusherVarnish implements CacheFlusherInterface {
      */
     public function flush() {
         // Flush the cache
-        $result = $this->api->cache_flush();
+        $result = $this->api->varnish_cache_flush();
 
         // Call API and check response code
         return $result->success();
@@ -43,7 +43,7 @@ class CacheFlusherVarnish implements CacheFlusherInterface {
     public function flush_domain($domain = null) {
 
         // Flush the domain cache
-        $result = $this->api->cache_flush( $domain );
+        $result = $this->api->varnish_cache_flush( $domain );
 
         // Call API and check response code
         return $result->success();
