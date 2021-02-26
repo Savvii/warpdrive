@@ -39,12 +39,12 @@ class CacheFlusher implements CacheFlusherInterface {
         // bitwise and the results with the current result
         // so if a cache isn't flushed we return false
         foreach ($this->caches as $cache) {
+
             // only flush enabled caches
             if (!$cache->is_enabled()) continue;
 
             $result = $result && $cache->flush();
         }
-
         return $result;
     }
 
@@ -59,7 +59,7 @@ class CacheFlusher implements CacheFlusherInterface {
         // Get the current domain
         $siteDomain = wp_parse_url( get_site_url() );
         $host = isset( $domain['host'] ) ? $siteDomain['host'] : '';
-      
+
         // Loop over all caches and flush them
         // bitwise and the results with the current result
         // so if a cache isn't flushed we return false
