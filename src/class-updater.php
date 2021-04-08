@@ -123,7 +123,11 @@ class Updater {
         global $wp_filesystem;
 
         // Skip if not Warpdrive
-        if ( empty( $hook_extra ) || Updater::NAME !== $hook_extra['plugin'] ) {
+        if (
+            empty( $hook_extra ) ||
+            !array_key_exists('plugin', $hook_extra) ||
+            Updater::NAME !== $hook_extra['plugin']
+        ) {
             return $result;
         }
 
