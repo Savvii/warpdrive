@@ -117,7 +117,7 @@ class CacheFlusherSucuriTest extends Warpdrive_UnitTestCase {
                     'response' => [
                         'code' => $response_code
                     ],
-                    'body' => '{"enabled":' . ($enabled ? 'true' : 'false') .'}'
+                    'body' => json_encode($enabled)
                 ])
             );
         $cf = new \Savvii\CacheFlusherSucuri();

@@ -69,6 +69,34 @@ class APITest extends Warpdrive_UnitTestCase {
         // Assert
     }
 
+    function test_varnish_cache_is_enabled() {
+        // Arrange
+        $token   = 'Foo42Bar';
+        $wp_http = $this->getMockBuilder( 'WP_Http' )
+            ->setMethods( [ 'request' ] )
+            ->getMock();
+        $wp_http->expects( $this->once() )
+            ->method( 'request' )
+            ->with(
+                $this->equalTo( Savvii\Options::api_location() . "/v2/caches/{$token}" ),
+                $this->equalTo(
+                    [
+                        'method' => 'GET',
+                        'httpversion' => '1.1',
+                        'sslverify' => true,
+                        'headers' => [
+                            'Authorization' => 'Token token="' . $token . '"',
+                        ],
+                    ]
+                )
+            );
+        $api = new Savvii\Api();
+        $this->setProtectedProperty( $api, 'http_client', $wp_http );
+        // Act
+        $api->varnish_cache_is_enabled();
+        // Assert
+    }
+
     function test_sucuri_cache_flush() {
         // Arrange
         $token   = 'Foo42Bar';

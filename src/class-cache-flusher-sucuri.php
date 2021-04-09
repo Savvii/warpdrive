@@ -89,10 +89,10 @@ class CacheFlusherSucuri implements CacheFlusherInterface {
 
         if ($result->success() && !empty($bodyRaw)
         ) {
-            $body = json_decode($bodyRaw);
+            $enabled = json_decode($bodyRaw);
 
-            if (!is_null($body)) {
-                return $body->enabled;
+            if (!is_null($enabled)) {
+                return $enabled;
             }
         }
 
