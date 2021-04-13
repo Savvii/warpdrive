@@ -72,7 +72,7 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         ob_start();
         $sd->warpdrive_dashboard();
         $output = ob_get_clean();
-        $this->assertContains( '<option value="agressive" selected="selected">Flush on post/page edit or publish</option>', $output, '', true );
+        $this->assertContains( '<option value="agressive" selected="selected">Flush on (custom) post/page edit or publish</option>', $output, '', true );
     }
 
     function test_maybe_update_cache_style_when_old_same_as_new() {
@@ -117,10 +117,40 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         $this->assertEquals( $new_style, get_option( self::OPT_CACHE_STYLE ) );
     }
 
+    /**
+     * @expectedException WPDieException
+     */
+    function test_update_custom_post_types_nonce_failure() {
+        // Setup
+        $post_types_enabled = array('movies' => true);
+        $post_types_disabled = array('movies' => false);
+        update_option(  Options::CACHING_CUSTOM_POST_TYPES , $post_types_disabled);
+        $_POST[ Options::CACHING_CUSTOM_POST_TYPES ] = $post_types_enabled;
+        $_REQUEST['_wpnonce'] = 'fail';
+        // Dashboard
+        $sd = new SavviiDashboard();
+        $sd->update_custom_post_types();
+        $this->assertEquals( $post_types_enabled, get_option( Options::CACHING_CUSTOM_POST_TYPES ) );
+    }
+
+    function test_update_custom_post_types() {
+        // Setup
+        $post_types_enabled = array('movies' => true);
+        $post_types_disabled = array('movies' => false);
+        update_option(  Options::CACHING_CUSTOM_POST_TYPES , $post_types_disabled);
+        $_POST[ Options::CACHING_CUSTOM_POST_TYPES ] = $post_types_enabled;
+        $_REQUEST['_wpnonce'] = wp_create_nonce( Options::CACHING_STYLE );
+        // Dashboard
+        $sd = new SavviiDashboard();
+        $sd->update_custom_post_types();
+        $this->assertEquals( $post_types_enabled, get_option( Options::CACHING_CUSTOM_POST_TYPES ) );
+    }
+
     function test_warpdrive_dashboard_methods_post_not_empty_check() {
         $mock_methods = [
             'maybe_update_caching_style',
             'maybe_update_default_caching_style',
+            'update_custom_post_types',
         ];
 
         $dash_mock = $this->getMockBuilder( 'Savvii\SavviiDashboard' )
