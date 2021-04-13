@@ -14,7 +14,6 @@ class SavviiDashboard {
     const FORM_CACHE_SET_DEFAULT = 'warpdrive_cache_set_default';
     const FORM_CACHE_USE_DEFAULT = 'warpdrive_cache_use_default';
     const FORM_DEFAULT_CACHE_STYLE = 'warpdrive_default_cache_style';
-    const FORM_CACHE_CUSTOM_POST_TYPES = 'warpdrive_flush_custom_post_type';
 
     /**
      * CacheFlusher instance
@@ -79,13 +78,13 @@ class SavviiDashboard {
 
         check_admin_referer( Options::CACHING_STYLE );
 
-        $current_checked_custom_post_types = get_option(self::FORM_CACHE_CUSTOM_POST_TYPES, array());
+        $current_checked_custom_post_types = get_option(Options::CACHING_CUSTOM_POST_TYPES, array());
 
-        if ( ! isset( $_POST[ self::FORM_CACHE_CUSTOM_POST_TYPES ] ) ) {
-            $new_checked_custom_post_types = array();
-        } else {
-            $new_checked_custom_post_types = $_POST[self::FORM_CACHE_CUSTOM_POST_TYPES];
-        }
+        // read the checked custom post types
+        $new_checked_custom_post_types =
+            isset( $_POST[Options::CACHING_CUSTOM_POST_TYPES] ) ?
+                $_POST[Options::CACHING_CUSTOM_POST_TYPES] :
+                array();
 
         // set the checked custom_post_types to true;
         foreach (array_keys($new_checked_custom_post_types) as $custom_post_type) {
@@ -99,7 +98,7 @@ class SavviiDashboard {
             }
         }
 
-        update_option(self::FORM_CACHE_CUSTOM_POST_TYPES, $current_checked_custom_post_types);
+        update_option(Options::CACHING_CUSTOM_POST_TYPES, $current_checked_custom_post_types);
     }
 
     function warpdrive_dashboard() {
@@ -123,7 +122,7 @@ class SavviiDashboard {
         ];
 
         $post_types = get_post_types(['_builtin' => false ]);
-        $checked_post_types = get_option(self::FORM_CACHE_CUSTOM_POST_TYPES, array());
+        $checked_post_types = get_option(Options::CACHING_CUSTOM_POST_TYPES, array());
 
         ?>
         <style>
@@ -184,7 +183,7 @@ class SavviiDashboard {
                                     <h3 style="margin-top: 10px;">Flush for the following custom post types</h3>
                                     <ul class="clear">
                                     <?php foreach ($post_types as $post_type) : ?>
-                                    <li class="sm"><label class="checkbox"><input type="checkbox" name="<?php echo self::FORM_CACHE_CUSTOM_POST_TYPES;?>[<?php echo $post_type; ?>]" <?php echo ((array_key_exists($post_type, $checked_post_types) && $checked_post_types[$post_type]) ? 'checked="checked"' : ''); ?> /><?php echo $post_type; ?></label></li>
+                                    <li class="sm"><label class="checkbox"><input type="checkbox" name="<?php echo Options::CACHING_CUSTOM_POST_TYPES;?>[<?php echo $post_type; ?>]" <?php echo ((array_key_exists($post_type, $checked_post_types) && $checked_post_types[$post_type]) ? 'checked="checked"' : ''); ?> /><?php echo $post_type; ?></label></li>
                                     <?php endforeach; ?>
                                     </ul>
 
