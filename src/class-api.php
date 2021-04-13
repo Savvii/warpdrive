@@ -57,6 +57,24 @@ class Api {
     }
 
     /**
+     * Ask Evvii if the Varnish cache for this account is enabled
+     *
+     * @return ApiResponse
+     */
+    function varnish_cache_is_enabled() {
+        // Build the request
+        $request = [
+            'method' => 'GET',
+        ];
+
+        // Call API
+        return $this->call_api( [
+            'request' => $request,
+            'api_route' => '/v2/caches/' . $this->token,
+        ] );
+    }
+
+    /**
      * Flush the sucuri cache of the specified domain, if no domain given it flushes the cache of all domains
      * @param string $domain Domain name
      *
@@ -86,7 +104,7 @@ class Api {
     }
 
     /**
-     * Ask Evvii if this account has a Sucuri cache
+     * Ask Evvii if the Sucuri cache for this account is enabled
      *
      * @return ApiResponse
      */

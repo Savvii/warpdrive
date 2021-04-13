@@ -3,47 +3,22 @@
 /**
  * Class CacheFlusherVarnishTest
  */
-class CacheFlusherVarnishTest extends Warpdrive_UnitTestCase {
+class CacheFlusherVarnishTest extends CacheFlusherSucuriTest {
 
-    function test_successful_flush_returns_true() {
-        // Arrange
-        $cf = $this->build_cache_flusher( true );
-        // Act and assert
-        $this->assertTrue( $cf->flush() );
-    }
-
-    function test_failed_flush_returns_false() {
-        // Arrange
-        $cf = $this->build_cache_flusher( false );
-        // Act and assert
-        $this->assertFalse( $cf->flush() );
-    }
-
-    function test_successful_flush_domain_returns_true() {
-        // Arrange
-        $domain  = 'example.org';
-        $cf = $this->build_cache_flusher( true );
-        // Act and assert
-        $this->assertTrue( $cf->flush_domain( $domain ) );
-    }
-
-    function test_failed_flush_domain_returns_false() {
-        // Arrange
-        $domain  = 'example.org';
-        $cf = $this->build_cache_flusher( false );
-        // Act and assert
-        $this->assertFalse( $cf->flush_domain( $domain ) );
-    }
-
-    function build_cache_flusher( $success ) {
+    function build_cache_flusher( $success, $enabled = true ) {
         $response_code = $success ? 200 : 400;
         $wp_http = $this->getMockBuilder( 'WP_Http' )
             ->setMethods( [ 'request' ] )
             ->getMock();
-        $wp_http->expects( $this->once() )
-            ->method( 'request' )
+        $wp_http->method( 'request' )
             ->will(
-                $this->returnValue( [ 'response' => [ 'code' => $response_code ] ] )
+                $this->returnValue(
+                    [
+                        'response' => [
+                            'code' => $response_code
+                        ],
+                        'body' => json_encode($enabled)
+                    ] )
             );
         $cf = new \Savvii\CacheFlusherVarnish();
 
@@ -52,14 +27,5 @@ class CacheFlusherVarnishTest extends Warpdrive_UnitTestCase {
         $this->setProtectedProperty( $cf, 'api', $api );
 
         return $cf;
-    }
-
-    /**
-     * Check is_enabled(), Varnish should always be enabled
-     */
-    public function test_is_enabled()
-    {
-        $cache = new \Savvii\CacheFlusherVarnish();
-        $this->assertTrue($cache->is_enabled());
     }
 }
