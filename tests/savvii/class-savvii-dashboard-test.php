@@ -126,6 +126,8 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         $post_types_disabled = array('movies' => false);
         update_option(  Options::CACHING_CUSTOM_POST_TYPES , $post_types_disabled);
         $_POST[ Options::CACHING_CUSTOM_POST_TYPES ] = $post_types_enabled;
+        $_POST[ SavviiDashboard::FORM_CACHE_DEFAULT ] = CacheFlusherPlugin::CACHING_STYLE_AGRESSIVE;
+        $_POST[ SavviiDashboard::FORM_CACHE_STYLE ] = CacheFlusherPlugin::CACHING_STYLE_AGRESSIVE;
         $_REQUEST['_wpnonce'] = 'fail';
         // Dashboard
         $sd = new SavviiDashboard();
@@ -139,6 +141,8 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         $post_types_disabled = array('movies' => false);
         update_option(  Options::CACHING_CUSTOM_POST_TYPES , $post_types_disabled);
         $_POST[ Options::CACHING_CUSTOM_POST_TYPES ] = $post_types_enabled;
+        $_POST[ SavviiDashboard::FORM_CACHE_DEFAULT ] = CacheFlusherPlugin::CACHING_STYLE_AGRESSIVE;
+        $_POST[ SavviiDashboard::FORM_CACHE_STYLE ] = CacheFlusherPlugin::CACHING_STYLE_AGRESSIVE;
         $_REQUEST['_wpnonce'] = wp_create_nonce( Options::CACHING_STYLE );
         // Dashboard
         $sd = new SavviiDashboard();

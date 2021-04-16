@@ -102,6 +102,21 @@ class CacheFlusherPlugin {
                 foreach ( $this->register_events[ self::CACHING_STYLE_AGRESSIVE ] as $event ) {
                     add_action( $event, [ $this, 'domainflush' ], 10, 2 );
                 }
+
+                // Register custom_post_type edit/publish flush action
+                // only in CACHING_STYLE_AGRESSIVE, CACHING_STYLE_NORMAL flushes on all posts types
+                $current_checked_custom_post_types = get_option(Options::CACHING_CUSTOM_POST_TYPES, array());
+
+                foreach ($current_checked_custom_post_types as $post_type => $enabled) {
+
+                    $publish_event = "publish_$post_type";
+                    $trashed_event  = "trashed_$post_type";
+                    if ($enabled) {
+                        add_action( $publish_event, [ $this, 'domainflush' ], 10, 2);
+                        add_action( $trashed_event, [ $this, 'domainflush'], 10, 2);
+                    }
+                }
+
                 break;
             case self::CACHING_STYLE_NORMAL:
                 foreach ( $this->register_events[ self::CACHING_STYLE_AGRESSIVE ] as $event ) {
@@ -119,15 +134,6 @@ class CacheFlusherPlugin {
                 break;
         }
 
-        // Register custom_post_type edit/publish flush action
-        $current_checked_custom_post_types = get_option(Options::CACHING_CUSTOM_POST_TYPES, array());
-        foreach ($current_checked_custom_post_types as $post_type => $enabled) {
-            if ($enabled) {
-                add_action('publish_' . $post_type, [ $this, 'domainflush' ], 10, 2);
-                add_action('trashed_' . $post_type, [ $this, 'domainflush'], 10, 2);
-            }
-        }
-
         // Add custom direct flush hook
         add_action( 'warpdrive_cache_flush', [ $this, 'flush' ], 10, 0 );
         add_action( 'warpdrive_domain_flush', [ $this, 'domainflush' ], 10, 0 );
@@ -135,7 +141,6 @@ class CacheFlusherPlugin {
         // Backward compatibility
         add_action( 'savvii_cache_flush', [ $this, 'flush' ], 10, 0 );
         add_action( 'savvii_domain_flush', [ $this, 'domainflush' ], 10, 0 );
-
 
         // init
         add_action( 'init', [ $this, 'init' ] );
@@ -206,6 +211,9 @@ class CacheFlusherPlugin {
     }
 
     function domainflush( $do_redirect = false ) {
+        // debug
+        //error_log(__FUNCTION__ . "Called by " . print_r(current_filter(), true));
+
         // Retrieve domain to flush
         $domain_parts = wp_parse_url( get_site_url() );
         $domain = isset( $domain_parts['host'] ) ? $domain_parts['host'] : '';
