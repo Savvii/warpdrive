@@ -74,12 +74,48 @@ class SavviiDashboard {
         update_site_option( Options::CACHING_STYLE, ( CacheFlusherPlugin::CACHING_STYLE_NORMAL === $_POST[ self::FORM_CACHE_SET_DEFAULT ] ? CacheFlusherPlugin::CACHING_STYLE_NORMAL : CacheFlusherPlugin::CACHING_STYLE_AGRESSIVE ) );
     }
 
+    function update_custom_post_types() {
+
+        check_admin_referer( Options::CACHING_STYLE );
+
+        // only update if we are in CACHING_STYLE_AGGRESSIVE
+        if (
+                $_POST[self::FORM_CACHE_STYLE] == CacheFlusherPlugin::CACHING_STYLE_AGRESSIVE &&
+                $_POST[self::FORM_CACHE_DEFAULT] == CacheFlusherPlugin::CACHING_STYLE_AGRESSIVE
+        ) {
+            $current_checked_custom_post_types = get_option(Options::CACHING_CUSTOM_POST_TYPES, array());
+
+            // read the checked custom post types
+            $new_checked_custom_post_types =
+                isset($_POST[Options::CACHING_CUSTOM_POST_TYPES]) ?
+                    $_POST[Options::CACHING_CUSTOM_POST_TYPES] :
+                    array();
+
+            // set the checked custom_post_types to true;
+            foreach (array_keys($new_checked_custom_post_types) as $custom_post_type) {
+                $current_checked_custom_post_types[$custom_post_type] = true;
+            }
+
+            // set the unchecked to false
+            foreach (array_keys($current_checked_custom_post_types) as $custom_post_type) {
+                if (!array_key_exists($custom_post_type, $new_checked_custom_post_types)) {
+                    $current_checked_custom_post_types[$custom_post_type] = false;
+                }
+            }
+
+            update_option(Options::CACHING_CUSTOM_POST_TYPES, $current_checked_custom_post_types);
+        }
+    }
+
     function warpdrive_dashboard() {
         if ( ! empty( $_POST ) ) {
             // Update settings when needed
             $this->maybe_update_caching_style();
             // Update default settings when needed
             $this->maybe_update_default_caching_style();
+
+            // Update custom_post_type hook settings
+            $this->update_custom_post_types();
         }
 
         // Get settings from options
@@ -87,9 +123,12 @@ class SavviiDashboard {
         $cache_style = get_option( Options::CACHING_STYLE, $default_cache_style );
 
         $caching_styles = [
-            CacheFlusherPlugin::CACHING_STYLE_AGRESSIVE => 'Flush on post/page edit or publish',
-            CacheFlusherPlugin::CACHING_STYLE_NORMAL => 'Flush on post/page edit or publish, comment changes, attachment changes',
+            CacheFlusherPlugin::CACHING_STYLE_AGRESSIVE => 'Flush on (custom) post/page edit or publish',
+            CacheFlusherPlugin::CACHING_STYLE_NORMAL => 'Flush on all post/page edit or publish, comment changes, attachment changes',
         ];
+
+        $post_types = get_post_types(['_builtin' => false ]);
+        $checked_post_types = get_option(Options::CACHING_CUSTOM_POST_TYPES, array());
 
         ?>
         <style>
@@ -98,7 +137,9 @@ class SavviiDashboard {
             .savvii .postbox .main .activity-block select { width: 100%; }
             .savvii .postbox .main .activity-block { border: none; }
             .savvii .postbox .main ul { list-style-type: square; }
+            .savvii .postbox .main ul.clear { list-style-type: none; }
             .savvii .postbox .main li { position: relative; left: 2em; }
+            .savvii .postbox .main li.sm { position: relative; left: 1em; }
             .savvii .postbox .button {text-align: center; width: 100%;}
             .savvii dt, dd { float: left }
             .savvii dt {width: 75px; clear:both}
@@ -144,6 +185,16 @@ class SavviiDashboard {
                                         </div>
                                     </div>
                                     <input type="hidden" name="<?php echo esc_attr( self::FORM_CACHE_DEFAULT ); ?>" value="<?php echo esc_attr( $cache_style ); ?>" />
+
+                                    <?php if ( get_option( Options::CACHING_STYLE, null) == CacheFlusherPlugin::CACHING_STYLE_AGRESSIVE) : ?>
+                                    <h3 style="margin-top: 10px;">Flush for the following custom post types</h3>
+                                    <ul class="clear">
+                                    <?php foreach ($post_types as $post_type) : ?>
+                                    <li class="sm"><label class="checkbox"><input type="checkbox" name="<?php echo Options::CACHING_CUSTOM_POST_TYPES;?>[<?php echo $post_type; ?>]" <?php echo ((array_key_exists($post_type, $checked_post_types) && $checked_post_types[$post_type]) ? 'checked="checked"' : ''); ?> /><?php echo $post_type; ?></label></li>
+                                    <?php endforeach; ?>
+                                    </ul>
+                                    <?php endif; ?>
+
                                     <?php wp_nonce_field( Options::CACHING_STYLE ); ?>
                                 </form>
                             </div>

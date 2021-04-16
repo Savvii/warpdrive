@@ -13,6 +13,7 @@ class Options {
      **************************************************/
 
     const CACHING_STYLE                = 'warpdrive.caching_style';
+    const CACHING_CUSTOM_POST_TYPES    = 'warpdrive_flush_custom_post_type';
     const REPO_LOCATION                = 'https://github.com/Savvii/warpdrive';
     const REPO_RELEASES_LOCATION       = 'https://api.github.com/repos/Savvii/warpdrive/releases/latest';
     const REPO_RELEASES_LATEST_ZIPBALL = 'https://github.com/Savvii/warpdrive/releases/latest/download/package.zip';
