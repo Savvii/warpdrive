@@ -134,15 +134,6 @@ class CacheFlusherPlugin {
                 break;
         }
 
-        // Register custom_post_type edit/publish flush action
-        $current_checked_custom_post_types = get_option(Options::CACHING_CUSTOM_POST_TYPES, array());
-        foreach ($current_checked_custom_post_types as $post_type => $enabled) {
-            if ($enabled) {
-                add_action('publish_' . $post_type, [ $this, 'domainflush' ], 10, 2);
-                add_action('trashed_' . $post_type, [ $this, 'domainflush'], 10, 2);
-            }
-        }
-
         // Add custom direct flush hook
         add_action( 'warpdrive_cache_flush', [ $this, 'flush' ], 10, 0 );
         add_action( 'warpdrive_domain_flush', [ $this, 'domainflush' ], 10, 0 );
