@@ -8,13 +8,13 @@ For development support, please look over the [CONTRIBUTING.md](https://github.c
 
 ## Features
 ### Cache flusher
-The cache flusher flushes the full page cache when certain changes are saved in WordPress.
+The cache flusher flushes the enabled/available caches (Varnish, Memcached, OpCache and/or Sucuri) when certain changes are saved in WordPress.
 Depending on the users caching setting this module will flush the varnish cache in different ways.
-You can choose between flushing the cache on "post/page edit or publish" and "post/page edit or publish, comment changes, attachment changes".
-If your site is having heavy traffic we recommend you to choose the "post/page edit or publish" option to minimize cache flushes.
+You can choose between flushing the cache on "(custom) post/page edit or publish" and "all post/page edit or publish, comment changes, attachment changes".
+If your site is having heavy traffic we recommend you to choose the "(custom) post/page edit or publish" option to minimize cache flushes.
 This way individual objects will age away in the cache to minimize the strain on the webserver.
-If you want the cache to flush immediately every time you update a post/comment/attachment in WordPress you can choose "post/page edit or publish, comment changes, attachment changes".
-Only post/page, comment changes and attachment changes will flush the cache on save or publish.
+If you want the cache to flush immediately every time you update a post/comment/attachment in WordPress you can choose "all post/page edit or publish, comment changes, attachment changes".
+Only (custom) post/page, comment changes and attachment changes will flush the cache on save or publish.
 
 #### Flush on demand
 The full page cache can be flushed from another plugin by using:
