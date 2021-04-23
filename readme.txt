@@ -20,6 +20,17 @@ A few notes about the sections above:
 
 == Changelog ==
 
+= 2.10.5
+* OpCache and Sucuri support
+* Flush on custom post types
+
+= 2.10.4 =
+* Rewrite for the update system
+
+= 2.10.3 = (never released)
+* Support for memcached
+* small fixes
+
 = 2.10.2 =
 * Support GitHub Updater
 * Add hooks for CLI and cron for the Updater
