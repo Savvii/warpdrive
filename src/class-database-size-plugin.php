@@ -53,7 +53,7 @@ class DatabaseSizePlugin {
                 !array_key_exists('size', $databaseinfo) ||
                 empty($tables)
         ) {
-            $errormsg = "Could not retrieve database information, please contact support";
+            $errormsg = 'Could not retrieve database information, please contact <a href="mailto:support@savvii.com">support</a>';
         } else {
             $databasename = $databaseinfo['database'];
             $databasesize = $databaseinfo['size'];
