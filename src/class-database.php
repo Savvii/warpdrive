@@ -10,7 +10,6 @@ class Database {
     public static function get_wp_table_sizes( $limit = -1 ) {
         global $wpdb;
 
-        //check_admin_referer( 'warpdrive_viewdatabasesize' );
         $systemname = Options::system_name();
 
         if ( $limit == -1) {
