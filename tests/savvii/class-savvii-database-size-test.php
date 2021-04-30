@@ -13,14 +13,13 @@ class SavviiDatabaseSizeTest extends Warpdrive_UnitTestCase {
         $_REQUEST = [];
     }
 
-    function test_construct_adds_database_to_admin_bar_menu_at_bottom_position() {
+    function test_construct_adds_database_to_admin_bar_menu() {
         $this->_setRole( 'administrator' );
 
         $wp_admin_bar = $this->getMockBuilder( 'stdClass' )
             ->setMethods( [ 'add_menu' ] )
             ->getMock();
-        $wp_admin_bar->expects( $this->exactly( 1 ) )
-            ->method( 'add_menu' )
+        $wp_admin_bar->method( 'add_menu' )
             ->withConsecutive(
                 [ $this->callback( [ $this, '_test_admin_bar_add_warpdrive_database_menu' ] ) ]
             );
@@ -50,11 +49,12 @@ class SavviiDatabaseSizeTest extends Warpdrive_UnitTestCase {
      * @expectedException WPDieException
      */
     function test_databaseinfo_page_nonce_failure() {
+        // Setup wrong nonce
+        $_REQUEST['_wpnonce'] = wp_create_nonce('waprdrive_databaseinfo');
+
+        // access page
         $dp = new DatabaseSizePlugin();
-        ob_start();
         $dp->databaseinfo_page();
-        $output = ob_get_clean();
-        $this->assertContains('Database Information', $output);
     }
 
     function test_databaseinfo_page_nonce_success() {
