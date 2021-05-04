@@ -21,5 +21,8 @@ class Warpdrive {
         new CacheFlusherPlugin();
         // Include read logs
         new ReadLogsPlugin();
+        // Include Database size info
+        new DatabaseSizePlugin();
+
     }
 }
