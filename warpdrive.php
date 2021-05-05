@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/Savvii/warpdrive
  * GitHub Plugin URI: Savvii/warpdrive
  * Description: Hosting plugin for Savvii
- * Version: 2.10.4
+ * Version: 2.10.5
  * Author: Savvii <support@savvii.com>
  * Author URI: https://www.savvii.com
  * License: GPL-3.0-only
