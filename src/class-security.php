@@ -166,7 +166,14 @@ class Security {
      * Clear authentication cookie
      */
     function clear_auth_cookie() {
-        wp_clear_auth_cookie();
+
+        // only call wp_clear_cookie() the first time we are here
+        // it seems that sometimes we end up in a loop, this will prevent that.
+        $cookie_already_cleared = wp_cache_get('warpdrive_cookie_already_cleared');
+        if ($cookie_already_cleared === false) {
+            wp_cache_set('warpdrive_cookie_already_cleared', true);
+            wp_clear_auth_cookie();
+        }
 
         if ( ! empty( $_COOKIE[ AUTH_COOKIE ] ) ) {
             $_COOKIE[ AUTH_COOKIE ] = '';
