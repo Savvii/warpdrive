@@ -1,8 +1,5 @@
 # Package managers
-vendor/
-node_modules/
-# Testing
-build/
+/warpdrive-plugin/vendor/
 
 # OS-X ignores
 .DS_Store
@@ -18,3 +15,9 @@ Icon
 # phpstorm ide files
 .idea
 
+# dev wordpress
+/wordpress
+
+# warden
+.env
+ 

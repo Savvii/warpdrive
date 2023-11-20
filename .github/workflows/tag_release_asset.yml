@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: rm -rf .git .DS_Store
       - run: mkdir -p /tmp/release
-      - run: cp -R . /tmp/release
+      - run: cp -R ./warpdrive-plugin/* /tmp/release
       - run: mv /tmp/release warpdrive
       - run: zip -r package.zip warpdrive
 

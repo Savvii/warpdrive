@@ -1,0 +1,17 @@
+version: "3.5"
+services:
+  php-fpm:
+    environment:
+      - WARPDRIVE_API=${WARPDRIVE_API}
+      - WARPDRIVE_ACCESS_TOKEN=${WARPDRIVE_ACCESS_TOKEN}
+      - WARPDRIVE_SYSTEM_NAME=${WARPDRIVE_SYSTEM_NAME}
+    volumes:
+      - ./.warden/wordpress/wp-config.php:/var/www/html/wp-config.php
+      - ./warpdrive-plugin:/var/www/html/wp-content/plugins/warpdrive
+      - ./.warden/warpdrive/access.log:/var/www/wordpress/log/wordpress.access.log
+      - ./.warden/warpdrive/error.log:/var/www/wordpress/log/wordpress.error.log
+  php-test:
+
+volumes:
+  data:
+    driver: local
