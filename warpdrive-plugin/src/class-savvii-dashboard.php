@@ -164,7 +164,7 @@ class SavviiDashboard {
                                     <?php $className = '\Savvii\CacheFlusher' . ucfirst($cache) ?>
                                     <?php $cacheClass = new $className() ?>
                                     <?php if ($cacheClass->is_enabled()) : ?>
-                                    <li><?php echo esc_attr(ucfirst($cache)) ?></li>
+                                    <li><?php echo esc_attr($className::CACHENAME) ?></li>
                                     <?php endif; ?>
                                     <?php endforeach; ?>
                                 </ul>

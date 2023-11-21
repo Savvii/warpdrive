@@ -17,7 +17,7 @@ class Options {
     const REPO_LOCATION                = 'https://github.com/Savvii/warpdrive';
     const REPO_RELEASES_LOCATION       = 'https://api.github.com/repos/Savvii/warpdrive/releases/latest';
     const REPO_RELEASES_LATEST_ZIPBALL = 'https://github.com/Savvii/warpdrive/releases/latest/download/package.zip';
-    const AVAILABLE_CACHES             = ['memcached', 'opcache', 'varnish', 'sucuri'];
+    const AVAILABLE_CACHES             = ['memcached', 'opcache', 'varnish', 'sucuri', 'wprocket' ];
 
     /**************************************************
      * Groups consts

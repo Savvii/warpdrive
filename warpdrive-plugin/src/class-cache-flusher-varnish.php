@@ -3,10 +3,12 @@
 namespace Savvii;
 
 /**
- * Class SavviiCacheFlusher
+ * Class CacheFlushVarnish
  * Sends cache flush request to the API
  */
 class CacheFlusherVarnish implements CacheFlusherInterface {
+
+    const CACHENAME='Varnish';
 
     /**
      * Are we in a test

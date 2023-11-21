@@ -4,8 +4,13 @@
 namespace Savvii;
 
 
+/**
+ * Class CacheFlusherMemcached
+ */
 class CacheFlusherMemcached implements CacheFlusherInterface
 {
+
+    const CACHENAME='Memcached';
 
     /**
      * @var false|resource

@@ -4,8 +4,13 @@
 namespace Savvii;
 
 
+/**
+ * Class CacheFlusherOpcache
+ */
 class CacheFlusherOpcache implements CacheFlusherInterface
 {
+    const CACHENAME='OPcache';
+
     /**
      * Used to override the behaviour in the flush_opcache() method during unittests
      * (workaround, 'cause we can't disable and enable opcache on the fly
