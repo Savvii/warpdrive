@@ -74,12 +74,11 @@ class CacheFlusherWPRocket implements CacheFlusherInterface {
         }
 
         if (function_exists('rocket_clean_files')) {
-            $language = get_bloginfo('language');
             $paths = [
                 'https://' . $domain . '/',
                 'http://' . $domain . '/'
             ];
-            rocket_clean_files($language);
+            rocket_clean_files($paths);
         }
 
         return true;
