@@ -3,10 +3,12 @@
 namespace Savvii;
 
 /**
- * Class SavviiCacheSucuri
+ * Class CacheFlusherSucuri
  * Sends Sucuri cache flush request to the API
  */
 class CacheFlusherSucuri implements CacheFlusherInterface {
+
+    const CACHENAME='Sucuri';
 
     /**
      * Are we in a test
