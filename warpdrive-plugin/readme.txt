@@ -4,7 +4,7 @@ Tags: hosting
 Requires at least: 4.0.1
 Tested up to: 6.4.1
 Requires PHP: 7.4
-Stable tag: 2.10.5
+Stable tag: 2.10.8
 License: GPL-3.0-only
 License URI: https://github.com/Savvii/warpdrive/blob/master/LICENSE
 
@@ -19,6 +19,13 @@ A detailed [README](https://github.com/Savvii/warpdrive/blob/master/README.md) c
 A few notes about the sections above:
 
 == Changelog ==
+= 2.10.8
+* Some code clean up
+* minor bugfxies
+* WP Rocket support
+
+= 2.10.7
+* Small bugfixes
 
 = 2.10.5
 * OpCache and Sucuri support
