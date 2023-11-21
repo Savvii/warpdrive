@@ -4,7 +4,7 @@ Tags: hosting
 Requires at least: 4.0.1
 Tested up to: 6.4.1
 Requires PHP: 7.4
-Stable tag: 2.10.9
+Stable tag: 2.10.10
 License: GPL-3.0-only
 License URI: https://github.com/Savvii/warpdrive/blob/master/LICENSE
 
@@ -19,6 +19,9 @@ A detailed [README](https://github.com/Savvii/warpdrive/blob/master/README.md) c
 A few notes about the sections above:
 
 == Changelog ==
+= 2.10.10
+* Version bump in main class
+
 = 2.10.9
 * Small code fix
 
