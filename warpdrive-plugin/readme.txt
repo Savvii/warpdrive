@@ -1,10 +1,10 @@
 === Warpdrive ===
-Contributors: fuegas
+Contributors: fuegas, joverthegrey
 Tags: hosting
 Requires at least: 4.0.1
-Tested up to: 5.1.1
-Requires PHP: 5.6.0
-Stable tag: trunk
+Tested up to: 6.4.1
+Requires PHP: 7.4
+Stable tag: 2.10.5
 License: GPL-3.0-only
 License URI: https://github.com/Savvii/warpdrive/blob/master/LICENSE
 
