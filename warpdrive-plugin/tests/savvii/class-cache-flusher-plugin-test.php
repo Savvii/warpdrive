@@ -8,13 +8,13 @@ use \Savvii\CacheFlusherPlugin;
  */
 class CacheFlusherPluginTest extends Warpdrive_UnitTestCase {
 
-    function setUp() {
+    function setUp():void {
         parent::setUp();
         wp_set_current_user( 0 );
         $_REQUEST = [];
     }
 
-    function tearDown() {
+    function tearDown():void {
         parent::tearDown();
         unset( $GLOBALS['wp_admin_bar'] );
     }

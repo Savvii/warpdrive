@@ -19,7 +19,7 @@ class SavviiSecurityTest extends \Warpdrive_UnitTestCase {
      */
     private $security;
 
-    function setUp() {
+    function setUp():void {
         parent::setUp();
         putenv( 'WARPDRIVE_SYSTEM_NAME=bar-baz' );
         $this->security = $this->getMockBuilder( 'Savvii\Security' )
@@ -69,7 +69,7 @@ class SavviiSecurityTest extends \Warpdrive_UnitTestCase {
     function test_gia_returns_string() {
         unset( $_SERVER['REMOTE_ADDR'] );
         $ip = $this->security->get_ip_address();
-        $this->assertInternalType( 'string', $ip );
+        $this->assertIsString($ip );
         $this->assertSame( '', $ip );
     }
 

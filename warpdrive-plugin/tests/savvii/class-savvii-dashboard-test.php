@@ -14,7 +14,7 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
     const FORM_CACHE_STYLE   = SavviiDashboard::FORM_CACHE_STYLE;
     const FORM_CACHE_DEFAULT   = SavviiDashboard::FORM_CACHE_DEFAULT;
 
-    function setUp() {
+    function setUp():void {
         parent::setUp();
         $_REQUEST = [];
     }
@@ -61,7 +61,7 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         ob_start();
         $sd->warpdrive_dashboard();
         $output = ob_get_clean();
-        $this->assertContains( '<input type="hidden" name="warpdrive_cache_default" value="normal" />', $output, '', true );
+        $this->assertStringContainsString( '<input type="hidden" name="warpdrive_cache_default" value="normal" />', $output, '', true );
     }
 
     function test_warpdrive_dashboard_shows_caching_agressive_when_option_is_set() {
@@ -72,7 +72,7 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         ob_start();
         $sd->warpdrive_dashboard();
         $output = ob_get_clean();
-        $this->assertContains( '<option value="agressive" selected="selected">Flush on (custom) post/page edit or publish</option>', $output, '', true );
+        $this->assertStringContainsString( '<option value="agressive" selected="selected">Flush on (custom) post/page edit or publish</option>', $output, '', true );
     }
 
     function test_maybe_update_cache_style_when_old_same_as_new() {
@@ -87,10 +87,10 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         $this->assertEquals( $style, get_option( self::OPT_CACHE_STYLE ) );
     }
 
-    /**
-     * @expectedException WPDieException
-     */
     function test_maybe_update_cache_style_nonce_failure() {
+
+        $this->expectException(WPDieException::class);
+
         // Setup
         $style = CacheFlusherPlugin::CACHING_STYLE_AGRESSIVE;
         update_option( self::OPT_CACHE_STYLE, $style );
@@ -117,10 +117,9 @@ class SavviiSavviiDashboardTest extends Warpdrive_UnitTestCase {
         $this->assertEquals( $new_style, get_option( self::OPT_CACHE_STYLE ) );
     }
 
-    /**
-     * @expectedException WPDieException
-     */
     function test_update_custom_post_types_nonce_failure() {
+        $this->expectException(WPDieException::class);
+
         // Setup
         $post_types_enabled = array('movies' => true);
         $post_types_disabled = array('movies' => false);

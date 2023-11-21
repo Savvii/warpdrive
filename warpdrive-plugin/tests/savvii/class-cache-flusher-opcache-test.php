@@ -12,7 +12,7 @@ class CacheFlusherOpcacheTest extends \Warpdrive_UnitTestCase
     /**
      * testcase setUp(), create an testing enabled CacheFlusherOpcache class
      */
-    public function setUp()
+    public function setUp():void
     {
         parent::setUp();
         $this->cache = new CacheFlusherOpcache();

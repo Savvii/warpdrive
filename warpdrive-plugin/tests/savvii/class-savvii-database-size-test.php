@@ -8,7 +8,7 @@ use \Savvii\DatabaseSizePlugin;
  */
 class SavviiDatabaseSizeTest extends Warpdrive_UnitTestCase {
 
-    function setUp() {
+    function setUp():void {
         parent::setUp();
         $_REQUEST = [];
     }
@@ -45,10 +45,9 @@ class SavviiDatabaseSizeTest extends Warpdrive_UnitTestCase {
         $this->assertArrayHasKey('warpdrive_databaseinfo', $_wp_submenu_nopriv['warpdrive_dashboard']);
     }
 
-    /**
-     * @expectedException WPDieException
-     */
     function test_databaseinfo_page_nonce_failure() {
+        $this->expectException(WPDieException::class);
+
         // Setup wrong nonce
         $_REQUEST['_wpnonce'] = wp_create_nonce('waprdrive_databaseinfo');
 
@@ -66,6 +65,6 @@ class SavviiDatabaseSizeTest extends Warpdrive_UnitTestCase {
         ob_start();
         $dp->databaseinfo_page();
         $output = ob_get_clean();
-        $this->assertContains('Database Information', $output);
+        $this->assertStringContainsString('Database Information', $output);
     }
 }

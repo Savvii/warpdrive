@@ -10,7 +10,7 @@ class CacheFlusherTest extends \Warpdrive_UnitTestCase
     /**
      * testcase Setup, construct a CacheFlusher with two CacheFlusherOpcaches in testmode
      */
-    public function setUp()
+    public function setUp():void
     {
         // construct a CacheFlusher with 2 CacheFlusherOpcache()
         // which we can alter.

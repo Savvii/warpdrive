@@ -9,7 +9,7 @@ class ReadLogsTest extends Warpdrive_UnitTestCase {
      */
     private $subject;
 
-    function setUp() {
+    function setUp():void {
         parent::setUp();
         putenv( 'WARPDRIVE_SYSTEM_NAME=FooBar' );
         $this->subject = $this->getMockBuilder( 'Savvii\ReadLogs' )
@@ -64,7 +64,7 @@ class ReadLogsTest extends Warpdrive_UnitTestCase {
 
         $lines = $this->subject->get_log_lines( 'error', 10 );
         $this->assertCount( 1, $lines );
-        $this->assertContains( 'Error log not found', $lines[0] );
+        $this->assertStringContainsString( 'Error log not found', $lines[0] );
     }
 
     function test_get_log_lines_on_empty_log() {
@@ -88,7 +88,7 @@ class ReadLogsTest extends Warpdrive_UnitTestCase {
 
         $lines = $this->subject->get_log_lines( 'error', 10 );
         $this->assertCount( 1, $lines );
-        $this->assertContains( 'Error log empty', $lines[0] );
+        $this->assertStringContainsString( 'Error log empty', $lines[0] );
     }
 
     function test_get_log_lines_returns_requested_amount_of_lines() {
