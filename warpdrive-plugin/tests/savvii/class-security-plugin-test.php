@@ -14,7 +14,7 @@ class SavviiSecurityPluginTest extends Warpdrive_UnitTestCase {
      */
     private $security;
 
-    function setUp() {
+    function setUp():void {
         parent::setUp();
         putenv( 'WARPDRIVE_SYSTEM_NAME=FooBar' );
         // Create SecurityPlugin mock
@@ -103,7 +103,7 @@ class SavviiSecurityPluginTest extends Warpdrive_UnitTestCase {
         $expected = '<strong>ERROR</strong>: Incorrect username or password';
         $this->prepare_clem( true, true );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $expected,
             apply_filters( 'login_errors', $messages )
         );

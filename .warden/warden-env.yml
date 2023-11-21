@@ -10,8 +10,21 @@ services:
       - ./warpdrive-plugin:/var/www/html/wp-content/plugins/warpdrive
       - ./.warden/warpdrive/access.log:/var/www/wordpress/log/wordpress.access.log
       - ./.warden/warpdrive/error.log:/var/www/wordpress/log/wordpress.error.log
-  php-test:
-
+  wp-test:
+    build:
+      context: ./.warden/wordpress_test/
+      args:
+        - DB_HOST=${DB_HOST}
+        - DB_DATABASE=${DB_DATABASE}
+        - DB_USERNAME=${DB_USERNAME}
+        - DB_PASSWORD=${DB_PASSWORD}
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - ./warpdrive-plugin:/var/www/html/wp-content/plugins/warpdrive
 volumes:
   data:
     driver: local

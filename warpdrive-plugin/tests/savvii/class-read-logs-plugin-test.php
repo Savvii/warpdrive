@@ -14,7 +14,7 @@ class ReadLogsPluginTest extends Warpdrive_UnitTestCase {
      */
     private $plugin;
 
-    function setUp() {
+    function setUp():void {
         parent::setUp();
         $this->read_logs = $this->getMockBuilder( 'Savvii\ReadLogs' )
             ->setMethods([ 'clean_log_name', 'clean_lines', 'get_log_lines' ] )
@@ -129,10 +129,9 @@ class ReadLogsPluginTest extends Warpdrive_UnitTestCase {
         $this->plugin->readlogs_page();
     }
 
-    /**
-     * @expectedException WPDieException
-     */
     function test_readlogs_page_incorrect_nonce() {
+        $this->expectException(WPDieException::class);
+
         $_REQUEST['_wpnonce'] = 'failure';
         $_SERVER['HTTP_REFERER'] = admin_url();
 

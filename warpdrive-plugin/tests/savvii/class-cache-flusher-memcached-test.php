@@ -19,7 +19,7 @@ class CacheFlusherMemcachedTest extends \Warpdrive_UnitTestCase
     /**
      * Testcase setUp(), create CacheFlusherMemcached and overwrite the stream
      */
-    public function setUp()
+    public function setUp(): void
     {
         // new CacheFlusherMemcached
         $this->cache = new CacheFlusherMemcached();

@@ -5,7 +5,7 @@
  */
 class APITest extends Warpdrive_UnitTestCase {
 
-    function setUp() {
+    function setUp():void {
         putenv( 'WARPDRIVE_ACCESS_TOKEN=Foo42Bar' );
         putenv( 'WARPDRIVE_SYSTEM_NAME=FooBar' );
     }

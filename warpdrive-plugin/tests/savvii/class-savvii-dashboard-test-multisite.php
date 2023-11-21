@@ -14,12 +14,12 @@ class SavviiSavviiDashboardTestMultisite extends Warpdrive_UnitTestCase {
     const FORM_CACHE_STYLE          = SavviiDashboard::FORM_CACHE_STYLE;
     const FORM_CACHE_USE_DEFAULT    = SavviiDashboard::FORM_CACHE_USE_DEFAULT;
 
-    function setUp() {
+    function setUp():void {
         parent::setUp();
         $_REQUEST = [];
 
         // Add a second site to test multisite
-        $this->factory->blog->create();
+        self::factory()->blog->create();
     }
 
     function test_blog_is_added() {
@@ -37,7 +37,7 @@ class SavviiSavviiDashboardTestMultisite extends Warpdrive_UnitTestCase {
         ob_start();
         $sd->warpdrive_dashboard();
         $output = ob_get_clean();
-        $this->assertContains( 'Please use the Savvii top menu for reading logs.', $output, '', true );
+        $this->assertStringContainsString( 'Please use the Savvii top menu for reading logs.', $output, '', true );
     }
 
     function test_warpdrive_dashboard_hide_log_options_for_non_super_admin() {
@@ -49,7 +49,7 @@ class SavviiSavviiDashboardTestMultisite extends Warpdrive_UnitTestCase {
         ob_start();
         $sd->warpdrive_dashboard();
         $output = ob_get_clean();
-        $this->assertContains( 'only users with the \'Super Admin\'', $output, '', true );
+        $this->assertStringContainsString( 'only users with the \'Super Admin\'', $output, '', true );
     }
 
     function test_site_cache_settings_not_equal() {
